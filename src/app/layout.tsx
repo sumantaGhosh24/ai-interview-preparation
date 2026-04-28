@@ -25,7 +25,44 @@ export const metadata: Metadata = {
     template: "%s | AI Powered Interview Preparation Platform",
     default: "AI Powered Interview Preparation Platform",
   },
-  description: "AI Powered Interview Preparation Platform",
+  metadataBase: new URL("https://sumanta-ghosh.vercel.app"),
+  description:
+    "The ultimate platform for preparing for your next interview. With AI-powered tools and resources, you can confidently prepare for your next interview with ease.",
+
+  keywords: [
+    "Sumanta Ghosh",
+    "Full-Stack Web Developer",
+    "Next.js",
+    "React",
+    "AI",
+    "Interview Platform",
+  ],
+
+  authors: [{name: "Sumanta Ghosh"}],
+  creator: "Sumanta Ghosh",
+
+  openGraph: {
+    title: "AI Powered Interview Preparation Platform",
+    description:
+      "The ultimate platform for preparing for your next interview. With AI-powered tools and resources, you can confidently prepare for your next interview with ease.",
+    url: "https://sumanta-ghosh.vercel.app",
+    siteName: "AI Powered Interview Preparation Platform",
+    type: "website",
+    images: ["/opengraph-image"],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "AI Powered Interview Preparation Platform",
+    description:
+      "The ultimate platform for preparing for your next interview. With AI-powered tools and resources, you can confidently prepare for your next interview with ease.",
+    images: ["/opengraph-image"],
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
@@ -34,7 +71,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <body
         className={cn(
           geistSans.variable,

@@ -1,26 +1,31 @@
-"use client";
+import Header from "@/features/landing/components/header";
+import Hero from "@/features/landing/components/hero";
+import Stats from "@/features/landing/components/stats";
+import Features from "@/features/landing/components/features";
+import Workflow from "@/features/landing/components/workflow";
+import Testimonials from "@/features/landing/components/testimonials";
+import WhyChooseUs from "@/features/landing/components/why-choose-us";
+import FAQ from "@/features/landing/components/faq";
+import CTA from "@/features/landing/components/cta";
+import Footer from "@/features/landing/components/footer";
 
-import {sendEmail} from "@/lib/email/send-email";
-import {Button} from "@/components/ui/button";
-
-// export const metadata = {
-//   title: "Home",
-// };
+export const metadata = {
+  title: "Home",
+};
 
 const Home = () => {
-  const handleSendEmail = async () => {
-    await sendEmail({
-      to: "sumantaghosh9574@gmail.com",
-      subject: "Test",
-      html: "<h1>Hello World</h1>",
-      text: "Hello World",
-    });
-  };
-
   return (
     <div>
-      <h1>Home</h1>
-      <Button onClick={handleSendEmail}>Send Email</Button>
+      <Header />
+      <Hero />
+      <Stats />
+      <Features />
+      <Workflow />
+      <Testimonials />
+      <WhyChooseUs />
+      <FAQ />
+      <CTA />
+      <Footer />
     </div>
   );
 };
