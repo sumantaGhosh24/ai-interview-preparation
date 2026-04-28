@@ -44,3 +44,6 @@ PLAN.md
 TASK.md
 
 /src/generated/prisma
+
+# Sentry Config File
+.env.sentry-build-plugin
