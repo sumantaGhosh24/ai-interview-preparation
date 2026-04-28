@@ -9,7 +9,7 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 
-function NotFound() {
+const NotFound = () => {
   return (
     <div className="h-screen w-full flex items-center justify-center">
       <div className="bg-background w-[80%] h-125 rounded-md shadow-md flex flex-col items-center justify-center gap-5 dark:shadow-white/40">
@@ -32,6 +32,6 @@ function NotFound() {
       </div>
     </div>
   );
-}
+};
 
 export default NotFound;

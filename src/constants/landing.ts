@@ -4,6 +4,13 @@ export const headerLinks = [
   {name: "Login", href: "/login"},
 ];
 
+export const userHeaderLinks = [
+  {name: "Dashboard", href: "/dashboard"},
+  {name: "Profile", href: "/profile"},
+];
+
+export const adminHeaderLinks = [{name: "Users", href: "/users"}];
+
 export const features = [
   {
     title: "AI Answer Evaluation",

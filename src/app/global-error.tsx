@@ -10,7 +10,7 @@ interface ErrorProps {
   reset: () => void;
 }
 
-function GlobalError({error, reset}: ErrorProps) {
+const GlobalError = ({error, reset}: ErrorProps) => {
   useEffect(() => {
     Sentry.captureException(error);
   }, [error]);
@@ -25,6 +25,6 @@ function GlobalError({error, reset}: ErrorProps) {
       </div>
     </div>
   );
-}
+};
 
 export default GlobalError;

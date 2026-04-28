@@ -10,7 +10,7 @@ interface ErrorProps {
   reset: () => void;
 }
 
-function Error({error, reset}: ErrorProps) {
+const Error = ({error, reset}: ErrorProps) => {
   useEffect(() => {
     Sentry.captureException(error);
   }, [error]);
@@ -25,6 +25,6 @@ function Error({error, reset}: ErrorProps) {
       </div>
     </div>
   );
-}
+};
 
 export default Error;
