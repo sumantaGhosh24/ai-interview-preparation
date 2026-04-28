@@ -6,6 +6,7 @@ import "./globals.css";
 import {cn} from "@/lib/utils";
 import {Toaster} from "@/components/ui/sonner";
 import ThemeProvider from "@/components/theme-provider";
+import {TRPCReactProvider} from "@/trpc/client";
 
 const inter = Inter({subsets: ["latin"], variable: "--font-sans"});
 
@@ -48,8 +49,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main>{children}</main>
-          <Toaster />
+          <TRPCReactProvider>
+            <main>{children}</main>
+            <Toaster />
+          </TRPCReactProvider>
         </ThemeProvider>
       </body>
     </html>
