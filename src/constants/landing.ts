@@ -1,8 +1,7 @@
 export const headerLinks = [
-  {name: "Home", href: "#home"},
-  {name: "Features", href: "#features"},
-  {name: "Workflow", href: "#workflow"},
-  {name: "FAQ", href: "#faq"},
+  {name: "Home", href: "/"},
+  {name: "Register", href: "/login"},
+  {name: "Login", href: "/login"},
 ];
 
 export const features = [

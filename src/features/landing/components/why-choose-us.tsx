@@ -22,7 +22,7 @@ const WhyChooseUs = () => {
           <div className="space-y-4">
             {points.map((point) => (
               <Card key={point} className="rounded-2xl p-5">
-                <CardHeader>
+                <CardHeader className="p-0">
                   <CardTitle className="font-medium">{point}</CardTitle>
                 </CardHeader>
               </Card>

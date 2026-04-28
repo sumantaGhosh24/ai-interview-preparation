@@ -1,10 +1,10 @@
+import {testimonials} from "@/constants/landing";
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {testimonials} from "@/constants/landing";
 
 const Testimonials = () => {
   return (
@@ -21,7 +21,7 @@ const Testimonials = () => {
         <div className="mt-14 grid gap-6 md:grid-cols-3">
           {testimonials.map((item) => (
             <Card key={item.name} className="rounded-3xl p-8">
-              <CardHeader>
+              <CardHeader className="p-0">
                 <CardTitle className="leading-7">“{item.feedback}”</CardTitle>
                 <CardDescription className="mt-6 font-semibold">
                   {item.name}

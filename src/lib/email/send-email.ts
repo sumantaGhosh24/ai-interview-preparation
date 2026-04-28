@@ -10,7 +10,7 @@ export async function sendEmail({
   text: string;
 }) {
   try {
-    await fetch("/api/email", {
+    await fetch(`${process.env.BETTER_AUTH_URL}/api/email`, {
       method: "post",
       body: JSON.stringify({to, subject, text, html}),
     });

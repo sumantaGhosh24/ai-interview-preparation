@@ -1,4 +1,4 @@
-import Header from "@/features/landing/components/header";
+import {requireUnauth} from "@/lib/auth-utils";
 import Hero from "@/features/landing/components/hero";
 import Stats from "@/features/landing/components/stats";
 import Features from "@/features/landing/components/features";
@@ -7,16 +7,16 @@ import Testimonials from "@/features/landing/components/testimonials";
 import WhyChooseUs from "@/features/landing/components/why-choose-us";
 import FAQ from "@/features/landing/components/faq";
 import CTA from "@/features/landing/components/cta";
-import Footer from "@/features/landing/components/footer";
 
 export const metadata = {
   title: "Home",
 };
 
-const Home = () => {
+const Home = async () => {
+  await requireUnauth();
+
   return (
     <div>
-      <Header />
       <Hero />
       <Stats />
       <Features />
@@ -25,7 +25,6 @@ const Home = () => {
       <WhyChooseUs />
       <FAQ />
       <CTA />
-      <Footer />
     </div>
   );
 };

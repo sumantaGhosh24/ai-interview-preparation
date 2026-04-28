@@ -23,7 +23,7 @@ const Header = () => {
       <div className="mx-auto container md:flex items-center justify-between px-6 py-4 md:px-8">
         <div className="flex items-center justify-between py-3 md:block md:py-5">
           <h1 className="text-xl font-bold tracking-tight text-blue-500">
-            <Link href="/">AI Interview Prep</Link>
+            <Link href="/">AI Interview Preparation</Link>
           </h1>
           <div className="md:hidden">
             <Button
@@ -55,7 +55,7 @@ const Header = () => {
                 <Link href="/login">Login</Link>
               </Button>
               <Button asChild>
-                <Link href="/register">Get Started</Link>
+                <Link href="/login">Get Started</Link>
               </Button>
               <ModeToggle />
             </NavigationMenuList>

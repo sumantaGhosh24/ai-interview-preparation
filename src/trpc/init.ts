@@ -1,6 +1,9 @@
 import {cache} from "react";
-import {initTRPC} from "@trpc/server";
+import {initTRPC, TRPCError} from "@trpc/server";
+import {headers} from "next/headers";
 import superjson from "superjson";
+
+import {auth} from "@/lib/auth";
 
 export const createTRPCContext = cache(async () => {
   return {userId: "user_123"};
@@ -15,3 +18,31 @@ export const createTRPCRouter = t.router;
 export const createCallerFactory = t.createCallerFactory;
 
 export const baseProcedure = t.procedure;
+
+export const protectedProcedure = baseProcedure.use(async ({ctx, next}) => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    throw new TRPCError({code: "UNAUTHORIZED", message: "Unathorized"});
+  }
+
+  return next({ctx: {...ctx, auth: session}});
+});
+
+export const adminProcedure = protectedProcedure.use(async ({ctx, next}) => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    throw new TRPCError({code: "UNAUTHORIZED", message: "Unauthorized"});
+  }
+
+  if (session.user.role !== "admin") {
+    throw new TRPCError({code: "FORBIDDEN", message: "Forbidden"});
+  }
+
+  return next({ctx: {...ctx, auth: session}});
+});

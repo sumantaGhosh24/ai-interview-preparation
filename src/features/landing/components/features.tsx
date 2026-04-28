@@ -8,7 +8,7 @@ import {
 
 const Features = () => {
   return (
-    <section className="border-y bg-muted/30 py-24" id="features">
+    <section className="border-y bg-muted/30 py-24">
       <div className="mx-auto container px-6 lg:px-8">
         <div>
           <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
@@ -25,7 +25,7 @@ const Features = () => {
         <div className="mt-14 grid gap-6 md:grid-cols-2">
           {features.map((feature) => (
             <Card key={feature.title} className="rounded-3xl border p-6">
-              <CardHeader>
+              <CardHeader className="p-0">
                 <CardTitle className="text-xl font-semibold">
                   {feature.title}
                 </CardTitle>

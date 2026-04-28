@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {Sparkles} from "lucide-react";
 
 import {Button} from "@/components/ui/button";
@@ -8,11 +9,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Link from "next/link";
 
 const Hero = () => {
   return (
-    <section className="overflow-hidden border-b" id="home">
+    <section className="overflow-hidden border-b">
       <div className="mx-auto container px-6 py-24 lg:px-8">
         <div className="grid items-center gap-14 lg:grid-cols-2">
           <div>
@@ -34,12 +34,12 @@ const Hero = () => {
                 <Link href="/login">Start Practicing</Link>
               </Button>
               <Button variant="outline" size="xl">
-                <Link href="/register">View Demo</Link>
+                <Link href="/login">View Demo</Link>
               </Button>
             </div>
           </div>
           <Card className="rounded-3xl border p-6 space-y-4">
-            <CardHeader className="space-y-4">
+            <CardHeader className="space-y-4 p-0">
               <CardDescription className="font-medium">
                 Latest Evaluation
               </CardDescription>
@@ -47,7 +47,7 @@ const Hero = () => {
                 Explain React useEffect cleanup function
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 p-0">
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className="rounded-2xl border p-4">
                   <p className="text-sm text-muted-foreground">Score</p>

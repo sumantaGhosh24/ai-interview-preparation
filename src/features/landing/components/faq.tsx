@@ -8,7 +8,7 @@ import {
 
 const FAQ = () => {
   return (
-    <section className="py-24" id="faq">
+    <section className="py-24">
       <div className="mx-auto container px-6 lg:px-8">
         <div className="text-center">
           <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
