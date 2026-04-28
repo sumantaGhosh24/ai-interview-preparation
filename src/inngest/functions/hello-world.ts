@@ -1,4 +1,9 @@
+import {createGoogleGenerativeAI} from "@ai-sdk/google";
+import {generateText} from "ai";
+
 import {inngest} from "../client";
+
+const google = createGoogleGenerativeAI();
 
 export const helloWorld = inngest.createFunction(
   {id: "hello-world", triggers: {event: "test/hello.world"}},
@@ -7,10 +12,16 @@ export const helloWorld = inngest.createFunction(
 
     await step.sleep("parse", "10s");
 
-    await step.sleep("sending-to-ai", "10s");
+    const {steps: geminiSteps} = await step.ai.wrap(
+      "gemini-generate-text",
+      generateText,
+      {
+        model: google("gemini-2.5-flash"),
+        system: "You are a helpful assistant.",
+        prompt: "What is 2 + 2?",
+      },
+    );
 
-    await step.run("create-interview", () => {
-      return {message: "Hello World"};
-    });
+    return {geminiSteps};
   },
 );
