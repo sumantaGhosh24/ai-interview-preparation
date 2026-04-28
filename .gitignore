@@ -42,3 +42,5 @@ next-env.d.ts
 
 PLAN.md
 TASK.md
+
+/src/generated/prisma
