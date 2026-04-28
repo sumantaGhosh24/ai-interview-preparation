@@ -1,18 +1,26 @@
-import prisma from "@/lib/db";
-import ModeToggle from "@/components/mode-toggle";
+"use client";
 
-export const metadata = {
-  title: "Home",
-};
+import {sendEmail} from "@/lib/email/send-email";
+import {Button} from "@/components/ui/button";
 
-const Home = async () => {
-  const users = await prisma.user.findMany();
+// export const metadata = {
+//   title: "Home",
+// };
+
+const Home = () => {
+  const handleSendEmail = async () => {
+    await sendEmail({
+      to: "sumantaghosh9574@gmail.com",
+      subject: "Test",
+      html: "<h1>Hello World</h1>",
+      text: "Hello World",
+    });
+  };
 
   return (
     <div>
       <h1>Home</h1>
-      <ModeToggle />
-      <p>{JSON.stringify(users)}</p>
+      <Button onClick={handleSendEmail}>Send Email</Button>
     </div>
   );
 };
