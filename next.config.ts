@@ -16,6 +16,14 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "cdn.discordapp.com",
       },
+      {
+        protocol: "https",
+        hostname: "utfs.io",
+      },
+      {
+        protocol: "https",
+        hostname: "hkevkgx9zr.ufs.sh",
+      },
     ],
   },
 };
