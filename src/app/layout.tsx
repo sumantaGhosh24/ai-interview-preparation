@@ -22,8 +22,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | AI Powered Interview Preparation Platform",
-    default: "AI Powered Interview Preparation Platform",
+    template: "%s | AI Interview Preparation",
+    default: "AI Interview Preparation",
   },
   metadataBase: new URL("https://sumanta-ghosh.vercel.app"),
   description:

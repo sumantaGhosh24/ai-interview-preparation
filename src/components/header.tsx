@@ -6,7 +6,6 @@ import Link from "next/link";
 import {toast} from "sonner";
 import {MenuIcon, XIcon} from "lucide-react";
 
-import {userHeaderLinks, adminHeaderLinks} from "@/constants/landing";
 import {authClient} from "@/lib/auth-client";
 import ModeToggle from "@/components/mode-toggle";
 import {
@@ -19,6 +18,8 @@ import {
 import {Button} from "@/components/ui/button";
 
 import {Skeleton} from "./ui/skeleton";
+import {SidebarTrigger} from "./ui/sidebar";
+import {Avatar, AvatarFallback, AvatarImage} from "./ui/avatar";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -55,10 +56,10 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-md">
       <div className="mx-auto container md:flex items-center justify-between px-6 py-4 md:px-8">
-        <div className="flex items-center justify-between py-3 md:block md:py-5">
-          <h1 className="text-xl font-bold tracking-tight text-blue-500">
-            <Link href="/">AI Interview Preparation</Link>
-          </h1>
+        <div className="flex items-center justify-between md:block">
+          <Button variant="outline" asChild className="h-9 px-4 ml-4">
+            <SidebarTrigger />
+          </Button>
           <div className="md:hidden">
             <Button
               className="rounded-md p-2 outline-none"
@@ -75,32 +76,28 @@ const Header = () => {
             <NavigationMenuList className="flex-col items-center gap-4 md:flex-row">
               {session !== null && (
                 <>
-                  {userHeaderLinks.map((link, i) => (
-                    <NavigationMenuItem key={`${link.name}-${i}`}>
+                  <NavigationMenuItem>
+                    <NavigationMenuLink
+                      asChild
+                      className={navigationMenuTriggerStyle({
+                        className: "hover:bg-transparent",
+                      })}
+                    >
+                      <Link href="/profile">Profile</Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                  {hasAdminPermission && (
+                    <NavigationMenuItem>
                       <NavigationMenuLink
                         asChild
                         className={navigationMenuTriggerStyle({
                           className: "hover:bg-transparent",
                         })}
                       >
-                        <Link href={link.href}>{link.name}</Link>
+                        <Link href="/users">Users</Link>
                       </NavigationMenuLink>
                     </NavigationMenuItem>
-                  ))}
-                  {hasAdminPermission
-                    ? adminHeaderLinks.map((link, i) => (
-                        <NavigationMenuItem key={`${link.name}-${i}`}>
-                          <NavigationMenuLink
-                            asChild
-                            className={navigationMenuTriggerStyle({
-                              className: "hover:bg-transparent",
-                            })}
-                          >
-                            <Link href={link.href}>{link.name}</Link>
-                          </NavigationMenuLink>
-                        </NavigationMenuItem>
-                      ))
-                    : null}
+                  )}
                   <Button
                     variant="secondary"
                     className={navigationMenuTriggerStyle({
@@ -110,6 +107,12 @@ const Header = () => {
                   >
                     Logout
                   </Button>
+                  <Avatar size="lg">
+                    <AvatarImage src={session?.user?.image as string} />
+                    <AvatarFallback>
+                      {session?.user?.name.slice(0, 2).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
                   <ModeToggle />
                 </>
               )}

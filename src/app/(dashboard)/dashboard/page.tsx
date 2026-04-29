@@ -1,24 +1,18 @@
-import {headers} from "next/headers";
-
-import {auth} from "@/lib/auth";
 import {requireAuth} from "@/lib/auth-utils";
 
 export const metadata = {
   title: "Dashboard",
 };
 
-const Dashboard = async () => {
+const DashboardPage = async () => {
   await requireAuth();
 
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
   return (
-    <div>
-      <p>{JSON.stringify(session?.user, null, 2)}</p>
+    <div className="space-y-4">
+      <h1 className="text-3xl font-bold">Dashboard</h1>
+      <p className="text-muted-foreground">Your learning progress overview.</p>
     </div>
   );
 };
 
-export default Dashboard;
+export default DashboardPage;
