@@ -96,7 +96,7 @@ const UserRow = ({user, selfId}: {user: UserWithRole; selfId: string}) => {
     <TableRow key={user.id}>
       <TableCell>
         <div>
-          <div className="font-medium">{user.name || "No name"}</div>
+          <div className="font-medium capitalize">{user.name || "No name"}</div>
           <div className="text-sm text-muted-foreground">{user.email}</div>
           <div className="flex items-center gap-2 not-empty:mt-2">
             {user.banned && (
