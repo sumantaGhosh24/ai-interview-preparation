@@ -21,7 +21,7 @@ const TopicOverviewCard = ({topicId}: TopicOverviewCardProps) => {
 
   const performances = topic?.performance ?? [];
 
-  const totalQuestions = topic?.questions?.totalCount ?? 0;
+  const totalQuestions = topic?.totalQuestions ?? 0;
 
   const totalAttempts = performances.reduce(
     (sum, item) => sum + (item.attemptCount ?? 0),

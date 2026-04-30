@@ -6,13 +6,12 @@ import {
 import {toast} from "sonner";
 
 import {useTRPC} from "@/trpc/client";
-
-import {useTopicsParams} from "./use-topics-params";
+import {useGlobalParams} from "@/features/global/hooks/use-global-params";
 
 export const useSuspenseTopics = () => {
   const trpc = useTRPC();
 
-  const [params] = useTopicsParams();
+  const [params] = useGlobalParams();
 
   return useSuspenseQuery(trpc.topics.getMany.queryOptions(params));
 };
@@ -20,9 +19,7 @@ export const useSuspenseTopics = () => {
 export const useSuspenseTopic = (id: string) => {
   const trpc = useTRPC();
 
-  const [params] = useTopicsParams();
-
-  return useSuspenseQuery(trpc.topics.getOne.queryOptions({...params, id}));
+  return useSuspenseQuery(trpc.topics.getOne.queryOptions({id}));
 };
 
 export const useCreateTopic = () => {

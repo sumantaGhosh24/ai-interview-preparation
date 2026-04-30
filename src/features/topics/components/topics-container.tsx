@@ -1,9 +1,8 @@
 import {ReactNode} from "react";
 
-import {EntityContainer} from "@/components/entity-components";
+import {EntityContainer, EntitySearch} from "@/components/entity-components";
 
 import TopicsHeader from "./topics-header";
-import TopicsSearch from "./topics-search";
 import TopicsPagination from "./topics-pagination";
 
 interface TopicsContainerProps {
@@ -14,7 +13,7 @@ const TopicsContainer = ({children}: TopicsContainerProps) => {
   return (
     <EntityContainer
       header={<TopicsHeader />}
-      search={<TopicsSearch placeholder="Search topics" />}
+      search={<EntitySearch placeholder="Search topics" />}
       pagination={<TopicsPagination />}
     >
       {children}

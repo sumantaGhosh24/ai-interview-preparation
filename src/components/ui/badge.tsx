@@ -13,6 +13,8 @@ const badgeVariants = cva(
         secondary:
           "bg-secondary text-secondary-foreground [a]:hover:bg-secondary/80",
         destructive: "bg-red-700 text-white [a]:hover:bg-red-700/80",
+        success: "bg-green-700 text-white [a]:hover:bg-green-700/80",
+        warning: "bg-amber-700 text-white [a]:hover:bg-amber-700/80",
         outline:
           "border-border text-foreground [a]:hover:bg-muted [a]:hover:text-muted-foreground",
         ghost:

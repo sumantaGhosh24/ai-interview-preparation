@@ -2,7 +2,7 @@ import {parseAsInteger, parseAsString} from "nuqs/server";
 
 import {PAGINATION} from "@/constants/pagination";
 
-export const topicsParams = {
+export const globalParams = {
   page: parseAsInteger
     .withDefault(PAGINATION.DEFAULT_PAGE)
     .withOptions({clearOnDefault: true}),

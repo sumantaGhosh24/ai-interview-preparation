@@ -3,7 +3,7 @@ import {ErrorBoundary} from "react-error-boundary";
 
 import {requireAuth} from "@/lib/auth-utils";
 import {prefetchTopics} from "@/features/topics/server/prefetch";
-import {topicsParamsLoader} from "@/features/topics/server/params-loader";
+import {globalParamsLoader} from "@/features/global/server/params-loader";
 import {HydrateClient} from "@/trpc/server";
 import TopicsList from "@/features/topics/components/topics-list";
 import TopicsContainer from "@/features/topics/components/topics-container";
@@ -16,7 +16,7 @@ export const metadata = {
 const TopicsPage = async ({searchParams}: PageProps<"/topics">) => {
   await requireAuth();
 
-  const params = await topicsParamsLoader(searchParams);
+  const params = await globalParamsLoader(searchParams);
 
   prefetchTopics(params);
 

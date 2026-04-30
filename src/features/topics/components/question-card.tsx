@@ -1,6 +1,7 @@
 import Link from "next/link";
-import {EyeIcon, FileQuestionIcon} from "lucide-react";
+import {EyeIcon, FileQuestionIcon, TrashIcon} from "lucide-react";
 
+import {useRemoveQuestion} from "@/features/questions/hooks/use-questions";
 import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
 import {
@@ -15,7 +16,19 @@ interface TopicQuestionCardProps {
   question: Question;
 }
 
-const TopicQuestionCard = ({question}: TopicQuestionCardProps) => {
+const QuestionCard = ({question}: TopicQuestionCardProps) => {
+  const removeQuestion = useRemoveQuestion();
+
+  const handleRemove = () => {
+    if (removeQuestion.isPending) {
+      return;
+    }
+
+    removeQuestion.mutate({
+      id: question.id,
+    });
+  };
+
   return (
     <Card className="p-4 shadow-none hover:shadow transition-all">
       <CardContent className="flex flex-row items-center justify-between gap-3 p-0">
@@ -26,9 +39,22 @@ const TopicQuestionCard = ({question}: TopicQuestionCardProps) => {
               {question.question}
             </CardTitle>
             <CardDescription className="text-xs">
-              {question.difficulty}
+              <Badge
+                className="uppercase"
+                variant={
+                  question.difficulty === "EASY"
+                    ? "success"
+                    : question.difficulty === "MEDIUM"
+                      ? "warning"
+                      : "destructive"
+                }
+              >
+                {question.difficulty}
+              </Badge>
+              <Badge className="uppercase ml-2">
+                {question.isAI ? "AI Generated" : "Manual"}
+              </Badge>
             </CardDescription>
-            <Badge>{question.isAI ? "AI Generated" : "Manual"}</Badge>
           </div>
         </div>
         <div className="flex gap-3 items-center flex-wrap md:flex-nowrap">
@@ -37,10 +63,13 @@ const TopicQuestionCard = ({question}: TopicQuestionCardProps) => {
               <EyeIcon className="size-4" />
             </Link>
           </Button>
+          <Button size="icon" variant="destructive" onClick={handleRemove}>
+            <TrashIcon className="size-4" />
+          </Button>
         </div>
       </CardContent>
     </Card>
   );
 };
 
-export default TopicQuestionCard;
+export default QuestionCard;

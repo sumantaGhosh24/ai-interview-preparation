@@ -93,24 +93,12 @@ export const topicsRouter = createTRPCRouter({
       };
     }),
   getOne: protectedProcedure
-    .input(
-      z.object({
-        id: z.string(),
-        page: z.number().default(PAGINATION.DEFAULT_PAGE),
-        pageSize: z
-          .number()
-          .min(PAGINATION.MIN_PAGE_SIZE)
-          .max(PAGINATION.MAX_PAGE_SIZE)
-          .default(PAGINATION.DEFAULT_PAGE_SIZE),
-        search: z.string().default(""),
-      }),
-    )
+    .input(z.object({id: z.string()}))
     .query(async ({ctx, input}) => {
-      const {page, pageSize, search} = input;
-
       const topic = await prisma.topic.findUniqueOrThrow({
         where: {id: input.id, userId: ctx.auth.user.id},
         include: {
+          questions: true,
           performance: {
             where: {
               userId: ctx.auth.user.id,
@@ -125,36 +113,6 @@ export const topicsRouter = createTRPCRouter({
           message: "Topic not found",
         });
       }
-
-      const [items, totalCount] = await Promise.all([
-        prisma.question.findMany({
-          skip: (page - 1) * pageSize,
-          take: pageSize,
-          where: {
-            topicId: input.id,
-            question: {
-              contains: search,
-              mode: "insensitive",
-            },
-          },
-          orderBy: {
-            updatedAt: "desc",
-          },
-        }),
-        prisma.question.count({
-          where: {
-            topicId: input.id,
-            question: {
-              contains: search,
-              mode: "insensitive",
-            },
-          },
-        }),
-      ]);
-
-      const totalPages = Math.ceil(totalCount / pageSize);
-      const hasNextPage = page < totalPages;
-      const hasPreviousPage = page > 1;
 
       const recentAnswers = await prisma.answer.findMany({
         where: {
@@ -175,15 +133,7 @@ export const topicsRouter = createTRPCRouter({
 
       return {
         ...topic,
-        questions: {
-          items,
-          page,
-          pageSize,
-          totalCount,
-          totalPages,
-          hasNextPage,
-          hasPreviousPage,
-        },
+        totalQuestions: topic.questions.length,
         recentAnswers,
       };
     }),

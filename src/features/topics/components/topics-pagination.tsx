@@ -1,14 +1,14 @@
 "use client";
 
+import {useGlobalParams} from "@/features/global/hooks/use-global-params";
 import {EntityPagination} from "@/components/entity-components";
 
 import {useSuspenseTopics} from "../hooks/use-topics";
-import {useTopicsParams} from "../hooks/use-topics-params";
 
 const TopicsPagination = () => {
   const topics = useSuspenseTopics();
 
-  const [params, setParams] = useTopicsParams();
+  const [params, setParams] = useGlobalParams();
 
   return (
     <EntityPagination

@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
-import {Field, FieldError, FieldGroup} from "@/components/ui/field";
+import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
 
 import {useUpdateTopic} from "../hooks/use-topics";
 
@@ -80,9 +80,9 @@ const UpdateTopicDialog = ({id, name, description}: UpdateTopicDialog) => {
               name="name"
               render={({field, fieldState}) => (
                 <Field data-invalid={fieldState.invalid} className="w-full">
-                  <span className="font-medium text-muted-foreground mb-1 block">
+                  <FieldLabel className="font-medium text-muted-foreground mb-1 block">
                     Topic Name
-                  </span>
+                  </FieldLabel>
                   <Input
                     placeholder="Enter your topic name"
                     id={field.name}
@@ -102,9 +102,9 @@ const UpdateTopicDialog = ({id, name, description}: UpdateTopicDialog) => {
               name="description"
               render={({field, fieldState}) => (
                 <Field data-invalid={fieldState.invalid} className="w-full">
-                  <span className="font-medium text-muted-foreground mb-1 block">
+                  <FieldLabel className="font-medium text-muted-foreground mb-1 block">
                     Topic Description
-                  </span>
+                  </FieldLabel>
                   <Textarea
                     placeholder="Enter your topic description"
                     rows={7}

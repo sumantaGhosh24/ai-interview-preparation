@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 
 import {cn} from "@/lib/utils";
+import {useGlobalParams} from "@/features/global/hooks/use-global-params";
+import {useEntitySearch} from "@/hooks/use-entity-search";
 
 import {Button} from "./ui/button";
 import {Input} from "./ui/input";
@@ -43,9 +45,9 @@ export const EntityContainer = ({
   pagination,
 }: EntityContainerProps) => {
   return (
-    <div className="mx-auto container w-full flex flex-col gap-y-8 h-full">
+    <div className="mx-auto container w-full flex flex-col gap-y-8">
       {header}
-      <div className="flex flex-col gap-y-4 h-full">
+      <div className="flex flex-col gap-y-4">
         {search}
         {children}
       </div>
@@ -81,24 +83,25 @@ export const EntityHeader = ({
 };
 
 interface EntitySearchProps {
-  value: string;
-  onChange: (value: string) => void;
   placeholder?: string;
 }
 
-export const EntitySearch = ({
-  value,
-  onChange,
-  placeholder = "Search",
-}: EntitySearchProps) => {
+export const EntitySearch = ({placeholder = "Search"}: EntitySearchProps) => {
+  const [params, setParams] = useGlobalParams();
+
+  const {searchValue, onSearchChange} = useEntitySearch({
+    params,
+    setParams,
+  });
+
   return (
     <div className="relative">
       <SearchIcon className="size-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
       <Input
         className="w-full bg-background shadow-none border-border pl-8"
         placeholder={placeholder}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
+        value={searchValue}
+        onChange={(e) => onSearchChange(e.target.value)}
       />
     </div>
   );

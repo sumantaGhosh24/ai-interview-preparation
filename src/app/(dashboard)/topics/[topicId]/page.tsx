@@ -3,13 +3,14 @@ import {ErrorBoundary} from "react-error-boundary";
 
 import {requireAuth} from "@/lib/auth-utils";
 import {prefetchTopic} from "@/features/topics/server/prefetch";
-import {topicsParamsLoader} from "@/features/topics/server/params-loader";
+import {prefetchQuestionsByTopic} from "@/features/questions/server/prefetch";
+import {globalParamsLoader} from "@/features/global/server/params-loader";
 import {HydrateClient} from "@/trpc/server";
 import {ErrorView, LoadingView} from "@/components/entity-components";
-import TopicContainer from "@/features/topics/components/topic-container";
+import QuestionsContainer from "@/features/questions/components/topic-container";
 import TopicOverviewCard from "@/features/topics/components/topic-overview-card";
 import RecentAttemptsCard from "@/features/topics/components/recent-attempts-card";
-import TopicQuestionsList from "@/features/topics/components/topic-questions-list";
+import QuestionsList from "@/features/questions/components/questions-list";
 
 export const metadata = {
   title: "Topic Details",
@@ -23,9 +24,11 @@ const TopicDetailsPage = async ({
 
   const {topicId} = await params;
 
-  const topicParams = await topicsParamsLoader(searchParams);
+  const topicParams = await globalParamsLoader(searchParams);
 
-  prefetchTopic({id: topicId, ...topicParams});
+  prefetchTopic(topicId);
+
+  prefetchQuestionsByTopic({...topicParams, topicId});
 
   return (
     <HydrateClient>
@@ -41,9 +44,9 @@ const TopicDetailsPage = async ({
       >
         <Suspense fallback={<LoadingView />}>
           <TopicOverviewCard topicId={topicId} />
-          <TopicContainer topicId={topicId}>
-            <TopicQuestionsList topicId={topicId} />
-          </TopicContainer>
+          <QuestionsContainer topicId={topicId}>
+            <QuestionsList topicId={topicId} />
+          </QuestionsContainer>
           <RecentAttemptsCard topicId={topicId} />
         </Suspense>
       </ErrorBoundary>
