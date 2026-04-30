@@ -2,24 +2,25 @@ import {ReactNode} from "react";
 
 import {EntityContainer} from "@/components/entity-components";
 
-import TopicsHeader from "./topic-header";
 import TopicsSearch from "./topics-search";
-import TopicsPagination from "./topics-pagination";
+import TopicHeader from "./topic-header";
+import TopicPagination from "./topic-pagination";
 
-interface TopicsContainerProps {
+interface TopicContainerProps {
+  topicId: string;
   children: ReactNode;
 }
 
-const TopicsContainer = ({children}: TopicsContainerProps) => {
+const TopicContainer = ({topicId, children}: TopicContainerProps) => {
   return (
     <EntityContainer
-      header={<TopicsHeader />}
-      search={<TopicsSearch />}
-      pagination={<TopicsPagination />}
+      header={<TopicHeader />}
+      search={<TopicsSearch placeholder="Search questions" />}
+      pagination={<TopicPagination topicId={topicId} />}
     >
       {children}
     </EntityContainer>
   );
 };
 
-export default TopicsContainer;
+export default TopicContainer;

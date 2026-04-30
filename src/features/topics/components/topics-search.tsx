@@ -5,7 +5,11 @@ import {EntitySearch} from "@/components/entity-components";
 
 import {useTopicsParams} from "../hooks/use-topics-params";
 
-const TopicsSearch = () => {
+interface TopicsSearchProps {
+  placeholder: string;
+}
+
+const TopicsSearch = ({placeholder}: TopicsSearchProps) => {
   const [params, setParams] = useTopicsParams();
 
   const {searchValue, onSearchChange} = useEntitySearch({
@@ -17,7 +21,7 @@ const TopicsSearch = () => {
     <EntitySearch
       value={searchValue}
       onChange={onSearchChange}
-      placeholder="Search topics"
+      placeholder={placeholder}
     />
   );
 };

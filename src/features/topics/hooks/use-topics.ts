@@ -17,6 +17,14 @@ export const useSuspenseTopics = () => {
   return useSuspenseQuery(trpc.topics.getMany.queryOptions(params));
 };
 
+export const useSuspenseTopic = (id: string) => {
+  const trpc = useTRPC();
+
+  const [params] = useTopicsParams();
+
+  return useSuspenseQuery(trpc.topics.getOne.queryOptions({...params, id}));
+};
+
 export const useCreateTopic = () => {
   const queryClient = useQueryClient();
 
@@ -26,6 +34,7 @@ export const useCreateTopic = () => {
     trpc.topics.create.mutationOptions({
       onSuccess: () => {
         toast.success("Topic created");
+
         queryClient.invalidateQueries(trpc.topics.getMany.queryOptions({}));
       },
       onError: (error) => {
@@ -44,7 +53,11 @@ export const useUpdateTopic = () => {
     trpc.topics.update.mutationOptions({
       onSuccess: (data) => {
         toast.success(`Topic "${data.name}" updated`);
+
         queryClient.invalidateQueries(trpc.topics.getMany.queryOptions({}));
+        queryClient.invalidateQueries(
+          trpc.topics.getOne.queryOptions({id: data.id}),
+        );
       },
       onError: (error) => {
         toast.error(`Failed to update topic: ${error.message}`);
@@ -62,7 +75,11 @@ export const useRemoveTopic = () => {
     trpc.topics.remove.mutationOptions({
       onSuccess: (data) => {
         toast.success(`Topic "${data.name}" removed`);
+
         queryClient.invalidateQueries(trpc.topics.getMany.queryOptions({}));
+        queryClient.invalidateQueries(
+          trpc.topics.getOne.queryFilter({id: data.id}),
+        );
       },
     }),
   );

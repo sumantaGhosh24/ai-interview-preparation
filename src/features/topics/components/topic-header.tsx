@@ -1,16 +1,17 @@
 import {EntityHeader} from "@/components/entity-components";
-import CreateTopicDialog from "./create-topic-dialog";
 
-const TopicsHeader = () => {
+import {Button} from "@/components/ui/button";
+
+const TopicHeader = () => {
   return (
     <>
       <EntityHeader
-        title="Topics"
-        description="Create and manage your topics"
-        create={<CreateTopicDialog />}
+        title="Questions"
+        description="Create and manage your questions"
+        create={<Button>Create Question</Button>}
       />
     </>
   );
 };
 
-export default TopicsHeader;
+export default TopicHeader;

@@ -44,7 +44,7 @@ const TopicCard = ({topic}: TopicCardProps) => {
         <div className="flex items-center gap-3 w-full">
           <BookOpenIcon />
           <div className="w-full">
-            <CardTitle className="text-base font-medium">
+            <CardTitle className="text-base font-medium capitalize">
               {topic.name}
             </CardTitle>
             {topic.description && (

@@ -6,7 +6,7 @@ import {prefetchTopics} from "@/features/topics/server/prefetch";
 import {topicsParamsLoader} from "@/features/topics/server/params-loader";
 import {HydrateClient} from "@/trpc/server";
 import TopicsList from "@/features/topics/components/topics-list";
-import TopicsContainer from "@/features/topics/components/topic-container";
+import TopicsContainer from "@/features/topics/components/topics-container";
 import {ErrorView, LoadingView} from "@/components/entity-components";
 
 export const metadata = {
