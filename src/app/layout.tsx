@@ -1,5 +1,6 @@
 import type {Metadata} from "next";
 import {Geist, Geist_Mono, Inter} from "next/font/google";
+import {NuqsAdapter} from "nuqs/adapters/next/app";
 
 import "./globals.css";
 
@@ -87,8 +88,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <TRPCReactProvider>
-            <main>{children}</main>
-            <Toaster position="top-right" closeButton={true} />
+            <NuqsAdapter>
+              <main>{children}</main>
+              <Toaster position="top-right" closeButton={true} />
+            </NuqsAdapter>
           </TRPCReactProvider>
         </ThemeProvider>
       </body>

@@ -1,47 +1,70 @@
-"use state";
+"use client";
 
-import {useState} from "react";
-import Link from "next/link";
-import {toast} from "sonner";
+import {ReactNode} from "react";
+import {useRouter} from "next/navigation";
 import {
-  AlertTriangleIcon,
-  EyeIcon,
-  Loader2Icon,
-  MoreVerticalIcon,
-  PackageOpenIcon,
-  PenIcon,
+  AlertCircleIcon,
+  FolderCodeIcon,
+  LoaderIcon,
   SearchIcon,
-  SendIcon,
-  TrashIcon,
 } from "lucide-react";
 
 import {cn} from "@/lib/utils";
 
-import LoadingSwap from "./loading-swap";
 import {Button} from "./ui/button";
 import {Input} from "./ui/input";
 import {
   Empty,
+  EmptyContent,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
 } from "./ui/empty";
-import {Card, CardContent, CardDescription, CardTitle} from "./ui/card";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import {Badge} from "./ui/badge";
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+} from "./ui/pagination";
+
+type EntityContainerProps = {
+  children: ReactNode;
+  header?: ReactNode;
+  search?: ReactNode;
+  pagination?: ReactNode;
+};
+
+export const EntityContainer = ({
+  children,
+  header,
+  search,
+  pagination,
+}: EntityContainerProps) => {
+  return (
+    <div className="mx-auto container w-full flex flex-col gap-y-8 h-full">
+      {header}
+      <div className="flex flex-col gap-y-4 h-full">
+        {search}
+        {children}
+      </div>
+      {pagination}
+    </div>
+  );
+};
 
 type EntityHeaderProps = {
   title: string;
   description?: string;
+  create?: ReactNode;
 };
 
-export const EntityHeader = ({title, description}: EntityHeaderProps) => {
+export const EntityHeader = ({
+  title,
+  description,
+  create,
+}: EntityHeaderProps) => {
   return (
     <div className="flex flex-row items-center justify-between gap-x-4">
       <div className="flex flex-col">
@@ -52,33 +75,7 @@ export const EntityHeader = ({title, description}: EntityHeaderProps) => {
           </p>
         )}
       </div>
-    </div>
-  );
-};
-
-type EntityContainerProps = {
-  children: React.ReactNode;
-  header?: React.ReactNode;
-  search?: React.ReactNode;
-  pagination?: React.ReactNode;
-};
-
-export const EntityContainer = ({
-  children,
-  header,
-  search,
-  pagination,
-}: EntityContainerProps) => {
-  return (
-    <div className="p-4 md:px-10 md:py-6 h-full">
-      <div className="mx-auto max-w-7xl w-full flex flex-col gap-y-8 h-full">
-        {header}
-        <div className="flex flex-col gap-y-4 h-full">
-          {search}
-          {children}
-        </div>
-        {pagination}
-      </div>
+      {create && create}
     </div>
   );
 };
@@ -120,65 +117,138 @@ export const EntityPagination = ({
   onPageChange,
   disabled,
 }: EntityPaginationProps) => {
+  const previousDisabled = page === 1 || disabled;
+  const nextDisabled = page === totalPages || totalPages === 0 || disabled;
+
   return (
     <div className="flex items-center justify-between gap-x-2 w-full">
       <div className="flex-1 text-sm text-muted-foreground">
         Page {page} of {totalPages || 1}
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          disabled={page === 1 || disabled}
-          variant="outline"
-          size="sm"
-          onClick={() => onPageChange(Math.max(1, page - 1))}
-        >
-          Previous
-        </Button>
-        <Button
-          disabled={page === totalPages || totalPages === 0 || disabled}
-          variant="outline"
-          size="sm"
-          onClick={() => onPageChange(Math.min(totalPages, page + 1))}
-        >
-          Next
-        </Button>
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() =>
+                  previousDisabled ? null : onPageChange(Math.max(1, page - 1))
+                }
+                aria-disabled={previousDisabled}
+                className={`${
+                  previousDisabled
+                    ? "opacity-50 cursor-not-allowed"
+                    : "cursor-pointer"
+                }`}
+              />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext
+                onClick={() =>
+                  nextDisabled
+                    ? null
+                    : onPageChange(Math.min(totalPages, page + 1))
+                }
+                aria-disabled={nextDisabled}
+                className={`${
+                  nextDisabled
+                    ? "opacity-50 cursor-not-allowed"
+                    : "cursor-pointer"
+                }`}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
     </div>
   );
 };
 
-interface StateViewProps {
-  message?: string;
+export const LoadingView = () => {
+  return (
+    <div className="flex items-center justify-center w-full h-full">
+      <Empty className="shadow-md container mx-auto h-112.5 dark:shadow-gray-200">
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <LoaderIcon className="animate-spin" />
+          </EmptyMedia>
+          <EmptyTitle>Loading...</EmptyTitle>
+          <EmptyDescription>Please wait</EmptyDescription>
+        </EmptyHeader>
+      </Empty>
+    </div>
+  );
+};
+
+interface ErrorViewProps {
+  title: string;
+  description: string;
+  buttonText: string;
+  redirectUrl: string;
 }
 
-export const LoadingView = ({message}: StateViewProps) => {
+export const ErrorView = ({
+  title,
+  description,
+  buttonText,
+  redirectUrl,
+}: ErrorViewProps) => {
+  const router = useRouter();
+
   return (
-    <div className="flex justify-center items-center h-full flex-1 flex-col gap-y-4">
-      <Loader2Icon className="size-6 animate-spin text-primary" />
-      {!!message && <p className="text-sm text-muted-foreground">{message}</p>}
+    <div className="flex items-center justify-center w-full h-full">
+      <Empty className="shadow-md container mx-auto h-112.5 dark:shadow-gray-200">
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <AlertCircleIcon />
+          </EmptyMedia>
+          <EmptyTitle>{title}</EmptyTitle>
+          <EmptyDescription>{description}</EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => router.push(redirectUrl)}>
+              {buttonText}
+            </Button>
+          </div>
+        </EmptyContent>
+      </Empty>
     </div>
   );
 };
 
-export const ErrorView = ({message}: StateViewProps) => {
-  return (
-    <div className="flex justify-center items-center h-full flex-1 flex-col gap-y-4">
-      <AlertTriangleIcon className="size-6 text-primary" />
-      {!!message && <p className="text-sm text-muted-foreground">{message}</p>}
-    </div>
-  );
-};
+interface EmptyViewProps {
+  title: string;
+  description: string;
+  buttonText?: string;
+  redirectUrl?: string;
+}
 
-export const EmptyView = ({message}: StateViewProps) => {
+export const EmptyView = ({
+  title,
+  description,
+  buttonText,
+  redirectUrl,
+}: EmptyViewProps) => {
+  const router = useRouter();
+
   return (
-    <Empty className="border border-dashed">
+    <Empty>
       <EmptyHeader>
         <EmptyMedia variant="icon">
-          <PackageOpenIcon />
+          <FolderCodeIcon />
         </EmptyMedia>
+        <EmptyTitle>{title}</EmptyTitle>
+        <EmptyDescription>{description}</EmptyDescription>
       </EmptyHeader>
-      <EmptyTitle>No items</EmptyTitle>
-      {!!message && <EmptyDescription>{message}</EmptyDescription>}
+      {buttonText && redirectUrl && (
+        <EmptyContent>
+          <div className="flex gap-2">
+            <Button onClick={() => router.push(redirectUrl)}>
+              {buttonText}
+            </Button>
+          </div>
+        </EmptyContent>
+      )}
     </Empty>
   );
 };
@@ -216,186 +286,3 @@ export function EntityList<T>({
     </div>
   );
 }
-
-interface EntityItemProps {
-  href: string;
-  title: string;
-  subtitle?: React.ReactNode;
-  image?: React.ReactNode;
-  actions?: React.ReactNode;
-  onRemove?: () => void | Promise<void>;
-  isRemoving?: boolean;
-  onUpdate?: (fileName: string) => void | Promise<void>;
-  isUpdating?: boolean;
-  className?: string;
-  status: "PENDING" | "PROCESSING" | "COMPLETED" | "FAILED";
-}
-
-export const EntityItem = ({
-  href,
-  title,
-  subtitle,
-  image,
-  actions,
-  onRemove,
-  isRemoving,
-  onUpdate,
-  isUpdating,
-  className,
-  status,
-}: EntityItemProps) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [fileName, setFileName] = useState(title);
-
-  const handleRemove = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (isRemoving || isUpdating) {
-      return;
-    }
-
-    if (onRemove) {
-      await onRemove();
-    }
-  };
-
-  const handleEdit = () => {
-    setIsEditing((prev) => !prev);
-  };
-
-  const handleUpdate = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (isRemoving || isUpdating) {
-      return;
-    }
-
-    if (fileName.length < 0) {
-      toast.error("File name is required");
-    }
-
-    if (fileName.length > 50) {
-      toast.error("File name length not be greater than 50");
-    }
-
-    if (onUpdate) {
-      await onUpdate(fileName);
-    }
-
-    setIsEditing(false);
-  };
-
-  return (
-    <Card
-      className={cn(
-        "p-4 shadow-none hover:shadow transition-all",
-        isRemoving && "opacity-50 cursor-not-allowed",
-        isUpdating && "opacity-50 cursor-not-allowed",
-        className,
-      )}
-    >
-      <CardContent className="flex flex-row items-center justify-between p-0">
-        <div className="flex items-center gap-3 w-full">
-          {image}
-          <div className="w-full">
-            <div className="flex items-center justify-between">
-              {isEditing ? (
-                <div className="flex items-center gap-3 mb-3 w-full">
-                  <Input
-                    type="text"
-                    placeholder="Enter file name"
-                    id="fileName"
-                    name="fileName"
-                    value={fileName}
-                    onChange={(e) => setFileName(e.target.value)}
-                    className="w-full"
-                  />
-                  <Button
-                    type="button"
-                    disabled={isUpdating}
-                    onClick={handleUpdate}
-                  >
-                    <LoadingSwap
-                      isLoading={Boolean(isUpdating)}
-                      className="flex items-center"
-                    >
-                      <SendIcon className="mr-2" /> Update
-                    </LoadingSwap>
-                  </Button>
-                </div>
-              ) : (
-                <div className="flex items-center gap-2 w-full">
-                  <CardTitle className="text-base font-medium">
-                    {title}
-                  </CardTitle>
-                  {status && (
-                    <Badge
-                      className={cn(
-                        "ml-2 uppercase",
-                        status === "PENDING" && "bg-yellow-100 text-yellow-800",
-                        status === "PROCESSING" && "bg-blue-100 text-blue-800",
-                        status === "COMPLETED" && "bg-green-100 text-green-800",
-                        status === "FAILED" && "bg-red-100 text-red-800",
-                      )}
-                    >
-                      {status.charAt(0) + status.slice(1).toLowerCase()}
-                    </Badge>
-                  )}
-                </div>
-              )}
-            </div>
-            {!!subtitle && (
-              <CardDescription className="text-xs">{subtitle}</CardDescription>
-            )}
-          </div>
-        </div>
-        {(actions || onRemove) && (
-          <div className="flex gap-x-4 items-center">
-            {actions}
-            <Button size="icon" variant="ghost" asChild>
-              <Link href={href}>
-                <EyeIcon className="size-4" />
-              </Link>
-            </Button>
-            {onRemove && (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <MoreVerticalIcon className="size-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align="end"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <DropdownMenuItem
-                    onClick={handleRemove}
-                    className="cursor-pointer"
-                  >
-                    <TrashIcon className="size-4" />
-                    Delete
-                  </DropdownMenuItem>
-                  {onUpdate && (
-                    <DropdownMenuItem
-                      onClick={handleEdit}
-                      className="cursor-pointer"
-                    >
-                      <PenIcon className="size-4" />
-                      Edit
-                    </DropdownMenuItem>
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
-          </div>
-        )}
-      </CardContent>
-    </Card>
-  );
-};

@@ -1,17 +1,44 @@
+import {Suspense} from "react";
+import {ErrorBoundary} from "react-error-boundary";
+
 import {requireAuth} from "@/lib/auth-utils";
+import {prefetchTopics} from "@/features/topics/server/prefetch";
+import {topicsParamsLoader} from "@/features/topics/server/params-loader";
+import {HydrateClient} from "@/trpc/server";
+import TopicsList from "@/features/topics/components/topics-list";
+import TopicsContainer from "@/features/topics/components/topic-container";
+import {ErrorView, LoadingView} from "@/components/entity-components";
 
 export const metadata = {
   title: "Topics",
 };
 
-const TopicsPage = async () => {
+const TopicsPage = async ({searchParams}: PageProps<"/topics">) => {
   await requireAuth();
 
+  const params = await topicsParamsLoader(searchParams);
+
+  prefetchTopics(params);
+
   return (
-    <div className="space-y-4">
-      <h1 className="text-3xl font-bold">Topics</h1>
-      <p className="text-muted-foreground">Manage your learning topics.</p>
-    </div>
+    <TopicsContainer>
+      <HydrateClient>
+        <ErrorBoundary
+          fallback={
+            <ErrorView
+              title="Something went wrong"
+              description="Try again later"
+              buttonText="Go Home"
+              redirectUrl="/"
+            />
+          }
+        >
+          <Suspense fallback={<LoadingView />}>
+            <TopicsList />
+          </Suspense>
+        </ErrorBoundary>
+      </HydrateClient>
+    </TopicsContainer>
   );
 };
 
