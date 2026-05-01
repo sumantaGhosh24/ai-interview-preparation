@@ -18,6 +18,12 @@ export const useSuspenseQuestionsByTopic = (topicId: string) => {
   );
 };
 
+export const useSuspenseQuestion = (id: string) => {
+  const trpc = useTRPC();
+
+  return useSuspenseQuery(trpc.questions.getOne.queryOptions({id}));
+};
+
 export const useCreateQuestionManual = () => {
   const queryClient = useQueryClient();
 
@@ -54,7 +60,7 @@ export const useGenerateAdaptiveQuestion = () => {
         );
       },
       onError: (error) => {
-        toast.error(`Failed to update question: ${error.message}`);
+        toast.error(`Failed to generate question: ${error.message}`);
       },
     }),
   );
@@ -72,6 +78,10 @@ export const useRemoveQuestion = () => {
 
         queryClient.invalidateQueries(
           trpc.questions.getByTopic.queryOptions({topicId: data.topicId}),
+        );
+
+        queryClient.invalidateQueries(
+          trpc.questions.getOne.queryOptions({id: data.id}),
         );
       },
     }),

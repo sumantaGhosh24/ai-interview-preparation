@@ -1,36 +1,56 @@
 "use client";
 
-import {useRealtime} from "inngest/react";
-import {CheckCircle2, AlertCircle, Sparkles, Loader2} from "lucide-react";
+import {useEffect} from "react";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {AlertCircle, CheckCircle2, Loader2, Sparkles} from "lucide-react";
 
-import {questionGenerationChannel} from "@/inngest/channels/question-channel";
-import {getRealtimeQuestionGenerationToken} from "@/inngest/actions/get-realtime-token";
+import {useTRPC} from "@/trpc/client";
+import {useGlobalParams} from "@/features/global/hooks/use-global-params";
 import {Card, CardContent} from "@/components/ui/card";
 import {Progress} from "@/components/ui/progress";
 
 interface QuestionGenerationStatusProps {
   jobId: string;
+  topicId: string;
 }
 
-const QuestionGenerationStatus = ({jobId}: QuestionGenerationStatusProps) => {
-  const channel = questionGenerationChannel({
-    jobId,
-  });
+const QuestionGenerationStatus = ({
+  jobId,
+  topicId,
+}: QuestionGenerationStatusProps) => {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const [params] = useGlobalParams();
 
-  const {messages} = useRealtime({
-    channel,
-    topics: ["progress"],
-    token: () => getRealtimeQuestionGenerationToken(jobId),
+  const {data} = useQuery({
+    ...trpc.questions.getGenerationStatus.queryOptions({jobId}),
     enabled: !!jobId,
+    refetchInterval: (query) => {
+      const status = query.state.data?.status;
+      return status === "COMPLETED" || status === "FAILED" ? false : 1500;
+    },
   });
 
-  const progress = messages.byTopic.progress?.data;
+  const status = data?.status ?? "PENDING";
+  const message =
+    data?.statusMessage ??
+    "Generating AI questions. This may take a few moments.";
 
-  if (!progress) return null;
+  const isRunning = status === "RUNNING" || status === "PENDING";
+  const isCompleted = status === "COMPLETED";
+  const isFailed = status === "FAILED";
+  const progressPercent =
+    status === "COMPLETED" ? 100 : status === "RUNNING" ? 65 : 15;
 
-  const isRunning = progress.status === "RUNNING";
-  const isCompleted = progress.status === "COMPLETED";
-  const isFailed = progress.status === "FAILED";
+  useEffect(() => {
+    if (!isCompleted) return;
+
+    queryClient.invalidateQueries(
+      trpc.questions.getByTopic.queryOptions({...params, topicId}),
+    );
+  }, [isCompleted, queryClient, trpc.questions.getByTopic, params, topicId]);
+
+  if (!jobId) return null;
 
   return (
     <Card className="mt-4 overflow-hidden rounded-2xl border shadow-sm">
@@ -40,9 +60,7 @@ const QuestionGenerationStatus = ({jobId}: QuestionGenerationStatusProps) => {
             <p className="text-sm font-medium text-muted-foreground">
               AI Question Generation
             </p>
-            <h3 className="text-lg font-semibold tracking-tight">
-              {progress.message}
-            </h3>
+            <h3 className="text-lg font-semibold tracking-tight">{message}</h3>
           </div>
           <div className="shrink-0 rounded-xl border bg-muted/40 p-3">
             {isRunning && <Loader2 className="h-5 w-5 animate-spin" />}
@@ -53,9 +71,9 @@ const QuestionGenerationStatus = ({jobId}: QuestionGenerationStatusProps) => {
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">Progress</span>
-            <span className="font-medium">{progress.progress}%</span>
+            <span className="font-medium">{progressPercent}%</span>
           </div>
-          <Progress value={progress.progress} className="h-2" />
+          <Progress value={progressPercent} className="h-2" />
         </div>
         <div className="rounded-xl border bg-muted/20 px-4 py-3">
           {isRunning && (

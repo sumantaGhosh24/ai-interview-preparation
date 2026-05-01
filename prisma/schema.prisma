@@ -30,6 +30,7 @@ model User {
 
   topics      Topic[]
   answers     Answer[]
+  jobs        QuestionGenerationJob[]
   attempts    AttemptSession[]
   performance TopicPerformance[]
 
@@ -137,6 +138,13 @@ enum AttemptMode {
   MOCK
 }
 
+enum JobStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
 model Topic {
   id          String  @id @default(cuid())
   name        String
@@ -149,6 +157,7 @@ model Topic {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   questions   Question[]
+  jobs        QuestionGenerationJob[]
   performance TopicPerformance[]
 
   @@index([userId])
@@ -177,6 +186,8 @@ model Question {
 model Answer {
   id      String @id @default(cuid())
   content String
+  status  JobStatus @default(PENDING)
+  statusMessage String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -191,6 +202,29 @@ model Answer {
 
   @@index([userId])
   @@index([questionId])
+  @@index([createdAt])
+  @@index([status])
+}
+
+model QuestionGenerationJob {
+  id                String    @id
+  numberOfQuestions Int
+  generatedCount    Int?
+  status            JobStatus @default(PENDING)
+  statusMessage     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  topicId String
+  topic   Topic @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([topicId])
+  @@index([status])
   @@index([createdAt])
 }
 

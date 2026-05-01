@@ -1,9 +1,9 @@
 "use client";
 
-import {EntityPagination} from "@/components/entity-components";
-
 import {useSuspenseQuestionsByTopic} from "../hooks/use-questions";
+
 import {useGlobalParams} from "@/features/global/hooks/use-global-params";
+import {EntityPagination} from "@/components/entity-components";
 
 interface QuestionsPaginationProps {
   topicId: string;

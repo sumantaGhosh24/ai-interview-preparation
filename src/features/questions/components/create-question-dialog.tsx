@@ -24,10 +24,8 @@ const CreateQuestionDialog = ({topicId}: CreateQuestionDialogProps) => {
       <DialogTrigger asChild>
         <Button>Create Questions</Button>
       </DialogTrigger>
-
-      {jobId && <QuestionGenerationStatus jobId={jobId} />}
-
       <DialogContent className="sm:max-w-lg">
+        {jobId && <QuestionGenerationStatus jobId={jobId} topicId={topicId} />}
         <Tabs defaultValue="manual">
           <TabsList>
             <TabsTrigger value="manual">

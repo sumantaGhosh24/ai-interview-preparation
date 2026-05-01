@@ -70,6 +70,17 @@ export const questionsRouter = createTRPCRouter({
         input.topicId,
       );
 
+      await prisma.questionGenerationJob.create({
+        data: {
+          id: jobId,
+          userId: ctx.auth.user.id,
+          topicId: topic.id,
+          numberOfQuestions: input.numberOfQuestions,
+          status: "PENDING",
+          statusMessage: "Queued for generation",
+        },
+      });
+
       await inngest.send({
         name: "question/generate",
         data: {
@@ -84,6 +95,25 @@ export const questionsRouter = createTRPCRouter({
       });
 
       return {topicId: topic.id, jobId};
+    }),
+  getGenerationStatus: protectedProcedure
+    .input(z.object({jobId: z.string()}))
+    .query(async ({input, ctx}) => {
+      const job = await prisma.questionGenerationJob.findFirst({
+        where: {
+          id: input.jobId,
+          userId: ctx.auth.user.id,
+        },
+      });
+
+      if (!job) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Question generation job not found",
+        });
+      }
+
+      return job;
     }),
   remove: protectedProcedure
     .input(z.object({id: z.string()}))
@@ -147,5 +177,21 @@ export const questionsRouter = createTRPCRouter({
         hasNextPage,
         hasPreviousPage,
       };
+    }),
+  getOne: protectedProcedure
+    .input(z.object({id: z.string()}))
+    .query(async ({input}) => {
+      const question = await prisma.question.findUnique({
+        where: {id: input.id},
+      });
+
+      if (!question) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Question not found",
+        });
+      }
+
+      return question;
     }),
 });

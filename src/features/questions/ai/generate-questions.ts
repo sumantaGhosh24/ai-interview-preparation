@@ -10,7 +10,6 @@ export const generatedQuestionSchema = z.array(
   z.object({
     question: z.string().min(15).max(2000),
     difficulty: z.enum(Difficulty),
-    expectedConcepts: z.array(z.string().min(2)).min(1).max(10),
   }),
 );
 
@@ -75,7 +74,6 @@ export const generateAdaptiveQuestion = async ({
             {
                 question,
                 difficulty,
-                expectedConcepts
             }
         ]
     `,

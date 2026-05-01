@@ -81,12 +81,7 @@ export default function RootLayout({
           "min-h-screen bg-background text-foreground antialiased font-sans",
         )}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider attribute="class" disableTransitionOnChange>
           <TRPCReactProvider>
             <NuqsAdapter>
               <main>{children}</main>

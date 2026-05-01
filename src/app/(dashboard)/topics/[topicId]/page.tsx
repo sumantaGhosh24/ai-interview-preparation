@@ -7,7 +7,7 @@ import {prefetchQuestionsByTopic} from "@/features/questions/server/prefetch";
 import {globalParamsLoader} from "@/features/global/server/params-loader";
 import {HydrateClient} from "@/trpc/server";
 import {ErrorView, LoadingView} from "@/components/entity-components";
-import QuestionsContainer from "@/features/questions/components/topic-container";
+import QuestionsContainer from "@/features/questions/components/questions-container";
 import TopicOverviewCard from "@/features/topics/components/topic-overview-card";
 import RecentAttemptsCard from "@/features/topics/components/recent-attempts-card";
 import QuestionsList from "@/features/questions/components/questions-list";
