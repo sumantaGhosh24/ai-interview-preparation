@@ -61,23 +61,23 @@ const RecentAnswers = () => {
                   <span className="font-semibold">Score:</span>{" "}
                   {ans.score !== null ? ans.score : "--"}
                 </div>
-                {ans.mistakes.length > 0 && (
+                {(ans.mistakes || []).length > 0 && (
                   <div className="mt-2">
                     <div className="text-xs font-semibold text-destructive mb-1">Mistakes</div>
                     <ul className="list-disc ml-5 text-xs text-destructive">
-                      {ans.mistakes.map((m, idx) => (
+                      {(ans.mistakes || []).map((m, idx) => (
                         <li key={idx}>{m}</li>
                       ))}
                     </ul>
                   </div>
                 )}
-                {ans.improvements.length > 0 && (
+                {(ans.improvements || []).length > 0 && (
                   <div className="mt-2">
                     <div className="text-xs font-semibold text-secondary-foreground mb-1">
                       Improvements
                     </div>
                     <ul className="list-disc ml-5 text-xs text-secondary-foreground">
-                      {ans.improvements.map((i, idx) => (
+                      {(ans.improvements || []).map((i, idx) => (
                         <li key={idx}>{i}</li>
                       ))}
                     </ul>
