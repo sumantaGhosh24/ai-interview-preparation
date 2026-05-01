@@ -1,10 +1,5 @@
-import {stats} from "@/constants/landing";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { stats } from "@/constants/landing";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Stats = () => {
   return (
@@ -13,9 +8,7 @@ const Stats = () => {
         {stats.map((stat) => (
           <Card key={stat.label} className="rounded-3xl border p-6">
             <CardHeader className="p-0">
-              <CardTitle className="text-3xl font-bold text-blue-500">
-                {stat.value}
-              </CardTitle>
+              <CardTitle className="text-3xl font-bold text-blue-500">{stat.value}</CardTitle>
               <CardDescription className="mt-2">{stat.label}</CardDescription>
             </CardHeader>
           </Card>

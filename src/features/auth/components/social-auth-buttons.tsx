@@ -1,6 +1,6 @@
 "use client";
 
-import {authClient} from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import {
   SUPPORTED_OAUTH_PROVIDER_DETAILS,
   SUPPORTED_OAUTH_PROVIDERS,

@@ -1,4 +1,4 @@
-import {EntityHeader} from "@/components/entity-components";
+import { EntityHeader } from "@/components/entity-components";
 
 import CreateQuestionDialog from "./create-question-dialog";
 
@@ -6,7 +6,7 @@ interface QuestionsHeaderProps {
   topicId: string;
 }
 
-const QuestionsHeader = ({topicId}: QuestionsHeaderProps) => {
+const QuestionsHeader = ({ topicId }: QuestionsHeaderProps) => {
   return (
     <>
       <EntityHeader

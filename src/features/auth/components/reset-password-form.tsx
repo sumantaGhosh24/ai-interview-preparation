@@ -1,24 +1,18 @@
 "use client";
 
-import {useRouter, useSearchParams} from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import {Controller, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
-import {toast} from "sonner";
+import { toast } from "sonner";
 
-import {authClient} from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import LoadingSwap from "@/components/loading-swap";
-import {Button} from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
-import {Input} from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 
 const resetPasswordSchema = z.object({
   password: z.string().min(8),
@@ -40,7 +34,7 @@ const ResetPasswordForm = () => {
     },
   });
 
-  const {isSubmitting} = form.formState;
+  const { isSubmitting } = form.formState;
 
   async function handleResetPassword(data: ResetPasswordForm) {
     if (token == null) return;
@@ -72,9 +66,7 @@ const ResetPasswordForm = () => {
         <Card className="w-full container mx-auto">
           <CardHeader>
             <CardTitle>Invalid Reset Link</CardTitle>
-            <CardDescription>
-              The password reset link is invalid or has expired.
-            </CardDescription>
+            <CardDescription>The password reset link is invalid or has expired.</CardDescription>
           </CardHeader>
           <CardContent>
             <Button className="w-full" asChild>
@@ -93,15 +85,12 @@ const ResetPasswordForm = () => {
           <CardTitle className="text-2xl">Reset Your Password</CardTitle>
         </CardHeader>
         <CardContent>
-          <form
-            className="space-y-4"
-            onSubmit={form.handleSubmit(handleResetPassword)}
-          >
+          <form className="space-y-4" onSubmit={form.handleSubmit(handleResetPassword)}>
             <FieldGroup>
               <Controller
                 control={form.control}
                 name="password"
-                render={({field, fieldState}) => (
+                render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor={field.name}>Password</FieldLabel>
                     <Input
@@ -111,16 +100,12 @@ const ResetPasswordForm = () => {
                       aria-invalid={fieldState.invalid}
                       {...field}
                     />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
               />
               <Button type="submit" disabled={isSubmitting}>
-                <LoadingSwap isLoading={isSubmitting}>
-                  Reset Password
-                </LoadingSwap>
+                <LoadingSwap isLoading={isSubmitting}>Reset Password</LoadingSwap>
               </Button>
             </FieldGroup>
           </form>

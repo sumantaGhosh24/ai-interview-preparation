@@ -1,26 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import {BookOpenIcon, EyeIcon, TrashIcon} from "lucide-react";
+import { BookOpenIcon, EyeIcon, TrashIcon } from "lucide-react";
 
-import {cn} from "@/lib/utils";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardTitle,
-} from "@/components/ui/card";
-import {Button} from "@/components/ui/button";
-import {Topic} from "@/generated/prisma/client";
+import { cn } from "@/lib/utils";
+import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Topic } from "@/generated/prisma/client";
 
-import {useRemoveTopic} from "../hooks/use-topics";
+import { useRemoveTopic } from "../hooks/use-topics";
 import UpdateTopicDialog from "./update-topic-dialog";
 
 interface TopicCardProps {
   topic: Topic;
 }
 
-const TopicCard = ({topic}: TopicCardProps) => {
+const TopicCard = ({ topic }: TopicCardProps) => {
   const removeTopic = useRemoveTopic();
 
   const handleRemove = () => {
@@ -44,13 +39,9 @@ const TopicCard = ({topic}: TopicCardProps) => {
         <div className="flex items-center gap-3 w-full">
           <BookOpenIcon />
           <div className="w-full">
-            <CardTitle className="text-base font-medium capitalize">
-              {topic.name}
-            </CardTitle>
+            <CardTitle className="text-base font-medium capitalize">{topic.name}</CardTitle>
             {topic.description && (
-              <CardDescription className="text-xs">
-                {topic.description}
-              </CardDescription>
+              <CardDescription className="text-xs">{topic.description}</CardDescription>
             )}
           </div>
         </div>

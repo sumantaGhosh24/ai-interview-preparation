@@ -1,6 +1,6 @@
-import {ReactNode} from "react";
+import { ReactNode } from "react";
 
-import {EntityContainer, EntitySearch} from "@/components/entity-components";
+import { EntityContainer, EntitySearch } from "@/components/entity-components";
 
 import QuestionsHeader from "./questions-header";
 import QuestionsPagination from "./questions-pagination";
@@ -10,7 +10,7 @@ interface QuestionsContainerProps {
   children: ReactNode;
 }
 
-const QuestionsContainer = ({topicId, children}: QuestionsContainerProps) => {
+const QuestionsContainer = ({ topicId, children }: QuestionsContainerProps) => {
   return (
     <EntityContainer
       header={<QuestionsHeader topicId={topicId} />}

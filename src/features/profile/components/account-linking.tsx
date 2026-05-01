@@ -1,21 +1,21 @@
 "use client";
 
-import {useRouter} from "next/navigation";
-import {PlusIcon, ShieldIcon, Trash2Icon} from "lucide-react";
+import { useRouter } from "next/navigation";
+import { PlusIcon, ShieldIcon, Trash2Icon } from "lucide-react";
 
-import {auth} from "@/lib/auth";
-import {authClient} from "@/lib/auth-client";
+import { auth } from "@/lib/auth";
+import { authClient } from "@/lib/auth-client";
 import {
   SUPPORTED_OAUTH_PROVIDER_DETAILS,
   SUPPORTED_OAUTH_PROVIDERS,
   SupportedOAuthProvider,
 } from "@/lib/o-auth-providers";
 import AuthActionButton from "@/features/auth/components/auth-action-button";
-import {Card, CardContent} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 type Account = Awaited<ReturnType<typeof auth.api.listUserAccounts>>[number];
 
-const AccountLinking = ({currentAccounts}: {currentAccounts: Account[]}) => {
+const AccountLinking = ({ currentAccounts }: { currentAccounts: Account[] }) => {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -29,11 +29,7 @@ const AccountLinking = ({currentAccounts}: {currentAccounts: Account[]}) => {
         ) : (
           <div className="space-y-3">
             {currentAccounts.map((account) => (
-              <AccountCard
-                key={account.id}
-                provider={account.providerId}
-                account={account}
-              />
+              <AccountCard key={account.id} provider={account.providerId} account={account} />
             ))}
           </div>
         )}
@@ -42,8 +38,7 @@ const AccountLinking = ({currentAccounts}: {currentAccounts: Account[]}) => {
         <h3 className="text-lg font-medium">Link Other Accounts</h3>
         <div className="grid gap-3">
           {SUPPORTED_OAUTH_PROVIDERS.filter(
-            (provider) =>
-              !currentAccounts.find((acc) => acc.providerId === provider),
+            (provider) => !currentAccounts.find((acc) => acc.providerId === provider),
           ).map((provider) => (
             <AccountCard key={provider} provider={provider} />
           ))}
@@ -55,18 +50,10 @@ const AccountLinking = ({currentAccounts}: {currentAccounts: Account[]}) => {
 
 export default AccountLinking;
 
-const AccountCard = ({
-  provider,
-  account,
-}: {
-  provider: string;
-  account?: Account;
-}) => {
+const AccountCard = ({ provider, account }: { provider: string; account?: Account }) => {
   const router = useRouter();
 
-  const providerDetails = SUPPORTED_OAUTH_PROVIDER_DETAILS[
-    provider as SupportedOAuthProvider
-  ] ?? {
+  const providerDetails = SUPPORTED_OAUTH_PROVIDER_DETAILS[provider as SupportedOAuthProvider] ?? {
     name: provider,
     Icon: ShieldIcon,
   };
@@ -80,7 +67,7 @@ const AccountCard = ({
 
   function unlinkAccount() {
     if (account == null) {
-      return Promise.resolve({error: {message: "Account not found"}});
+      return Promise.resolve({ error: { message: "Account not found" } });
     }
     return authClient.unlinkAccount(
       {
@@ -120,11 +107,7 @@ const AccountCard = ({
               Link
             </AuthActionButton>
           ) : (
-            <AuthActionButton
-              variant="destructive"
-              size="sm"
-              action={unlinkAccount}
-            >
+            <AuthActionButton variant="destructive" size="sm" action={unlinkAccount}>
               <Trash2Icon />
               Unlink
             </AuthActionButton>

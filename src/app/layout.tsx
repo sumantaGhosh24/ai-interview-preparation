@@ -1,15 +1,15 @@
-import type {Metadata} from "next";
-import {Geist, Geist_Mono, Inter} from "next/font/google";
-import {NuqsAdapter} from "nuqs/adapters/next/app";
+import type { Metadata } from "next";
+import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import "./globals.css";
 
-import {cn} from "@/lib/utils";
-import {Toaster} from "@/components/ui/sonner";
+import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner";
 import ThemeProvider from "@/components/theme-provider";
-import {TRPCReactProvider} from "@/trpc/client";
+import { TRPCReactProvider } from "@/trpc/client";
 
-const inter = Inter({subsets: ["latin"], variable: "--font-sans"});
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     "Interview Platform",
   ],
 
-  authors: [{name: "Sumanta Ghosh"}],
+  authors: [{ name: "Sumanta Ghosh" }],
   creator: "Sumanta Ghosh",
 
   openGraph: {

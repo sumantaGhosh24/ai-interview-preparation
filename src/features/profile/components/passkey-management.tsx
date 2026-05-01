@@ -1,19 +1,19 @@
 "use client";
 
-import {useState} from "react";
-import {useRouter} from "next/navigation";
-import {Controller, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
-import {toast} from "sonner";
-import {Passkey} from "@better-auth/passkey";
-import {Trash2Icon} from "lucide-react";
+import { toast } from "sonner";
+import { Passkey } from "@better-auth/passkey";
+import { Trash2Icon } from "lucide-react";
 
-import {authClient} from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import AuthActionButton from "@/features/auth/components/auth-action-button";
 import LoadingSwap from "@/components/loading-swap";
-import {Input} from "@/components/ui/input";
-import {Button} from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -22,13 +22,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 
 const passkeySchema = z.object({
   name: z.string().min(1),
@@ -36,7 +31,7 @@ const passkeySchema = z.object({
 
 type PasskeyForm = z.infer<typeof passkeySchema>;
 
-const PasskeyManagement = ({passkeys}: {passkeys: Passkey[]}) => {
+const PasskeyManagement = ({ passkeys }: { passkeys: Passkey[] }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const router = useRouter();
@@ -48,7 +43,7 @@ const PasskeyManagement = ({passkeys}: {passkeys: Passkey[]}) => {
     },
   });
 
-  const {isSubmitting} = form.formState;
+  const { isSubmitting } = form.formState;
 
   async function handleAddPasskey(data: PasskeyForm) {
     await authClient.passkey.addPasskey(data, {
@@ -64,8 +59,8 @@ const PasskeyManagement = ({passkeys}: {passkeys: Passkey[]}) => {
 
   function handleDeletePasskey(passkeyId: string) {
     return authClient.passkey.deletePasskey(
-      {id: passkeyId},
-      {onSuccess: () => router.refresh()},
+      { id: passkeyId },
+      { onSuccess: () => router.refresh() },
     );
   }
 
@@ -121,15 +116,12 @@ const PasskeyManagement = ({passkeys}: {passkeys: Passkey[]}) => {
               Create a new passkey for secure, passwordless authentication.
             </DialogDescription>
           </DialogHeader>
-          <form
-            className="space-y-4"
-            onSubmit={form.handleSubmit(handleAddPasskey)}
-          >
+          <form className="space-y-4" onSubmit={form.handleSubmit(handleAddPasskey)}>
             <FieldGroup>
               <Controller
                 control={form.control}
                 name="name"
-                render={({field, fieldState}) => (
+                render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor={field.name}>Name</FieldLabel>
                     <Input
@@ -139,9 +131,7 @@ const PasskeyManagement = ({passkeys}: {passkeys: Passkey[]}) => {
                       aria-invalid={fieldState.invalid}
                       {...field}
                     />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
               />

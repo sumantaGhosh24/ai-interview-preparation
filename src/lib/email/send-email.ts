@@ -12,7 +12,7 @@ export async function sendEmail({
   try {
     await fetch(`${process.env.BETTER_AUTH_URL}/api/email`, {
       method: "post",
-      body: JSON.stringify({to, subject, text, html}),
+      body: JSON.stringify({ to, subject, text, html }),
     });
     return;
   } catch (error: unknown) {

@@ -1,8 +1,8 @@
-import {NextRequest, NextResponse} from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 export async function POST(req: NextRequest) {
-  const {to, subject, text, html} = await req.json();
+  const { to, subject, text, html } = await req.json();
 
   try {
     const transporter = nodemailer.createTransport({
@@ -23,8 +23,8 @@ export async function POST(req: NextRequest) {
 
     await transporter.sendMail(mailOptions);
 
-    return NextResponse.json({message: "Success!"});
+    return NextResponse.json({ message: "Success!" });
   } catch {
-    return NextResponse.json({message: "Failed!"}, {status: 400});
+    return NextResponse.json({ message: "Failed!" }, { status: 400 });
   }
 }

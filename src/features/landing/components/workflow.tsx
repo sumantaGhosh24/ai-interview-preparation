@@ -1,10 +1,5 @@
-import {workflows} from "@/constants/landing";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { workflows } from "@/constants/landing";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Workflow = () => {
   return (
@@ -14,9 +9,7 @@ const Workflow = () => {
           <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
             Workflow
           </p>
-          <h2 className="mt-3 text-3xl font-bold sm:text-5xl">
-            From practice to improvement
-          </h2>
+          <h2 className="mt-3 text-3xl font-bold sm:text-5xl">From practice to improvement</h2>
         </div>
         <div className="mt-14 grid gap-6 md:grid-cols-5">
           {workflows.map((step, index) => (

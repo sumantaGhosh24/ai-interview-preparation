@@ -1,16 +1,16 @@
 "use client";
 
-import {EmptyView, EntityList} from "@/components/entity-components";
+import { EmptyView, EntityList } from "@/components/entity-components";
 
-import {useSuspenseQuestionsByTopic} from "../hooks/use-questions";
+import { useSuspenseQuestionsByTopic } from "../hooks/use-questions";
 import QuestionCard from "../../topics/components/question-card";
 
 interface QuestionsListProps {
   topicId: string;
 }
 
-const QuestionsList = ({topicId}: QuestionsListProps) => {
-  const {data: questions} = useSuspenseQuestionsByTopic(topicId);
+const QuestionsList = ({ topicId }: QuestionsListProps) => {
+  const { data: questions } = useSuspenseQuestionsByTopic(topicId);
 
   return (
     <>

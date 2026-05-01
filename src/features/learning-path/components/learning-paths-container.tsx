@@ -1,6 +1,6 @@
-import {ReactNode} from "react";
+import { ReactNode } from "react";
 
-import {EntityContainer} from "@/components/entity-components";
+import { EntityContainer } from "@/components/entity-components";
 
 import LearningPathsHeader from "./learning-paths-header";
 import LearningPathsPagination from "./learning-paths-pagination";
@@ -9,12 +9,9 @@ interface LearningPathsContainerProps {
   children: ReactNode;
 }
 
-const LearningPathsContainer = ({children}: LearningPathsContainerProps) => {
+const LearningPathsContainer = ({ children }: LearningPathsContainerProps) => {
   return (
-    <EntityContainer
-      header={<LearningPathsHeader />}
-      pagination={<LearningPathsPagination />}
-    >
+    <EntityContainer header={<LearningPathsHeader />} pagination={<LearningPathsPagination />}>
       {children}
     </EntityContainer>
   );

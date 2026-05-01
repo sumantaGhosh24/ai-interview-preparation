@@ -1,16 +1,16 @@
 "use client";
 
-import {useRouter} from "next/navigation";
-import {Controller, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
-import {toast} from "sonner";
+import { toast } from "sonner";
 
-import {authClient} from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import LoadingSwap from "@/components/loading-swap";
-import {Input} from "@/components/ui/input";
-import {Button} from "@/components/ui/button";
-import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 
 import PasskeyButton from "./passkey-button";
 
@@ -38,11 +38,11 @@ const SignInTab = ({
     },
   });
 
-  const {isSubmitting} = form.formState;
+  const { isSubmitting } = form.formState;
 
   async function handleSignIn(data: SignInForm) {
     await authClient.signIn.email(
-      {...data, callbackURL: "/dashboard"},
+      { ...data, callbackURL: "/dashboard" },
       {
         onError: (error) => {
           if (error.error.code === "EMAIL_NOT_VERIFIED") {
@@ -64,7 +64,7 @@ const SignInTab = ({
           <Controller
             control={form.control}
             name="email"
-            render={({field, fieldState}) => (
+            render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor={field.name}>Email</FieldLabel>
                 <Input
@@ -74,16 +74,14 @@ const SignInTab = ({
                   aria-invalid={fieldState.invalid}
                   {...field}
                 />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
           />
           <Controller
             control={form.control}
             name="password"
-            render={({field, fieldState}) => (
+            render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <div className="flex justify-between items-center">
                   <FieldLabel htmlFor={field.name}>Password</FieldLabel>
@@ -104,9 +102,7 @@ const SignInTab = ({
                   aria-invalid={fieldState.invalid}
                   {...field}
                 />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
           />

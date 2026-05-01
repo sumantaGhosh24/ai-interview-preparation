@@ -1,28 +1,21 @@
 "use client";
 
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardDescription,
-} from "@/components/ui/card";
-import {Separator} from "@/components/ui/separator";
-import {Progress} from "@/components/ui/progress";
-import {Badge} from "@/components/ui/badge";
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
 
-import {useSuspenseQuestionSourceStats} from "../hooks/use-analytics";
+import { useSuspenseQuestionSourceStats } from "../hooks/use-analytics";
 
 const QuestionSourceStats = () => {
-  const {data: stats} = useSuspenseQuestionSourceStats();
+  const { data: stats } = useSuspenseQuestionSourceStats();
 
   const aiQuestions = stats?.aiQuestions ?? 0;
   const manualQuestions = stats?.manualQuestions ?? 0;
   const total = aiQuestions + manualQuestions;
 
   const aiPercent = total > 0 ? Math.round((aiQuestions / total) * 100) : 0;
-  const manualPercent =
-    total > 0 ? Math.round((manualQuestions / total) * 100) : 0;
+  const manualPercent = total > 0 ? Math.round((manualQuestions / total) * 100) : 0;
 
   return (
     <Card className="mb-5">
@@ -39,9 +32,7 @@ const QuestionSourceStats = () => {
             <div className="flex gap-3 items-center">
               <Badge variant="default">AI-Generated</Badge>
               <span className="text-2xl font-semibold">{aiQuestions}</span>
-              <span className="text-muted-foreground text-sm">
-                ({aiPercent}%)
-              </span>
+              <span className="text-muted-foreground text-sm">({aiPercent}%)</span>
             </div>
             <Progress value={aiPercent} className="w-48 bg-muted" />
           </div>
@@ -49,9 +40,7 @@ const QuestionSourceStats = () => {
             <div className="flex gap-3 items-center">
               <Badge variant="secondary">Manual</Badge>
               <span className="text-2xl font-semibold">{manualQuestions}</span>
-              <span className="text-muted-foreground text-sm">
-                ({manualPercent}%)
-              </span>
+              <span className="text-muted-foreground text-sm">({manualPercent}%)</span>
             </div>
             <Progress value={manualPercent} className="w-48 bg-muted" />
           </div>

@@ -1,21 +1,15 @@
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from "@tanstack/react-query";
-import {toast} from "sonner";
+import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 
-import {useTRPC} from "@/trpc/client";
-import {useGlobalParams} from "@/features/global/hooks/use-global-params";
+import { useTRPC } from "@/trpc/client";
+import { useGlobalParams } from "@/features/global/hooks/use-global-params";
 
 export const useSuspenseAnswersHistory = (questionId: string) => {
   const trpc = useTRPC();
 
   const [params] = useGlobalParams();
 
-  return useSuspenseQuery(
-    trpc.answers.getAnswersHistory.queryOptions({...params, questionId}),
-  );
+  return useSuspenseQuery(trpc.answers.getAnswersHistory.queryOptions({ ...params, questionId }));
 };
 
 export const useSubmitAnswer = () => {

@@ -1,14 +1,14 @@
 "use client";
 
-import {useRouter} from "next/navigation";
-import {UAParser} from "ua-parser-js";
-import {Session} from "better-auth";
-import {MonitorIcon, SmartphoneIcon, Trash2Icon} from "lucide-react";
+import { useRouter } from "next/navigation";
+import { UAParser } from "ua-parser-js";
+import { Session } from "better-auth";
+import { MonitorIcon, SmartphoneIcon, Trash2Icon } from "lucide-react";
 
-import {authClient} from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import AuthActionButton from "@/features/auth/components/auth-action-button";
-import {Badge} from "@/components/ui/badge";
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const SessionManagement = ({
   sessions,
@@ -32,18 +32,12 @@ const SessionManagement = ({
 
   return (
     <div className="space-y-6">
-      {currentSession && (
-        <SessionCard session={currentSession} isCurrentSession />
-      )}
+      {currentSession && <SessionCard session={currentSession} isCurrentSession />}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-medium">Other Active Sessions</h3>
           {otherSessions.length > 0 && (
-            <AuthActionButton
-              variant="destructive"
-              size="sm"
-              action={revokeOtherSessions}
-            >
+            <AuthActionButton variant="destructive" size="sm" action={revokeOtherSessions}>
               Revoke Other Sessions
             </AuthActionButton>
           )}
@@ -119,11 +113,7 @@ const SessionCard = ({
       <CardContent>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            {userAgentInfo?.device.type === "mobile" ? (
-              <SmartphoneIcon />
-            ) : (
-              <MonitorIcon />
-            )}
+            {userAgentInfo?.device.type === "mobile" ? <SmartphoneIcon /> : <MonitorIcon />}
             <div>
               <p className="text-sm text-muted-foreground">
                 Created: {formatDate(session.createdAt)}

@@ -1,20 +1,20 @@
 import z from "zod";
-import {TRPCError} from "@trpc/server";
+import { TRPCError } from "@trpc/server";
 
 import prisma from "@/lib/db";
-import {createTRPCRouter, protectedProcedure} from "@/trpc/init";
-import {inngest} from "@/inngest/client";
-import {getPreviousWeaknesses} from "@/features/global/helpers/utils";
-import {PAGINATION} from "@/constants/pagination";
+import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import { inngest } from "@/inngest/client";
+import { getPreviousWeaknesses } from "@/features/global/helpers/utils";
+import { PAGINATION } from "@/constants/pagination";
 
 export const learningPathsRouter = createTRPCRouter({
   create: protectedProcedure
-    .input(z.object({topicId: z.string()}))
-    .mutation(async ({input, ctx}) => {
-      const {topicId} = input;
+    .input(z.object({ topicId: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      const { topicId } = input;
 
       const topic = await prisma.topic.findUnique({
-        where: {id: input.topicId},
+        where: { id: input.topicId },
       });
 
       if (!topic) {
@@ -24,10 +24,7 @@ export const learningPathsRouter = createTRPCRouter({
         });
       }
 
-      const previousWeaknesses = await getPreviousWeaknesses(
-        ctx.auth.user.id,
-        input.topicId,
-      );
+      const previousWeaknesses = await getPreviousWeaknesses(ctx.auth.user.id, input.topicId);
 
       await inngest.send({
         name: "learning-path/generate",
@@ -39,18 +36,18 @@ export const learningPathsRouter = createTRPCRouter({
         },
       });
 
-      return {topicId: topic.id};
+      return { topicId: topic.id };
     }),
   remove: protectedProcedure
-    .input(z.object({id: z.string()}))
-    .mutation(async ({input, ctx}) => {
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input, ctx }) => {
       return prisma.learningPath.delete({
-        where: {id: input.id, userId: ctx.auth.user.id},
+        where: { id: input.id, userId: ctx.auth.user.id },
       });
     }),
   getByTopicId: protectedProcedure
-    .input(z.object({topicId: z.string()}))
-    .query(async ({input, ctx}) => {
+    .input(z.object({ topicId: z.string() }))
+    .query(async ({ input, ctx }) => {
       const learningPath = await prisma.learningPath.findFirst({
         where: {
           topicId: input.topicId,
@@ -83,8 +80,8 @@ export const learningPathsRouter = createTRPCRouter({
           .default(PAGINATION.DEFAULT_PAGE_SIZE),
       }),
     )
-    .query(async ({input, ctx}) => {
-      const {page, pageSize} = input;
+    .query(async ({ input, ctx }) => {
+      const { page, pageSize } = input;
 
       const [items, totalCount] = await Promise.all([
         prisma.learningPath.findMany({

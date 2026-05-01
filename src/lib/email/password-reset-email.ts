@@ -1,10 +1,10 @@
-import {sendEmail} from "./send-email";
+import { sendEmail } from "./send-email";
 
 export function sendPasswordResetEmail({
   user,
   url,
 }: {
-  user: {email: string; name: string};
+  user: { email: string; name: string };
   url: string;
 }) {
   return sendEmail({

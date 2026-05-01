@@ -1,16 +1,10 @@
 "use client";
 
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardDescription,
-} from "@/components/ui/card";
-import {Badge} from "@/components/ui/badge";
-import {Separator} from "@/components/ui/separator";
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 
-import {useSuspenseRecentAnswers} from "../hooks/use-analytics";
+import { useSuspenseRecentAnswers } from "../hooks/use-analytics";
 
 const statusColor = (status: string) => {
   switch (status) {
@@ -28,15 +22,14 @@ const statusColor = (status: string) => {
 };
 
 const RecentAnswers = () => {
-  const {data: answers} = useSuspenseRecentAnswers();
+  const { data: answers } = useSuspenseRecentAnswers();
 
   return (
     <Card className="mb-5">
       <CardHeader>
         <CardTitle>Recent Answers</CardTitle>
         <CardDescription>
-          Last {answers && answers.length > 0 ? answers.length : 0} question
-          attempts
+          Last {answers && answers.length > 0 ? answers.length : 0} question attempts
         </CardDescription>
       </CardHeader>
       <Separator />
@@ -45,16 +38,11 @@ const RecentAnswers = () => {
           <div className="text-muted-foreground">No recent answers found.</div>
         ) : (
           answers.map((ans) => (
-            <div
-              key={ans.id}
-              className="border rounded-lg p-4 space-y-2 shadow-sm bg-muted/40"
-            >
+            <div key={ans.id} className="border rounded-lg p-4 space-y-2 shadow-sm bg-muted/40">
               <div className="flex items-center gap-2">
                 <Badge variant={statusColor(ans.status)}>{ans.status}</Badge>
                 {ans.statusMessage && (
-                  <span className="text-xs text-muted-foreground">
-                    {ans.statusMessage}
-                  </span>
+                  <span className="text-xs text-muted-foreground">{ans.statusMessage}</span>
                 )}
                 <span className="ml-auto text-xs text-muted-foreground">
                   {new Date(ans.createdAt).toLocaleString()}
@@ -75,9 +63,7 @@ const RecentAnswers = () => {
                 </div>
                 {ans.mistakes.length > 0 && (
                   <div className="mt-2">
-                    <div className="text-xs font-semibold text-destructive mb-1">
-                      Mistakes
-                    </div>
+                    <div className="text-xs font-semibold text-destructive mb-1">Mistakes</div>
                     <ul className="list-disc ml-5 text-xs text-destructive">
                       {ans.mistakes.map((m, idx) => (
                         <li key={idx}>{m}</li>

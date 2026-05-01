@@ -1,21 +1,19 @@
 "use client";
 
-import {EmptyView, EntityList} from "@/components/entity-components";
+import { EmptyView, EntityList } from "@/components/entity-components";
 
-import {useSuspenseLearningPaths} from "../hooks/use-learning-path";
+import { useSuspenseLearningPaths } from "../hooks/use-learning-path";
 import LearningPathCard from "./learning-path-card";
 
 const LearningPathsList = () => {
-  const {data: learningPaths} = useSuspenseLearningPaths();
+  const { data: learningPaths } = useSuspenseLearningPaths();
 
   return (
     <>
       <EntityList
         items={learningPaths.items}
         getKey={(learningPath) => learningPath.id}
-        renderItem={(learningPath) => (
-          <LearningPathCard learningPath={learningPath} />
-        )}
+        renderItem={(learningPath) => <LearningPathCard learningPath={learningPath} />}
         emptyView={
           <EmptyView
             title="No Learning Path Found"

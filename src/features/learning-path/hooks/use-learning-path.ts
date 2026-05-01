@@ -1,12 +1,8 @@
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from "@tanstack/react-query";
-import {toast} from "sonner";
+import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 
-import {useTRPC} from "@/trpc/client";
-import {useGlobalParams} from "@/features/global/hooks/use-global-params";
+import { useTRPC } from "@/trpc/client";
+import { useGlobalParams } from "@/features/global/hooks/use-global-params";
 
 export const useSuspenseLearningPaths = () => {
   const trpc = useTRPC();
@@ -19,9 +15,7 @@ export const useSuspenseLearningPaths = () => {
 export const useSuspenseLearningPathByTopicId = (topicId: string) => {
   const trpc = useTRPC();
 
-  return useSuspenseQuery(
-    trpc.learningPaths.getByTopicId.queryOptions({topicId}),
-  );
+  return useSuspenseQuery(trpc.learningPaths.getByTopicId.queryOptions({ topicId }));
 };
 
 export const useCreateLearningPath = () => {
@@ -35,7 +29,7 @@ export const useCreateLearningPath = () => {
         toast.success("Learning path created");
 
         queryClient.invalidateQueries(
-          trpc.learningPaths.getByTopicId.queryOptions({topicId: data.topicId}),
+          trpc.learningPaths.getByTopicId.queryOptions({ topicId: data.topicId }),
         );
       },
       onError: (error) => {
@@ -55,12 +49,10 @@ export const useRemoveLearningPath = () => {
         toast.success("Learning path removed");
 
         queryClient.invalidateQueries(
-          trpc.learningPaths.getByTopicId.queryOptions({topicId: data.topicId}),
+          trpc.learningPaths.getByTopicId.queryOptions({ topicId: data.topicId }),
         );
 
-        queryClient.invalidateQueries(
-          trpc.learningPaths.getMany.queryOptions({}),
-        );
+        queryClient.invalidateQueries(trpc.learningPaths.getMany.queryOptions({}));
       },
       onError: (error) => {
         toast.error(`Failed to remove learning path: ${error.message}`);

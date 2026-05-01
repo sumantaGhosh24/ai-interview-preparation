@@ -1,5 +1,5 @@
-import {deleteByPattern, deleteManyCache} from "./cache";
-import {cacheKeys} from "./cache-keys";
+import { deleteByPattern, deleteManyCache } from "./cache";
+import { cacheKeys } from "./cache-keys";
 
 export async function invalidateTopicCaches(userId: string, topicId?: string) {
   const keys = [
@@ -39,11 +39,7 @@ export async function invalidateQuestionCaches(
   await deleteByPattern(`questions:list:${topicId}:*`);
 }
 
-export async function invalidateAnswerCaches(
-  userId: string,
-  topicId: string,
-  questionId: string,
-) {
+export async function invalidateAnswerCaches(userId: string, topicId: string, questionId: string) {
   const keys = [
     cacheKeys.dashboard(userId),
     cacheKeys.weakTopics(userId),

@@ -1,25 +1,25 @@
 "use client";
 
-import {useEffect} from "react";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {AlertCircle, CheckCircle2, Loader2} from "lucide-react";
+import { useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
 
-import {useTRPC} from "@/trpc/client";
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
-import {Progress} from "@/components/ui/progress";
+import { useTRPC } from "@/trpc/client";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 
 interface EvaluationStatusProps {
   answerId: string;
   questionId: string;
 }
 
-const EvaluationStatus = ({answerId, questionId}: EvaluationStatusProps) => {
+const EvaluationStatus = ({ answerId, questionId }: EvaluationStatusProps) => {
   const trpc = useTRPC();
 
   const queryClient = useQueryClient();
 
-  const {data} = useQuery({
-    ...trpc.answers.getSubmissionStatus.queryOptions({answerId}),
+  const { data } = useQuery({
+    ...trpc.answers.getSubmissionStatus.queryOptions({ answerId }),
     enabled: !!answerId,
     refetchInterval: (query) => {
       const status = query.state.data?.status;
@@ -29,18 +29,14 @@ const EvaluationStatus = ({answerId, questionId}: EvaluationStatusProps) => {
 
   const status = data?.status ?? "PENDING";
   const message =
-    data?.statusMessage ??
-    "Your answer has been submitted. AI evaluation is being processed.";
+    data?.statusMessage ?? "Your answer has been submitted. AI evaluation is being processed.";
 
-  const progressPercent =
-    status === "COMPLETED" ? 100 : status === "RUNNING" ? 60 : 10;
+  const progressPercent = status === "COMPLETED" ? 100 : status === "RUNNING" ? 60 : 10;
 
   useEffect(() => {
     if (status !== "COMPLETED") return;
 
-    queryClient.invalidateQueries(
-      trpc.answers.getAnswersHistory.queryOptions({questionId}),
-    );
+    queryClient.invalidateQueries(trpc.answers.getAnswersHistory.queryOptions({ questionId }));
   }, [status, queryClient, questionId, trpc.answers.getAnswersHistory]);
 
   return (

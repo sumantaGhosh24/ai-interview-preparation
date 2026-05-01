@@ -1,8 +1,8 @@
-import {generateText} from "ai";
-import {z} from "zod";
+import { generateText } from "ai";
+import { z } from "zod";
 
-import {safeJson} from "@/features/global/helpers/utils";
-import {BASE_SYSTEM_RULES, geminiModel} from "@/lib/ai";
+import { safeJson } from "@/features/global/helpers/utils";
+import { BASE_SYSTEM_RULES, geminiModel } from "@/lib/ai";
 
 export const generateLearningPathSchema = z.object({
   title: z.string(),
@@ -22,9 +22,7 @@ export const generateLearningPathSchema = z.object({
   expectedOutcome: z.string(),
 });
 
-export type GenerateLearningPathOutput = z.infer<
-  typeof generateLearningPathSchema
->;
+export type GenerateLearningPathOutput = z.infer<typeof generateLearningPathSchema>;
 
 export async function generateLearningPath({
   topicName,
@@ -33,7 +31,7 @@ export async function generateLearningPath({
   topicName: string;
   previousWeaknesses?: string[];
 }) {
-  const {text} = await generateText({
+  const { text } = await generateText({
     model: geminiModel,
     prompt: `
       ${BASE_SYSTEM_RULES}

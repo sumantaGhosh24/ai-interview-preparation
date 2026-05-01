@@ -1,10 +1,10 @@
 "use client";
 
-import {useState} from "react";
+import { useState } from "react";
 import Link from "next/link";
-import {MenuIcon, XIcon} from "lucide-react";
+import { MenuIcon, XIcon } from "lucide-react";
 
-import {headerLinks} from "@/constants/landing";
+import { headerLinks } from "@/constants/landing";
 import ModeToggle from "@/components/mode-toggle";
 import {
   NavigationMenu,
@@ -13,7 +13,7 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -26,10 +26,7 @@ const Header = () => {
             <Link href="/">AI Interview Preparation</Link>
           </h1>
           <div className="md:hidden">
-            <Button
-              className="rounded-md p-2 outline-none"
-              onClick={() => setOpen(!open)}
-            >
+            <Button className="rounded-md p-2 outline-none" onClick={() => setOpen(!open)}>
               {open ? <XIcon color="white" /> : <MenuIcon color="white" />}
             </Button>
           </div>

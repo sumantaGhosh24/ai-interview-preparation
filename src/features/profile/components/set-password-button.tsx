@@ -1,9 +1,9 @@
 "use client";
 
-import {authClient} from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import AuthActionButton from "@/features/auth/components/auth-action-button";
 
-const SetPasswordButton = ({email}: {email: string}) => {
+const SetPasswordButton = ({ email }: { email: string }) => {
   return (
     <AuthActionButton
       variant="outline"

@@ -1,11 +1,11 @@
 "use client";
 
-import {useState} from "react";
-import {SparkleIcon, UserIcon} from "lucide-react";
+import { useState } from "react";
+import { SparkleIcon, UserIcon } from "lucide-react";
 
-import {Dialog, DialogContent, DialogTrigger} from "@/components/ui/dialog";
-import {Button} from "@/components/ui/button";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import CreateManualQuestion from "./create-question-manual";
 import CreateQuestionAI from "./create-question-ai";
@@ -15,7 +15,7 @@ interface CreateQuestionDialogProps {
   topicId: string;
 }
 
-const CreateQuestionDialog = ({topicId}: CreateQuestionDialogProps) => {
+const CreateQuestionDialog = ({ topicId }: CreateQuestionDialogProps) => {
   const [open, setOpen] = useState(false);
   const [jobId, setJobId] = useState<string | null>(null);
 

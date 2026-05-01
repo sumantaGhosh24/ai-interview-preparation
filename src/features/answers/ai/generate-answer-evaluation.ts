@@ -1,8 +1,8 @@
-import {generateText} from "ai";
-import {z} from "zod";
+import { generateText } from "ai";
+import { z } from "zod";
 
-import {BASE_SYSTEM_RULES, geminiModel} from "@/lib/ai";
-import {safeJson, sanitizeAIInput} from "@/features/global/helpers/utils";
+import { BASE_SYSTEM_RULES, geminiModel } from "@/lib/ai";
+import { safeJson, sanitizeAIInput } from "@/features/global/helpers/utils";
 
 export const answerEvaluationSchema = z.object({
   score: z.number().min(0).max(10),
@@ -24,7 +24,7 @@ export const generateAnswerEvaluation = async ({
 }) => {
   const sanitizedAnswer = sanitizeAIInput(userAnswer);
 
-  const {text} = await generateText({
+  const { text } = await generateText({
     model: geminiModel,
     prompt: `
       ${BASE_SYSTEM_RULES}

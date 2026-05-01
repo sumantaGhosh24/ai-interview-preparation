@@ -1,4 +1,4 @@
-import {ComponentProps} from "react";
+import { ComponentProps } from "react";
 
 export const GoogleIcon = (props: ComponentProps<"svg">) => {
   return (

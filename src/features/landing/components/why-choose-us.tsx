@@ -1,5 +1,5 @@
-import {points} from "@/constants/landing";
-import {Card, CardHeader, CardTitle} from "@/components/ui/card";
+import { points } from "@/constants/landing";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
 const WhyChooseUs = () => {
   return (
@@ -14,9 +14,9 @@ const WhyChooseUs = () => {
               Built like a real learning system, not just another practice app
             </h2>
             <p className="mt-6 leading-8 text-muted-foreground">
-              Instead of random question lists, this platform uses performance
-              tracking, structured AI feedback, and adaptive learning paths to
-              help users improve systematically and prepare with confidence.
+              Instead of random question lists, this platform uses performance tracking, structured
+              AI feedback, and adaptive learning paths to help users improve systematically and
+              prepare with confidence.
             </p>
           </div>
           <div className="space-y-4">

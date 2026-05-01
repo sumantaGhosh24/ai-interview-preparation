@@ -1,12 +1,12 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import {useState} from "react";
-import {useTheme} from "next-themes";
+import { useState } from "react";
+import { useTheme } from "next-themes";
 
-import {useSuspenseQuestion} from "@/features/questions/hooks/use-questions";
+import { useSuspenseQuestion } from "@/features/questions/hooks/use-questions";
 import LoadingSwap from "@/components/loading-swap";
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import {useSubmitAnswer} from "../hooks/use-answers";
+import { useSubmitAnswer } from "../hooks/use-answers";
 
 interface AnswerEditorProps {
   questionId: string;
@@ -26,20 +26,20 @@ const MonacoEditor = dynamic(() => import("@monaco-editor/react"), {
 });
 
 const languageOptions = [
-  {label: "Plain Text", value: "plaintext"},
-  {label: "JavaScript", value: "javascript"},
-  {label: "TypeScript", value: "typescript"},
+  { label: "Plain Text", value: "plaintext" },
+  { label: "JavaScript", value: "javascript" },
+  { label: "TypeScript", value: "typescript" },
 ] as const;
 
 type LanguageOption = (typeof languageOptions)[number]["value"];
 
-const AnswerEditor = ({questionId}: AnswerEditorProps) => {
+const AnswerEditor = ({ questionId }: AnswerEditorProps) => {
   const [content, setContent] = useState("");
   const [language, setLanguage] = useState<LanguageOption>("plaintext");
 
-  const {theme} = useTheme();
+  const { theme } = useTheme();
 
-  const {data: question} = useSuspenseQuestion(questionId);
+  const { data: question } = useSuspenseQuestion(questionId);
 
   const submitAnswer = useSubmitAnswer();
 
@@ -68,10 +68,7 @@ const AnswerEditor = ({questionId}: AnswerEditorProps) => {
           <h1 className="text-3xl font-bold tracking-tight">Answer Question</h1>
           <p className="mt-2 text-muted-foreground">{question.question}</p>
         </div>
-        <Select
-          value={language}
-          onValueChange={(value) => setLanguage(value as LanguageOption)}
-        >
+        <Select value={language} onValueChange={(value) => setLanguage(value as LanguageOption)}>
           <SelectTrigger className="w-45">
             <SelectValue placeholder="Choose editor mode" />
           </SelectTrigger>
@@ -91,7 +88,7 @@ const AnswerEditor = ({questionId}: AnswerEditorProps) => {
           language={language}
           onChange={(value) => setContent(value ?? "")}
           options={{
-            minimap: {enabled: false},
+            minimap: { enabled: false },
             wordWrap: "on",
             automaticLayout: true,
             scrollBeyondLastLine: false,
@@ -102,16 +99,12 @@ const AnswerEditor = ({questionId}: AnswerEditorProps) => {
         />
       </div>
       <div className="flex items-center justify-between gap-3">
-        <p className="text-xs text-muted-foreground">
-          Minimum 10 characters required to submit.
-        </p>
+        <p className="text-xs text-muted-foreground">Minimum 10 characters required to submit.</p>
         <Button
           onClick={handleSubmit}
           disabled={submitAnswer.isPending || content.trim().length < 10}
         >
-          <LoadingSwap isLoading={submitAnswer.isPending}>
-            Submit Answer
-          </LoadingSwap>
+          <LoadingSwap isLoading={submitAnswer.isPending}>Submit Answer</LoadingSwap>
         </Button>
       </div>
     </div>

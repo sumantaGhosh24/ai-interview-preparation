@@ -1,4 +1,4 @@
-import {requireUnauth} from "@/lib/auth-utils";
+import { requireUnauth } from "@/lib/auth-utils";
 import ResetPasswordForm from "@/features/auth/components/reset-password-form";
 
 export const metadata = {

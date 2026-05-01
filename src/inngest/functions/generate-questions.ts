@@ -1,30 +1,23 @@
-import {NonRetriableError} from "inngest";
+import { NonRetriableError } from "inngest";
 
 import prisma from "@/lib/db";
-import {aiRateLimit} from "@/lib/redis";
-import {generateAdaptiveQuestion} from "@/features/questions/ai/generate-questions";
+import { aiRateLimit } from "@/lib/redis";
+import { generateAdaptiveQuestion } from "@/features/questions/ai/generate-questions";
 
-import {inngest} from "../client";
+import { inngest } from "../client";
 
 export const generateQuestions = inngest.createFunction(
-  {id: "generate-question", triggers: {event: "question/generate"}},
-  async ({event, step}) => {
-    const {
-      userId,
-      topicId,
-      topicName,
-      difficulty,
-      previousWeaknesses,
-      numberOfQuestions,
-      jobId,
-    } = event.data;
+  { id: "generate-question", triggers: { event: "question/generate" } },
+  async ({ event, step }) => {
+    const { userId, topicId, topicName, difficulty, previousWeaknesses, numberOfQuestions, jobId } =
+      event.data;
 
     if (!userId) throw new NonRetriableError("User ID is required");
 
     try {
       await step.run("mark-job-running", async () => {
         return prisma.questionGenerationJob.update({
-          where: {id: jobId},
+          where: { id: jobId },
           data: {
             status: "RUNNING",
             statusMessage: "Generating AI questions...",
@@ -66,7 +59,7 @@ export const generateQuestions = inngest.createFunction(
 
       await step.run("mark-job-completed", async () => {
         return prisma.questionGenerationJob.update({
-          where: {id: jobId},
+          where: { id: jobId },
           data: {
             status: "COMPLETED",
             statusMessage: "Questions generated successfully",
@@ -75,11 +68,11 @@ export const generateQuestions = inngest.createFunction(
         });
       });
 
-      return {success: true};
+      return { success: true };
     } catch (error) {
       await step.run("mark-job-failed", async () => {
         return prisma.questionGenerationJob.update({
-          where: {id: jobId},
+          where: { id: jobId },
           data: {
             status: "FAILED",
             statusMessage: "Failed to generate questions",

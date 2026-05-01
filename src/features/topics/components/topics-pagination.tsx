@@ -1,9 +1,9 @@
 "use client";
 
-import {useGlobalParams} from "@/features/global/hooks/use-global-params";
-import {EntityPagination} from "@/components/entity-components";
+import { useGlobalParams } from "@/features/global/hooks/use-global-params";
+import { EntityPagination } from "@/components/entity-components";
 
-import {useSuspenseTopics} from "../hooks/use-topics";
+import { useSuspenseTopics } from "../hooks/use-topics";
 
 const TopicsPagination = () => {
   const topics = useSuspenseTopics();
@@ -15,7 +15,7 @@ const TopicsPagination = () => {
       disabled={topics.isFetching}
       totalPages={topics.data.totalPages}
       page={topics.data.page}
-      onPageChange={(page) => setParams({...params, page})}
+      onPageChange={(page) => setParams({ ...params, page })}
     />
   );
 };

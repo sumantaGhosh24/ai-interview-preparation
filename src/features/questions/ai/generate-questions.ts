@@ -1,9 +1,9 @@
-import {generateText} from "ai";
-import {z} from "zod";
+import { generateText } from "ai";
+import { z } from "zod";
 
-import {BASE_SYSTEM_RULES, geminiModel} from "@/lib/ai";
-import {Difficulty} from "@/generated/prisma/enums";
-import {safeJson} from "@/features/global/helpers/utils";
+import { BASE_SYSTEM_RULES, geminiModel } from "@/lib/ai";
+import { Difficulty } from "@/generated/prisma/enums";
+import { safeJson } from "@/features/global/helpers/utils";
 
 export const generatedQuestionSchema = z.array(
   z.object({
@@ -25,7 +25,7 @@ export const generateAdaptiveQuestion = async ({
   previousWeaknesses?: string[];
   numberOfQuestions?: number;
 }) => {
-  const {text} = await generateText({
+  const { text } = await generateText({
     model: geminiModel,
     prompt: `
         ${BASE_SYSTEM_RULES}

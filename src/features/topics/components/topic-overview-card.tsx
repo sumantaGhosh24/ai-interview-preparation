@@ -1,43 +1,32 @@
 "use client";
 
-import {Target, Trophy, BarChart3, Activity} from "lucide-react";
+import { Target, Trophy, BarChart3, Activity } from "lucide-react";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-import {useSuspenseTopic} from "../hooks/use-topics";
+import { useSuspenseTopic } from "../hooks/use-topics";
 
 interface TopicOverviewCardProps {
   topicId: string;
 }
 
-const TopicOverviewCard = ({topicId}: TopicOverviewCardProps) => {
-  const {data: topic} = useSuspenseTopic(topicId);
+const TopicOverviewCard = ({ topicId }: TopicOverviewCardProps) => {
+  const { data: topic } = useSuspenseTopic(topicId);
 
   const performances = topic?.performance ?? [];
 
   const totalQuestions = topic?.totalQuestions ?? 0;
 
-  const totalAttempts = performances.reduce(
-    (sum, item) => sum + (item.attemptCount ?? 0),
-    0,
-  );
+  const totalAttempts = performances.reduce((sum, item) => sum + (item.attemptCount ?? 0), 0);
 
   const avgScore =
     performances.length > 0
-      ? performances.reduce((sum, item) => sum + (item.avgScore ?? 0), 0) /
-        performances.length
+      ? performances.reduce((sum, item) => sum + (item.avgScore ?? 0), 0) / performances.length
       : 0;
 
   const accuracy =
     performances.length > 0
-      ? performances.reduce((sum, item) => sum + (item.accuracy ?? 0), 0) /
-        performances.length
+      ? performances.reduce((sum, item) => sum + (item.accuracy ?? 0), 0) / performances.length
       : 0;
 
   const stats = [
@@ -67,9 +56,7 @@ const TopicOverviewCard = ({topicId}: TopicOverviewCardProps) => {
     <Card className="container mx-auto mb-10">
       <CardHeader className="border-b bg-muted/30">
         <CardTitle className="text-lg capitalize">{topic.name}</CardTitle>
-        <CardDescription className="text-sm">
-          {topic.description}
-        </CardDescription>
+        <CardDescription className="text-sm">{topic.description}</CardDescription>
       </CardHeader>
       <CardContent className="p-0">
         <div className="grid gap-4 px-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -86,9 +73,7 @@ const TopicOverviewCard = ({topicId}: TopicOverviewCardProps) => {
                     <Icon className="h-4 w-4" />
                   </div>
                 </div>
-                <p className="text-xl font-semibold tracking-tight">
-                  {item.value}
-                </p>
+                <p className="text-xl font-semibold tracking-tight">{item.value}</p>
               </div>
             );
           })}

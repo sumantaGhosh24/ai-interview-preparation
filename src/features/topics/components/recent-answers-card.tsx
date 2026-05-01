@@ -1,24 +1,18 @@
 "use client";
 
-import {formatDistanceToNow} from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 
-import {EmptyView} from "@/components/entity-components";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { EmptyView } from "@/components/entity-components";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-import {useSuspenseTopic} from "../hooks/use-topics";
+import { useSuspenseTopic } from "../hooks/use-topics";
 
 interface RecentAnswersCardProps {
   topicId: string;
 }
 
-const RecentAnswersCard = ({topicId}: RecentAnswersCardProps) => {
-  const {data: topic} = useSuspenseTopic(topicId);
+const RecentAnswersCard = ({ topicId }: RecentAnswersCardProps) => {
+  const { data: topic } = useSuspenseTopic(topicId);
 
   return (
     <div className="container mx-auto">
@@ -38,9 +32,7 @@ const RecentAnswersCard = ({topicId}: RecentAnswersCardProps) => {
               </CardHeader>
               <CardContent className="flex items-center justify-between">
                 <span>Score: {answer.evaluation?.score ?? "Pending"}</span>
-                <span>
-                  {formatDistanceToNow(answer.createdAt, {addSuffix: true})}
-                </span>
+                <span>{formatDistanceToNow(answer.createdAt, { addSuffix: true })}</span>
               </CardContent>
             </Card>
           ))

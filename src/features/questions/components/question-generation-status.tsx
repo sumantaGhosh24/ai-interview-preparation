@@ -1,29 +1,26 @@
 "use client";
 
-import {useEffect} from "react";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {AlertCircle, CheckCircle2, Loader2, Sparkles} from "lucide-react";
+import { useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { AlertCircle, CheckCircle2, Loader2, Sparkles } from "lucide-react";
 
-import {useTRPC} from "@/trpc/client";
-import {useGlobalParams} from "@/features/global/hooks/use-global-params";
-import {Card, CardContent} from "@/components/ui/card";
-import {Progress} from "@/components/ui/progress";
+import { useTRPC } from "@/trpc/client";
+import { useGlobalParams } from "@/features/global/hooks/use-global-params";
+import { Card, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 
 interface QuestionGenerationStatusProps {
   jobId: string;
   topicId: string;
 }
 
-const QuestionGenerationStatus = ({
-  jobId,
-  topicId,
-}: QuestionGenerationStatusProps) => {
+const QuestionGenerationStatus = ({ jobId, topicId }: QuestionGenerationStatusProps) => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const [params] = useGlobalParams();
 
-  const {data} = useQuery({
-    ...trpc.questions.getGenerationStatus.queryOptions({jobId}),
+  const { data } = useQuery({
+    ...trpc.questions.getGenerationStatus.queryOptions({ jobId }),
     enabled: !!jobId,
     refetchInterval: (query) => {
       const status = query.state.data?.status;
@@ -32,22 +29,17 @@ const QuestionGenerationStatus = ({
   });
 
   const status = data?.status ?? "PENDING";
-  const message =
-    data?.statusMessage ??
-    "Generating AI questions. This may take a few moments.";
+  const message = data?.statusMessage ?? "Generating AI questions. This may take a few moments.";
 
   const isRunning = status === "RUNNING" || status === "PENDING";
   const isCompleted = status === "COMPLETED";
   const isFailed = status === "FAILED";
-  const progressPercent =
-    status === "COMPLETED" ? 100 : status === "RUNNING" ? 65 : 15;
+  const progressPercent = status === "COMPLETED" ? 100 : status === "RUNNING" ? 65 : 15;
 
   useEffect(() => {
     if (!isCompleted) return;
 
-    queryClient.invalidateQueries(
-      trpc.questions.getByTopic.queryOptions({...params, topicId}),
-    );
+    queryClient.invalidateQueries(trpc.questions.getByTopic.queryOptions({ ...params, topicId }));
   }, [isCompleted, queryClient, trpc.questions.getByTopic, params, topicId]);
 
   if (!jobId) return null;
@@ -57,9 +49,7 @@ const QuestionGenerationStatus = ({
       <CardContent className="space-y-5 p-6">
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1">
-            <p className="text-sm font-medium text-muted-foreground">
-              AI Question Generation
-            </p>
+            <p className="text-sm font-medium text-muted-foreground">AI Question Generation</p>
             <h3 className="text-lg font-semibold tracking-tight">{message}</h3>
           </div>
           <div className="shrink-0 rounded-xl border bg-muted/40 p-3">

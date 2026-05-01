@@ -1,13 +1,9 @@
-import {createAuthClient} from "better-auth/react";
-import {
-  inferAdditionalFields,
-  twoFactorClient,
-  adminClient,
-} from "better-auth/client/plugins";
-import {passkeyClient} from "@better-auth/passkey/client";
+import { createAuthClient } from "better-auth/react";
+import { inferAdditionalFields, twoFactorClient, adminClient } from "better-auth/client/plugins";
+import { passkeyClient } from "@better-auth/passkey/client";
 
-import {auth} from "./auth";
-import {admin, user, ac} from "./permissions";
+import { auth } from "./auth";
+import { admin, user, ac } from "./permissions";
 
 export const authClient = createAuthClient({
   plugins: [

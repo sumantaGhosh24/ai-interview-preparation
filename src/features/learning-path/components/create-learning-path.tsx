@@ -1,17 +1,17 @@
 "use client";
 
-import {useState} from "react";
+import { useState } from "react";
 
 import LoadingSwap from "@/components/loading-swap";
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 
-import {useCreateLearningPath} from "../hooks/use-learning-path";
+import { useCreateLearningPath } from "../hooks/use-learning-path";
 
 interface CreateLearningPathProps {
   topicId: string;
 }
 
-const CreateLearningPath = ({topicId}: CreateLearningPathProps) => {
+const CreateLearningPath = ({ topicId }: CreateLearningPathProps) => {
   const [loading, setLoading] = useState(false);
 
   const createLearningPath = useCreateLearningPath();

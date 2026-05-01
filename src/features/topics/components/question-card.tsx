@@ -1,22 +1,17 @@
 import Link from "next/link";
-import {EyeIcon, FileQuestionIcon, TrashIcon} from "lucide-react";
+import { EyeIcon, FileQuestionIcon, TrashIcon } from "lucide-react";
 
-import {useRemoveQuestion} from "@/features/questions/hooks/use-questions";
-import {Badge} from "@/components/ui/badge";
-import {Button} from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardTitle,
-} from "@/components/ui/card";
-import {Question} from "@/generated/prisma/client";
+import { useRemoveQuestion } from "@/features/questions/hooks/use-questions";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
+import { Question } from "@/generated/prisma/client";
 
 interface TopicQuestionCardProps {
   question: Question;
 }
 
-const QuestionCard = ({question}: TopicQuestionCardProps) => {
+const QuestionCard = ({ question }: TopicQuestionCardProps) => {
   const removeQuestion = useRemoveQuestion();
 
   const handleRemove = () => {
@@ -35,9 +30,7 @@ const QuestionCard = ({question}: TopicQuestionCardProps) => {
         <div className="flex items-center gap-3 w-full">
           <FileQuestionIcon />
           <div className="w-full">
-            <CardTitle className="text-base font-medium capitalize">
-              {question.question}
-            </CardTitle>
+            <CardTitle className="text-base font-medium capitalize">{question.question}</CardTitle>
             <CardDescription className="text-xs">
               <Badge
                 className="uppercase"
@@ -51,9 +44,7 @@ const QuestionCard = ({question}: TopicQuestionCardProps) => {
               >
                 {question.difficulty}
               </Badge>
-              <Badge className="uppercase ml-2">
-                {question.isAI ? "AI Generated" : "Manual"}
-              </Badge>
+              <Badge className="uppercase ml-2">{question.isAI ? "AI Generated" : "Manual"}</Badge>
             </CardDescription>
           </div>
         </div>

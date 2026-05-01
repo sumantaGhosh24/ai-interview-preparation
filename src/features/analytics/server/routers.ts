@@ -1,23 +1,19 @@
-import {getOrSetCache} from "@/lib/cache";
-import {cacheKeys} from "@/lib/cache-keys";
+import { getOrSetCache } from "@/lib/cache";
+import { cacheKeys } from "@/lib/cache-keys";
 import prisma from "@/lib/db";
-import {createTRPCRouter, protectedProcedure} from "@/trpc/init";
+import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 
 export const analyticsRouter = createTRPCRouter({
-  getWeakTopics: protectedProcedure.query(async ({ctx}) => {
+  getWeakTopics: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.auth.user.id;
 
     return getOrSetCache(
       cacheKeys.weakTopics(userId),
       async () => {
         const performances = await prisma.topicPerformance.findMany({
-          where: {userId: userId},
-          include: {topic: true},
-          orderBy: [
-            {accuracy: "asc"},
-            {avgScore: "asc"},
-            {attemptCount: "asc"},
-          ],
+          where: { userId: userId },
+          include: { topic: true },
+          orderBy: [{ accuracy: "asc" }, { avgScore: "asc" }, { attemptCount: "asc" }],
           take: 5,
         });
 
@@ -37,43 +33,43 @@ export const analyticsRouter = createTRPCRouter({
       300,
     );
   }),
-  getDashboard: protectedProcedure.query(async ({ctx}) => {
+  getDashboard: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.auth.user.id;
 
     return getOrSetCache(
       cacheKeys.dashboard(userId),
       async () => {
         const [
-          {count: totalTopics},
-          {count: totalQuestions},
-          {count: totalAnswers},
+          { count: totalTopics },
+          { count: totalQuestions },
+          { count: totalAnswers },
           averagePerformance,
           bestTopicPerformance,
           worstTopicPerformance,
         ] = await Promise.all([
           prisma.topic
             .aggregate({
-              _count: {id: true},
-              where: {userId: userId},
+              _count: { id: true },
+              where: { userId: userId },
             })
-            .then((res) => ({count: res._count.id})),
+            .then((res) => ({ count: res._count.id })),
 
           prisma.question
             .aggregate({
-              _count: {id: true},
-              where: {topic: {userId: userId}},
+              _count: { id: true },
+              where: { topic: { userId: userId } },
             })
-            .then((res) => ({count: res._count.id})),
+            .then((res) => ({ count: res._count.id })),
 
           prisma.answer
             .aggregate({
-              _count: {id: true},
-              where: {userId: userId},
+              _count: { id: true },
+              where: { userId: userId },
             })
-            .then((res) => ({count: res._count.id})),
+            .then((res) => ({ count: res._count.id })),
 
           prisma.topicPerformance.aggregate({
-            where: {userId: userId},
+            where: { userId: userId },
             _avg: {
               avgScore: true,
               accuracy: true,
@@ -82,21 +78,21 @@ export const analyticsRouter = createTRPCRouter({
           }),
 
           prisma.topicPerformance.findFirst({
-            where: {userId: userId},
-            orderBy: [{accuracy: "desc"}, {avgScore: "desc"}],
-            include: {topic: true},
+            where: { userId: userId },
+            orderBy: [{ accuracy: "desc" }, { avgScore: "desc" }],
+            include: { topic: true },
           }),
 
           prisma.topicPerformance.findFirst({
-            where: {userId: userId},
-            orderBy: [{accuracy: "asc"}, {avgScore: "asc"}],
-            include: {topic: true},
+            where: { userId: userId },
+            orderBy: [{ accuracy: "asc" }, { avgScore: "asc" }],
+            include: { topic: true },
           }),
         ]);
 
         const totalAttempts = await prisma.topicPerformance.aggregate({
-          where: {userId: userId},
-          _sum: {attemptCount: true},
+          where: { userId: userId },
+          _sum: { attemptCount: true },
         });
 
         const averageAccuracyRaw = averagePerformance._avg.accuracy ?? 0;
@@ -142,13 +138,13 @@ export const analyticsRouter = createTRPCRouter({
       300,
     );
   }),
-  getRecentAnswers: protectedProcedure.query(async ({ctx}) => {
+  getRecentAnswers: protectedProcedure.query(async ({ ctx }) => {
     const answers = await prisma.answer.findMany({
-      where: {userId: ctx.auth.user.id},
-      orderBy: [{createdAt: "desc"}],
+      where: { userId: ctx.auth.user.id },
+      orderBy: [{ createdAt: "desc" }],
       take: 5,
       include: {
-        question: {select: {question: true, topicId: true}},
+        question: { select: { question: true, topicId: true } },
         evaluation: {
           include: {
             mistakes: true,
@@ -171,7 +167,7 @@ export const analyticsRouter = createTRPCRouter({
       improvements: ans.evaluation?.improvements.map((i) => i.content) ?? [],
     }));
   }),
-  getQuestionSourceStats: protectedProcedure.query(async ({ctx}) => {
+  getQuestionSourceStats: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.auth.user.id;
 
     return getOrSetCache(
@@ -180,13 +176,13 @@ export const analyticsRouter = createTRPCRouter({
         const [aiCount, manualCount] = await Promise.all([
           prisma.question.count({
             where: {
-              topic: {userId: userId},
+              topic: { userId: userId },
               isAI: true,
             },
           }),
           prisma.question.count({
             where: {
-              topic: {userId: userId},
+              topic: { userId: userId },
               isAI: false,
             },
           }),
@@ -200,7 +196,7 @@ export const analyticsRouter = createTRPCRouter({
       300,
     );
   }),
-  getAttemptTrends: protectedProcedure.query(async ({ctx}) => {
+  getAttemptTrends: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.auth.user.id;
 
     return getOrSetCache(
@@ -212,15 +208,15 @@ export const analyticsRouter = createTRPCRouter({
         const answers = await prisma.answer.findMany({
           where: {
             userId: userId,
-            createdAt: {gte: since},
+            createdAt: { gte: since },
           },
-          orderBy: {createdAt: "asc"},
+          orderBy: { createdAt: "asc" },
           select: {
             createdAt: true,
           },
         });
 
-        const byDay: {[date: string]: number} = {};
+        const byDay: { [date: string]: number } = {};
         for (const ans of answers) {
           const d = ans.createdAt.toISOString().slice(0, 10);
           byDay[d] = (byDay[d] || 0) + 1;

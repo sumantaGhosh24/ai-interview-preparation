@@ -1,7 +1,7 @@
 export const headerLinks = [
-  {name: "Home", href: "/"},
-  {name: "Register", href: "/login"},
-  {name: "Login", href: "/login"},
+  { name: "Home", href: "/" },
+  { name: "Register", href: "/login" },
+  { name: "Login", href: "/login" },
 ];
 
 export const features = [
@@ -28,10 +28,10 @@ export const features = [
 ];
 
 export const stats = [
-  {label: "Topics Supported", value: "50+"},
-  {label: "AI Feedback Speed", value: "< 30s"},
-  {label: "Learning Path", value: "Unlimited"},
-  {label: "Performance Tracking", value: "Real-time"},
+  { label: "Topics Supported", value: "50+" },
+  { label: "AI Feedback Speed", value: "< 30s" },
+  { label: "Learning Path", value: "Unlimited" },
+  { label: "Performance Tracking", value: "Real-time" },
 ];
 
 export const workflows = [

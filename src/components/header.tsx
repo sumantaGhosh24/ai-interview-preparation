@@ -1,12 +1,12 @@
 "use client";
 
-import {useEffect, useState} from "react";
-import {useRouter} from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import {toast} from "sonner";
-import {MenuIcon, XIcon} from "lucide-react";
+import { toast } from "sonner";
+import { MenuIcon, XIcon } from "lucide-react";
 
-import {authClient} from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import ModeToggle from "@/components/mode-toggle";
 import {
   NavigationMenu,
@@ -15,11 +15,11 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 
-import {Skeleton} from "./ui/skeleton";
-import {SidebarTrigger} from "./ui/sidebar";
-import {Avatar, AvatarFallback, AvatarImage} from "./ui/avatar";
+import { Skeleton } from "./ui/skeleton";
+import { SidebarTrigger } from "./ui/sidebar";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -27,14 +27,12 @@ const Header = () => {
 
   const router = useRouter();
 
-  const {data: session, isPending: loading} = authClient.useSession();
+  const { data: session, isPending: loading } = authClient.useSession();
 
   useEffect(() => {
-    authClient.admin
-      .hasPermission({permissions: {category: ["create"]}})
-      .then(({data}) => {
-        setHasAdminPermission(data?.success ?? false);
-      });
+    authClient.admin.hasPermission({ permissions: { category: ["create"] } }).then(({ data }) => {
+      setHasAdminPermission(data?.success ?? false);
+    });
   }, []);
 
   const handleSignOut = async () => {
@@ -61,10 +59,7 @@ const Header = () => {
             <SidebarTrigger />
           </Button>
           <div className="md:hidden">
-            <Button
-              className="rounded-md p-2 outline-none"
-              onClick={() => setOpen(!open)}
-            >
+            <Button className="rounded-md p-2 outline-none" onClick={() => setOpen(!open)}>
               {open ? <XIcon color="white" /> : <MenuIcon color="white" />}
             </Button>
           </div>
@@ -109,9 +104,7 @@ const Header = () => {
                   </Button>
                   <Avatar size="lg">
                     <AvatarImage src={session?.user?.image as string} />
-                    <AvatarFallback>
-                      {session?.user?.name.slice(0, 2).toUpperCase()}
-                    </AvatarFallback>
+                    <AvatarFallback>{session?.user?.name.slice(0, 2).toUpperCase()}</AvatarFallback>
                   </Avatar>
                   <ModeToggle />
                 </>

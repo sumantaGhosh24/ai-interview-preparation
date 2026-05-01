@@ -1,12 +1,12 @@
 "use client";
 
-import {formatDistanceToNow} from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 
-import {useSuspenseQuestion} from "@/features/questions/hooks/use-questions";
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
-import {Badge} from "@/components/ui/badge";
+import { useSuspenseQuestion } from "@/features/questions/hooks/use-questions";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
-import {useSuspenseAnswersHistory} from "../hooks/use-answers";
+import { useSuspenseAnswersHistory } from "../hooks/use-answers";
 import EvaluationCard from "./evaluation-card";
 import EvaluationStatus from "./evaluation-status";
 
@@ -14,10 +14,10 @@ interface AnswerHistoryProps {
   questionId: string;
 }
 
-const AnswerHistory = ({questionId}: AnswerHistoryProps) => {
-  const {data: question} = useSuspenseQuestion(questionId);
+const AnswerHistory = ({ questionId }: AnswerHistoryProps) => {
+  const { data: question } = useSuspenseQuestion(questionId);
 
-  const {data: answersHistory} = useSuspenseAnswersHistory(questionId);
+  const { data: answersHistory } = useSuspenseAnswersHistory(questionId);
 
   const answers = answersHistory.items;
   const latestAnswer = answers[0];
@@ -42,9 +42,7 @@ const AnswerHistory = ({questionId}: AnswerHistoryProps) => {
           >
             {question.difficulty}
           </Badge>
-          <Badge className="uppercase ml-2">
-            {question.isAI ? "AI Generated" : "Manual"}
-          </Badge>
+          <Badge className="uppercase ml-2">{question.isAI ? "AI Generated" : "Manual"}</Badge>
         </CardContent>
       </Card>
       {!latestAnswer ? (
@@ -68,15 +66,9 @@ const AnswerHistory = ({questionId}: AnswerHistoryProps) => {
           </CardHeader>
           <CardContent className="space-y-3">
             {answers.map((answer) => (
-              <div
-                key={answer.id}
-                className="space-y-2 rounded-xl border p-4 text-sm"
-              >
+              <div key={answer.id} className="space-y-2 rounded-xl border p-4 text-sm">
                 <div className="flex items-center justify-between gap-2">
-                  <Badge
-                    variant={answer.evaluation ? "success" : "warning"}
-                    className="uppercase"
-                  >
+                  <Badge variant={answer.evaluation ? "success" : "warning"} className="uppercase">
                     {answer.evaluation ? "Evaluated" : "Pending"}
                   </Badge>
                   <span className="text-muted-foreground">
@@ -89,13 +81,9 @@ const AnswerHistory = ({questionId}: AnswerHistoryProps) => {
                   {answer.content}
                 </p>
                 {answer.evaluation ? (
-                  <p className="font-medium">
-                    Score: {answer.evaluation.score}/10
-                  </p>
+                  <p className="font-medium">Score: {answer.evaluation.score}/10</p>
                 ) : (
-                  <p className="font-medium text-muted-foreground">
-                    Score: Pending
-                  </p>
+                  <p className="font-medium text-muted-foreground">Score: Pending</p>
                 )}
               </div>
             ))}

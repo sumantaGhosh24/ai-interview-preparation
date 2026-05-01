@@ -1,4 +1,4 @@
-import {requireUnauth} from "@/lib/auth-utils";
+import { requireUnauth } from "@/lib/auth-utils";
 import Hero from "@/features/landing/components/hero";
 import Stats from "@/features/landing/components/stats";
 import Features from "@/features/landing/components/features";

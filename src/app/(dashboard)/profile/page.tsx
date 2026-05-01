@@ -1,6 +1,6 @@
-import {type ReactNode, Suspense} from "react";
-import {headers} from "next/headers";
-import {redirect} from "next/navigation";
+import { type ReactNode, Suspense } from "react";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import Image from "next/image";
 import {
   ImageIcon,
@@ -12,8 +12,8 @@ import {
   UserIcon,
 } from "lucide-react";
 
-import {auth} from "@/lib/auth";
-import {requireAuth} from "@/lib/auth-utils";
+import { auth } from "@/lib/auth";
+import { requireAuth } from "@/lib/auth-utils";
 import ProfileUpdateForm from "@/features/profile/components/profile-update-form";
 import ProfileUpdateImageForm from "@/features/profile/components/profile-update-image-form";
 import AccountDeletion from "@/features/profile/components/account-deletion";
@@ -23,15 +23,9 @@ import ChangePasswordForm from "@/features/profile/components/change-password-fo
 import SetPasswordButton from "@/features/profile/components/set-password-button";
 import TwoFactorAuth from "@/features/profile/components/two-factor-auth";
 import PasskeyManagement from "@/features/profile/components/passkey-management";
-import {Badge} from "@/components/ui/badge";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const metadata = {
   title: "Profile",
@@ -40,7 +34,7 @@ export const metadata = {
 const ProfilePage = async () => {
   await requireAuth();
 
-  const session = await auth.api.getSession({headers: await headers()});
+  const session = await auth.api.getSession({ headers: await headers() });
 
   if (session == null) return redirect("/login");
 
@@ -148,10 +142,8 @@ const ProfilePage = async () => {
 export default ProfilePage;
 
 const LinkedAccountsTab = async () => {
-  const accounts = await auth.api.listUserAccounts({headers: await headers()});
-  const nonCredentialAccounts = accounts.filter(
-    (a) => a.providerId !== "credential",
-  );
+  const accounts = await auth.api.listUserAccounts({ headers: await headers() });
+  const nonCredentialAccounts = accounts.filter((a) => a.providerId !== "credential");
 
   return (
     <Card>
@@ -162,20 +154,13 @@ const LinkedAccountsTab = async () => {
   );
 };
 
-const SessionsTab = async ({
-  currentSessionToken,
-}: {
-  currentSessionToken: string;
-}) => {
-  const sessions = await auth.api.listSessions({headers: await headers()});
+const SessionsTab = async ({ currentSessionToken }: { currentSessionToken: string }) => {
+  const sessions = await auth.api.listSessions({ headers: await headers() });
 
   return (
     <Card>
       <CardContent>
-        <SessionManagement
-          sessions={sessions}
-          currentSessionToken={currentSessionToken}
-        />
+        <SessionManagement sessions={sessions} currentSessionToken={currentSessionToken} />
       </CardContent>
     </Card>
   );
@@ -189,13 +174,11 @@ const SecurityTab = async ({
   isTwoFactorEnabled: boolean;
 }) => {
   const [passkeys, accounts] = await Promise.all([
-    auth.api.listPasskeys({headers: await headers()}),
-    auth.api.listUserAccounts({headers: await headers()}),
+    auth.api.listPasskeys({ headers: await headers() }),
+    auth.api.listUserAccounts({ headers: await headers() }),
   ]);
 
-  const hasPasswordAccount = accounts.some(
-    (a) => a.providerId === "credential",
-  );
+  const hasPasswordAccount = accounts.some((a) => a.providerId === "credential");
 
   return (
     <div className="space-y-6">
@@ -203,9 +186,7 @@ const SecurityTab = async ({
         <Card>
           <CardHeader>
             <CardTitle>Change Password</CardTitle>
-            <CardDescription>
-              Update your password for improved security.
-            </CardDescription>
+            <CardDescription>Update your password for improved security.</CardDescription>
           </CardHeader>
           <CardContent>
             <ChangePasswordForm />
@@ -249,10 +230,8 @@ const SecurityTab = async ({
   );
 };
 
-const LoadingSuspense = ({children}: {children: ReactNode}) => {
+const LoadingSuspense = ({ children }: { children: ReactNode }) => {
   return (
-    <Suspense fallback={<Loader2Icon className="size-20 animate-spin" />}>
-      {children}
-    </Suspense>
+    <Suspense fallback={<Loader2Icon className="size-20 animate-spin" />}>{children}</Suspense>
   );
 };

@@ -1,20 +1,15 @@
 "use client";
 
-import {ReactNode} from "react";
-import {useRouter} from "next/navigation";
-import {
-  AlertCircleIcon,
-  FolderCodeIcon,
-  LoaderIcon,
-  SearchIcon,
-} from "lucide-react";
+import { ReactNode } from "react";
+import { useRouter } from "next/navigation";
+import { AlertCircleIcon, FolderCodeIcon, LoaderIcon, SearchIcon } from "lucide-react";
 
-import {cn} from "@/lib/utils";
-import {useGlobalParams} from "@/features/global/hooks/use-global-params";
-import {useEntitySearch} from "@/hooks/use-entity-search";
+import { cn } from "@/lib/utils";
+import { useGlobalParams } from "@/features/global/hooks/use-global-params";
+import { useEntitySearch } from "@/hooks/use-entity-search";
 
-import {Button} from "./ui/button";
-import {Input} from "./ui/input";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 import {
   Empty,
   EmptyContent,
@@ -38,12 +33,7 @@ type EntityContainerProps = {
   pagination?: ReactNode;
 };
 
-export const EntityContainer = ({
-  children,
-  header,
-  search,
-  pagination,
-}: EntityContainerProps) => {
+export const EntityContainer = ({ children, header, search, pagination }: EntityContainerProps) => {
   return (
     <div className="mx-auto container w-full flex flex-col gap-y-8">
       {header}
@@ -62,20 +52,12 @@ type EntityHeaderProps = {
   create?: ReactNode;
 };
 
-export const EntityHeader = ({
-  title,
-  description,
-  create,
-}: EntityHeaderProps) => {
+export const EntityHeader = ({ title, description, create }: EntityHeaderProps) => {
   return (
     <div className="flex flex-row items-center justify-between gap-x-4">
       <div className="flex flex-col">
         <h1 className="text-lg md:text-xl font-semibold">{title}</h1>
-        {description && (
-          <p className="text-xs md:text-sm text-muted-foreground">
-            {description}
-          </p>
-        )}
+        {description && <p className="text-xs md:text-sm text-muted-foreground">{description}</p>}
       </div>
       {create && create}
     </div>
@@ -86,10 +68,10 @@ interface EntitySearchProps {
   placeholder?: string;
 }
 
-export const EntitySearch = ({placeholder = "Search"}: EntitySearchProps) => {
+export const EntitySearch = ({ placeholder = "Search" }: EntitySearchProps) => {
   const [params, setParams] = useGlobalParams();
 
-  const {searchValue, onSearchChange} = useEntitySearch({
+  const { searchValue, onSearchChange } = useEntitySearch({
     params,
     setParams,
   });
@@ -133,30 +115,18 @@ export const EntityPagination = ({
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious
-                onClick={() =>
-                  previousDisabled ? null : onPageChange(Math.max(1, page - 1))
-                }
+                onClick={() => (previousDisabled ? null : onPageChange(Math.max(1, page - 1)))}
                 aria-disabled={previousDisabled}
                 className={`${
-                  previousDisabled
-                    ? "opacity-50 cursor-not-allowed"
-                    : "cursor-pointer"
+                  previousDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
                 }`}
               />
             </PaginationItem>
             <PaginationItem>
               <PaginationNext
-                onClick={() =>
-                  nextDisabled
-                    ? null
-                    : onPageChange(Math.min(totalPages, page + 1))
-                }
+                onClick={() => (nextDisabled ? null : onPageChange(Math.min(totalPages, page + 1)))}
                 aria-disabled={nextDisabled}
-                className={`${
-                  nextDisabled
-                    ? "opacity-50 cursor-not-allowed"
-                    : "cursor-pointer"
-                }`}
+                className={`${nextDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
               />
             </PaginationItem>
           </PaginationContent>
@@ -189,12 +159,7 @@ interface ErrorViewProps {
   redirectUrl: string;
 }
 
-export const ErrorView = ({
-  title,
-  description,
-  buttonText,
-  redirectUrl,
-}: ErrorViewProps) => {
+export const ErrorView = ({ title, description, buttonText, redirectUrl }: ErrorViewProps) => {
   const router = useRouter();
 
   return (
@@ -226,12 +191,7 @@ interface EmptyViewProps {
   redirectUrl?: string;
 }
 
-export const EmptyView = ({
-  title,
-  description,
-  buttonText,
-  redirectUrl,
-}: EmptyViewProps) => {
+export const EmptyView = ({ title, description, buttonText, redirectUrl }: EmptyViewProps) => {
   const router = useRouter();
 
   return (
@@ -246,9 +206,7 @@ export const EmptyView = ({
       {buttonText && redirectUrl && (
         <EmptyContent>
           <div className="flex gap-2">
-            <Button onClick={() => router.push(redirectUrl)}>
-              {buttonText}
-            </Button>
+            <Button onClick={() => router.push(redirectUrl)}>{buttonText}</Button>
           </div>
         </EmptyContent>
       )}
@@ -282,9 +240,7 @@ export function EntityList<T>({
   return (
     <div className={cn("flex flex-col gap-y-4", className)}>
       {items.map((item, index) => (
-        <div key={getKey ? getKey(item, index) : index}>
-          {renderItem(item, index)}
-        </div>
+        <div key={getKey ? getKey(item, index) : index}>{renderItem(item, index)}</div>
       ))}
     </div>
   );

@@ -1,5 +1,5 @@
-import {createLoader} from "nuqs/server";
+import { createLoader } from "nuqs/server";
 
-import {globalParams} from "../params";
+import { globalParams } from "../params";
 
 export const globalParamsLoader = createLoader(globalParams);

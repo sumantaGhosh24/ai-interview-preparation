@@ -1,27 +1,21 @@
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from "@tanstack/react-query";
-import {toast} from "sonner";
+import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 
-import {useTRPC} from "@/trpc/client";
-import {useGlobalParams} from "@/features/global/hooks/use-global-params";
+import { useTRPC } from "@/trpc/client";
+import { useGlobalParams } from "@/features/global/hooks/use-global-params";
 
 export const useSuspenseQuestionsByTopic = (topicId: string) => {
   const trpc = useTRPC();
 
   const [params] = useGlobalParams();
 
-  return useSuspenseQuery(
-    trpc.questions.getByTopic.queryOptions({...params, topicId}),
-  );
+  return useSuspenseQuery(trpc.questions.getByTopic.queryOptions({ ...params, topicId }));
 };
 
 export const useSuspenseQuestion = (id: string) => {
   const trpc = useTRPC();
 
-  return useSuspenseQuery(trpc.questions.getOne.queryOptions({id}));
+  return useSuspenseQuery(trpc.questions.getOne.queryOptions({ id }));
 };
 
 export const useCreateQuestionManual = () => {
@@ -35,7 +29,7 @@ export const useCreateQuestionManual = () => {
         toast.success("Question created");
 
         queryClient.invalidateQueries(
-          trpc.questions.getByTopic.queryOptions({topicId: data.topicId}),
+          trpc.questions.getByTopic.queryOptions({ topicId: data.topicId }),
         );
       },
       onError: (error) => {
@@ -56,7 +50,7 @@ export const useGenerateAdaptiveQuestion = () => {
         toast.success("Adaptive question generated");
 
         queryClient.invalidateQueries(
-          trpc.questions.getByTopic.queryOptions({topicId: data.topicId}),
+          trpc.questions.getByTopic.queryOptions({ topicId: data.topicId }),
         );
       },
       onError: (error) => {
@@ -77,12 +71,10 @@ export const useRemoveQuestion = () => {
         toast.success(`Question "${data.id}" removed`);
 
         queryClient.invalidateQueries(
-          trpc.questions.getByTopic.queryOptions({topicId: data.topicId}),
+          trpc.questions.getByTopic.queryOptions({ topicId: data.topicId }),
         );
 
-        queryClient.invalidateQueries(
-          trpc.questions.getOne.queryOptions({id: data.id}),
-        );
+        queryClient.invalidateQueries(trpc.questions.getOne.queryOptions({ id: data.id }));
       },
     }),
   );

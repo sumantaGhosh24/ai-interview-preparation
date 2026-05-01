@@ -1,15 +1,9 @@
 "use client";
 
-import {TrashIcon} from "lucide-react";
+import { TrashIcon } from "lucide-react";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {Button} from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 import {
   useRemoveLearningPath,
@@ -21,8 +15,8 @@ interface LearningPathProps {
   topicId: string;
 }
 
-const LearningPath = ({topicId}: LearningPathProps) => {
-  const {data: learningPath} = useSuspenseLearningPathByTopicId(topicId);
+const LearningPath = ({ topicId }: LearningPathProps) => {
+  const { data: learningPath } = useSuspenseLearningPathByTopicId(topicId);
 
   const removeLearningPath = useRemoveLearningPath();
 
@@ -47,11 +41,7 @@ const LearningPath = ({topicId}: LearningPathProps) => {
             Duration: {learningPath?.duration}
           </CardDescription>
         </div>
-        <Button
-          size="icon"
-          variant="destructive"
-          onClick={handleRemoveLearningPath}
-        >
+        <Button size="icon" variant="destructive" onClick={handleRemoveLearningPath}>
           <TrashIcon className="size-4" />
         </Button>
       </CardHeader>
@@ -60,9 +50,7 @@ const LearningPath = ({topicId}: LearningPathProps) => {
           learningPath?.phases?.map((phase) => (
             <div key={phase.id} className="rounded-lg border p-4 bg-muted/50">
               <h3 className="text-lg font-semibold mb-1">{phase.title}</h3>
-              <div className="mb-2 text-muted-foreground text-sm">
-                Duration: {phase.duration}
-              </div>
+              <div className="mb-2 text-muted-foreground text-sm">Duration: {phase.duration}</div>
               {phase.tasks && phase.tasks.length > 0 ? (
                 <ul className="list-disc pl-5 space-y-1">
                   {phase.tasks.map((task) => (
@@ -77,9 +65,7 @@ const LearningPath = ({topicId}: LearningPathProps) => {
                   ))}
                 </ul>
               ) : (
-                <p className="text-sm text-muted-foreground">
-                  No tasks for this phase.
-                </p>
+                <p className="text-sm text-muted-foreground">No tasks for this phase.</p>
               )}
             </div>
           ))

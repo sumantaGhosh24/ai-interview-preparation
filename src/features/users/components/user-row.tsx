@@ -1,11 +1,11 @@
 "use client";
 
-import {useRouter} from "next/navigation";
-import {toast} from "sonner";
-import {UserWithRole} from "better-auth/plugins/admin";
-import {MoreHorizontalIcon} from "lucide-react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { UserWithRole } from "better-auth/plugins/admin";
+import { MoreHorizontalIcon } from "lucide-react";
 
-import {authClient} from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,8 +17,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import {Badge} from "@/components/ui/badge";
-import {Button} from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,16 +26,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {TableCell, TableRow} from "@/components/ui/table";
+import { TableCell, TableRow } from "@/components/ui/table";
 
-const UserRow = ({user, selfId}: {user: UserWithRole; selfId: string}) => {
+const UserRow = ({ user, selfId }: { user: UserWithRole; selfId: string }) => {
   const router = useRouter();
 
   const isSelf = user.id === selfId;
 
   function handleBanUser(userId: string) {
     authClient.admin.banUser(
-      {userId},
+      { userId },
       {
         onError: (error) => {
           toast.error(error.error.message || "Failed to ban user");
@@ -50,7 +50,7 @@ const UserRow = ({user, selfId}: {user: UserWithRole; selfId: string}) => {
 
   function handleUnbanUser(userId: string) {
     authClient.admin.unbanUser(
-      {userId},
+      { userId },
       {
         onError: (error) => {
           toast.error(error.error.message || "Failed to unban user");
@@ -65,7 +65,7 @@ const UserRow = ({user, selfId}: {user: UserWithRole; selfId: string}) => {
 
   function handleRevokeSessions(userId: string) {
     authClient.admin.revokeUserSessions(
-      {userId},
+      { userId },
       {
         onError: (error) => {
           toast.error(error.error.message || "Failed to revoke user sessions");
@@ -79,7 +79,7 @@ const UserRow = ({user, selfId}: {user: UserWithRole; selfId: string}) => {
 
   function handleRemoveUser(userId: string) {
     authClient.admin.removeUser(
-      {userId},
+      { userId },
       {
         onError: (error) => {
           toast.error(error.error.message || "Failed to delete user");
@@ -114,10 +114,7 @@ const UserRow = ({user, selfId}: {user: UserWithRole; selfId: string}) => {
         </div>
       </TableCell>
       <TableCell>
-        <Badge
-          variant={user.role === "admin" ? "default" : "secondary"}
-          className="uppercase"
-        >
+        <Badge variant={user.role === "admin" ? "default" : "secondary"} className="uppercase">
           {user.role}
         </Badge>
       </TableCell>
@@ -155,10 +152,7 @@ const UserRow = ({user, selfId}: {user: UserWithRole; selfId: string}) => {
                 )}
                 <DropdownMenuSeparator />
                 <AlertDialogTrigger asChild>
-                  <DropdownMenuItem
-                    variant="destructive"
-                    className="cursor-pointer"
-                  >
+                  <DropdownMenuItem variant="destructive" className="cursor-pointer">
                     Delete User
                   </DropdownMenuItem>
                 </AlertDialogTrigger>
@@ -168,8 +162,7 @@ const UserRow = ({user, selfId}: {user: UserWithRole; selfId: string}) => {
               <AlertDialogHeader>
                 <AlertDialogTitle>Delete User</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Are you sure you want to delete this user? This action cannot
-                  be undone.
+                  Are you sure you want to delete this user? This action cannot be undone.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>

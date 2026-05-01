@@ -1,12 +1,8 @@
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from "@tanstack/react-query";
-import {toast} from "sonner";
+import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 
-import {useTRPC} from "@/trpc/client";
-import {useGlobalParams} from "@/features/global/hooks/use-global-params";
+import { useTRPC } from "@/trpc/client";
+import { useGlobalParams } from "@/features/global/hooks/use-global-params";
 
 export const useSuspenseTopics = () => {
   const trpc = useTRPC();
@@ -19,7 +15,7 @@ export const useSuspenseTopics = () => {
 export const useSuspenseTopic = (id: string) => {
   const trpc = useTRPC();
 
-  return useSuspenseQuery(trpc.topics.getOne.queryOptions({id}));
+  return useSuspenseQuery(trpc.topics.getOne.queryOptions({ id }));
 };
 
 export const useCreateTopic = () => {
@@ -52,9 +48,7 @@ export const useUpdateTopic = () => {
         toast.success(`Topic "${data.name}" updated`);
 
         queryClient.invalidateQueries(trpc.topics.getMany.queryOptions({}));
-        queryClient.invalidateQueries(
-          trpc.topics.getOne.queryOptions({id: data.id}),
-        );
+        queryClient.invalidateQueries(trpc.topics.getOne.queryOptions({ id: data.id }));
       },
       onError: (error) => {
         toast.error(`Failed to update topic: ${error.message}`);
@@ -74,9 +68,7 @@ export const useRemoveTopic = () => {
         toast.success(`Topic "${data.name}" removed`);
 
         queryClient.invalidateQueries(trpc.topics.getMany.queryOptions({}));
-        queryClient.invalidateQueries(
-          trpc.topics.getOne.queryFilter({id: data.id}),
-        );
+        queryClient.invalidateQueries(trpc.topics.getOne.queryFilter({ id: data.id }));
       },
     }),
   );

@@ -1,18 +1,15 @@
-import {TRPCError} from "@trpc/server";
+import { TRPCError } from "@trpc/server";
 import z from "zod";
 
-import {inngest} from "@/inngest/client";
+import { inngest } from "@/inngest/client";
 import prisma from "@/lib/db";
-import {createTRPCRouter, protectedProcedure} from "@/trpc/init";
-import {PAGINATION} from "@/constants/pagination";
-import {Difficulty} from "@/generated/prisma/enums";
-import {invalidateQuestionCaches} from "@/lib/cache-invalidation";
-import {getOrSetCache} from "@/lib/cache";
-import {cacheKeys} from "@/lib/cache-keys";
-import {
-  getPreviousWeaknesses,
-  getRecommendedDifficulty,
-} from "@/features/global/helpers/utils";
+import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import { PAGINATION } from "@/constants/pagination";
+import { Difficulty } from "@/generated/prisma/enums";
+import { invalidateQuestionCaches } from "@/lib/cache-invalidation";
+import { getOrSetCache } from "@/lib/cache";
+import { cacheKeys } from "@/lib/cache-keys";
+import { getPreviousWeaknesses, getRecommendedDifficulty } from "@/features/global/helpers/utils";
 
 export const questionsRouter = createTRPCRouter({
   createManual: protectedProcedure
@@ -23,9 +20,9 @@ export const questionsRouter = createTRPCRouter({
         difficulty: z.enum(Difficulty),
       }),
     )
-    .mutation(async ({input, ctx}) => {
+    .mutation(async ({ input, ctx }) => {
       const topic = await prisma.topic.findUnique({
-        where: {id: input.topicId},
+        where: { id: input.topicId },
       });
 
       if (!topic) {
@@ -49,12 +46,10 @@ export const questionsRouter = createTRPCRouter({
       return question;
     }),
   generateAdaptive: protectedProcedure
-    .input(
-      z.object({topicId: z.string(), numberOfQuestions: z.number().default(1)}),
-    )
-    .mutation(async ({input, ctx}) => {
+    .input(z.object({ topicId: z.string(), numberOfQuestions: z.number().default(1) }))
+    .mutation(async ({ input, ctx }) => {
       const topic = await prisma.topic.findUnique({
-        where: {id: input.topicId},
+        where: { id: input.topicId },
       });
 
       if (!topic) {
@@ -66,15 +61,9 @@ export const questionsRouter = createTRPCRouter({
 
       const jobId = crypto.randomUUID();
 
-      const difficulty = await getRecommendedDifficulty(
-        ctx.auth.user.id,
-        input.topicId,
-      );
+      const difficulty = await getRecommendedDifficulty(ctx.auth.user.id, input.topicId);
 
-      const previousWeaknesses = await getPreviousWeaknesses(
-        ctx.auth.user.id,
-        input.topicId,
-      );
+      const previousWeaknesses = await getPreviousWeaknesses(ctx.auth.user.id, input.topicId);
 
       await prisma.questionGenerationJob.create({
         data: {
@@ -100,11 +89,11 @@ export const questionsRouter = createTRPCRouter({
         },
       });
 
-      return {topicId: topic.id, jobId};
+      return { topicId: topic.id, jobId };
     }),
   getGenerationStatus: protectedProcedure
-    .input(z.object({jobId: z.string()}))
-    .query(async ({input, ctx}) => {
+    .input(z.object({ jobId: z.string() }))
+    .query(async ({ input, ctx }) => {
       const job = await prisma.questionGenerationJob.findFirst({
         where: {
           id: input.jobId,
@@ -122,8 +111,8 @@ export const questionsRouter = createTRPCRouter({
       return job;
     }),
   remove: protectedProcedure
-    .input(z.object({id: z.string()}))
-    .mutation(async ({input, ctx}) => {
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input, ctx }) => {
       const existingQuestion = await prisma.question.findUnique({
         where: {
           id: input.id,
@@ -168,8 +157,8 @@ export const questionsRouter = createTRPCRouter({
         search: z.string().default(""),
       }),
     )
-    .query(async ({input}) => {
-      const {page, pageSize, search} = input;
+    .query(async ({ input }) => {
+      const { page, pageSize, search } = input;
 
       return getOrSetCache(
         cacheKeys.questionsList(input.topicId, page, pageSize, search),
@@ -217,28 +206,26 @@ export const questionsRouter = createTRPCRouter({
         300,
       );
     }),
-  getOne: protectedProcedure
-    .input(z.object({id: z.string()}))
-    .query(async ({input}) => {
-      const questionId = input.id;
+  getOne: protectedProcedure.input(z.object({ id: z.string() })).query(async ({ input }) => {
+    const questionId = input.id;
 
-      return getOrSetCache(
-        cacheKeys.questionDetail(questionId),
-        async () => {
-          const question = await prisma.question.findUnique({
-            where: {id: questionId},
+    return getOrSetCache(
+      cacheKeys.questionDetail(questionId),
+      async () => {
+        const question = await prisma.question.findUnique({
+          where: { id: questionId },
+        });
+
+        if (!question) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Question not found",
           });
+        }
 
-          if (!question) {
-            throw new TRPCError({
-              code: "NOT_FOUND",
-              message: "Question not found",
-            });
-          }
-
-          return question;
-        },
-        300,
-      );
-    }),
+        return question;
+      },
+      300,
+    );
+  }),
 });

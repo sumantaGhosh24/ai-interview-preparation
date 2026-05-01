@@ -1,9 +1,9 @@
 "use client";
 
-import {Moon, Sun} from "lucide-react";
-import {useTheme} from "next-themes";
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const ModeToggle = () => {
-  const {setTheme} = useTheme();
+  const { setTheme } = useTheme();
 
   return (
     <DropdownMenu>
@@ -24,12 +24,8 @@ const ModeToggle = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

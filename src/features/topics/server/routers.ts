@@ -1,17 +1,17 @@
-import {TRPCError} from "@trpc/server";
+import { TRPCError } from "@trpc/server";
 import z from "zod";
 
 import prisma from "@/lib/db";
-import {createTRPCRouter, protectedProcedure} from "@/trpc/init";
-import {PAGINATION} from "@/constants/pagination";
-import {invalidateTopicCaches} from "@/lib/cache-invalidation";
-import {getOrSetCache} from "@/lib/cache";
-import {cacheKeys} from "@/lib/cache-keys";
+import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import { PAGINATION } from "@/constants/pagination";
+import { invalidateTopicCaches } from "@/lib/cache-invalidation";
+import { getOrSetCache } from "@/lib/cache";
+import { cacheKeys } from "@/lib/cache-keys";
 
 export const topicsRouter = createTRPCRouter({
   create: protectedProcedure
-    .input(z.object({name: z.string(), description: z.string()}))
-    .mutation(async ({input, ctx}) => {
+    .input(z.object({ name: z.string(), description: z.string() }))
+    .mutation(async ({ input, ctx }) => {
       const topic = await prisma.topic.create({
         data: {
           userId: ctx.auth.user.id,
@@ -25,10 +25,8 @@ export const topicsRouter = createTRPCRouter({
       return topic;
     }),
   update: protectedProcedure
-    .input(
-      z.object({id: z.string(), name: z.string(), description: z.string()}),
-    )
-    .mutation(async ({ctx, input}) => {
+    .input(z.object({ id: z.string(), name: z.string(), description: z.string() }))
+    .mutation(async ({ ctx, input }) => {
       const updatedTopic = await prisma.topic.update({
         where: {
           id: input.id,
@@ -45,8 +43,8 @@ export const topicsRouter = createTRPCRouter({
       return updatedTopic;
     }),
   remove: protectedProcedure
-    .input(z.object({id: z.string()}))
-    .mutation(async ({ctx, input}) => {
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
       const deletedTopic = await prisma.topic.delete({
         where: {
           id: input.id,
@@ -70,8 +68,8 @@ export const topicsRouter = createTRPCRouter({
         search: z.string().default(""),
       }),
     )
-    .query(async ({ctx, input}) => {
-      const {page, pageSize, search} = input;
+    .query(async ({ ctx, input }) => {
+      const { page, pageSize, search } = input;
       const userId = ctx.auth.user.id;
 
       return getOrSetCache(
@@ -120,58 +118,56 @@ export const topicsRouter = createTRPCRouter({
         300,
       );
     }),
-  getOne: protectedProcedure
-    .input(z.object({id: z.string()}))
-    .query(async ({ctx, input}) => {
-      const userId = ctx.auth.user.id;
-      const topicId = input.id;
+  getOne: protectedProcedure.input(z.object({ id: z.string() })).query(async ({ ctx, input }) => {
+    const userId = ctx.auth.user.id;
+    const topicId = input.id;
 
-      return getOrSetCache(
-        cacheKeys.topicDetail(userId, topicId),
-        async () => {
-          const topic = await prisma.topic.findUniqueOrThrow({
-            where: {id: topicId, userId: userId},
-            include: {
-              questions: true,
-              performance: {
-                where: {
-                  userId: userId,
-                },
+    return getOrSetCache(
+      cacheKeys.topicDetail(userId, topicId),
+      async () => {
+        const topic = await prisma.topic.findUniqueOrThrow({
+          where: { id: topicId, userId: userId },
+          include: {
+            questions: true,
+            performance: {
+              where: {
+                userId: userId,
               },
             },
+          },
+        });
+
+        if (!topic) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Topic not found",
           });
+        }
 
-          if (!topic) {
-            throw new TRPCError({
-              code: "NOT_FOUND",
-              message: "Topic not found",
-            });
-          }
+        const recentAnswers = await prisma.answer.findMany({
+          where: {
+            userId: userId,
+            question: {
+              topicId: topicId,
+            },
+          },
+          include: {
+            evaluation: true,
+            question: true,
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+          take: 5,
+        });
 
-          const recentAnswers = await prisma.answer.findMany({
-            where: {
-              userId: userId,
-              question: {
-                topicId: topicId,
-              },
-            },
-            include: {
-              evaluation: true,
-              question: true,
-            },
-            orderBy: {
-              createdAt: "desc",
-            },
-            take: 5,
-          });
-
-          return {
-            ...topic,
-            totalQuestions: topic.questions.length,
-            recentAnswers,
-          };
-        },
-        300,
-      );
-    }),
+        return {
+          ...topic,
+          totalQuestions: topic.questions.length,
+          recentAnswers,
+        };
+      },
+      300,
+    );
+  }),
 });

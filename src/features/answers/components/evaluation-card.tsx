@@ -1,4 +1,4 @@
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Answer,
   AnswerEvaluation,
@@ -17,7 +17,7 @@ interface EvaluationCardProps {
   };
 }
 
-const EvaluationCard = ({answer}: EvaluationCardProps) => {
+const EvaluationCard = ({ answer }: EvaluationCardProps) => {
   const evaluation = answer.evaluation;
 
   if (!evaluation) return null;
@@ -38,9 +38,7 @@ const EvaluationCard = ({answer}: EvaluationCardProps) => {
           </div>
           <div className="rounded-xl border p-4">
             <p className="text-sm text-muted-foreground">Model Answer</p>
-            <p className="mt-2 text-sm whitespace-pre-wrap">
-              {evaluation.modelAnswer}
-            </p>
+            <p className="mt-2 text-sm whitespace-pre-wrap">{evaluation.modelAnswer}</p>
           </div>
         </div>
         <div>

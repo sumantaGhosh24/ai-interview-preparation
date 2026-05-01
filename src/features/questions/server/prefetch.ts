@@ -1,6 +1,6 @@
-import type {inferInput} from "@trpc/tanstack-react-query";
+import type { inferInput } from "@trpc/tanstack-react-query";
 
-import {prefetch, trpc} from "@/trpc/server";
+import { prefetch, trpc } from "@/trpc/server";
 
 type Input = inferInput<typeof trpc.questions.getByTopic>;
 
@@ -9,5 +9,5 @@ export const prefetchQuestionsByTopic = (params: Input) => {
 };
 
 export const prefetchQuestion = (id: string) => {
-  return prefetch(trpc.questions.getOne.queryOptions({id}));
+  return prefetch(trpc.questions.getOne.queryOptions({ id }));
 };

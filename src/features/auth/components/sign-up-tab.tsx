@@ -1,15 +1,15 @@
 "use client";
 
-import {Controller, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
-import {toast} from "sonner";
+import { toast } from "sonner";
 
-import {authClient} from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import LoadingSwap from "@/components/loading-swap";
-import {Input} from "@/components/ui/input";
-import {Button} from "@/components/ui/button";
-import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 
 const signUpSchema = z.object({
   name: z.string().min(1),
@@ -41,7 +41,7 @@ const SignUpTab = ({
     },
   });
 
-  const {isSubmitting} = form.formState;
+  const { isSubmitting } = form.formState;
 
   async function handleSignUp(data: SignUpForm) {
     const res = await authClient.signUp.email(
@@ -68,7 +68,7 @@ const SignUpTab = ({
         <Controller
           control={form.control}
           name="name"
-          render={({field, fieldState}) => (
+          render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor={field.name}>Name</FieldLabel>
               <Input
@@ -85,7 +85,7 @@ const SignUpTab = ({
         <Controller
           control={form.control}
           name="email"
-          render={({field, fieldState}) => (
+          render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor={field.name}>Email</FieldLabel>
               <Input
@@ -102,7 +102,7 @@ const SignUpTab = ({
         <Controller
           control={form.control}
           name="password"
-          render={({field, fieldState}) => (
+          render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor={field.name}>Password</FieldLabel>
               <Input
@@ -119,7 +119,7 @@ const SignUpTab = ({
         <Controller
           control={form.control}
           name="favoriteNumber"
-          render={({field, fieldState}) => (
+          render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor={field.name}>Favorite Number</FieldLabel>
               <Input

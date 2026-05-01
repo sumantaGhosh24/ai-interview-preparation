@@ -1,18 +1,12 @@
 "use client";
 
-import {useEffect, useState} from "react";
-import {useRouter} from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-import {authClient} from "@/lib/auth-client";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import {Separator} from "@/components/ui/separator";
+import { authClient } from "@/lib/auth-client";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
 
 import EmailVerification from "./email-verification";
 import SignInTab from "./sign-in-tab";

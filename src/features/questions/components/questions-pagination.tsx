@@ -1,15 +1,15 @@
 "use client";
 
-import {useSuspenseQuestionsByTopic} from "../hooks/use-questions";
+import { useSuspenseQuestionsByTopic } from "../hooks/use-questions";
 
-import {useGlobalParams} from "@/features/global/hooks/use-global-params";
-import {EntityPagination} from "@/components/entity-components";
+import { useGlobalParams } from "@/features/global/hooks/use-global-params";
+import { EntityPagination } from "@/components/entity-components";
 
 interface QuestionsPaginationProps {
   topicId: string;
 }
 
-const QuestionsPagination = ({topicId}: QuestionsPaginationProps) => {
+const QuestionsPagination = ({ topicId }: QuestionsPaginationProps) => {
   const questions = useSuspenseQuestionsByTopic(topicId);
 
   const [params, setParams] = useGlobalParams();
@@ -19,7 +19,7 @@ const QuestionsPagination = ({topicId}: QuestionsPaginationProps) => {
       disabled={questions.isFetching}
       totalPages={questions.data.totalPages}
       page={questions.data.page}
-      onPageChange={(page) => setParams({...params, page})}
+      onPageChange={(page) => setParams({ ...params, page })}
     />
   );
 };

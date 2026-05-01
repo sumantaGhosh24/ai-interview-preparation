@@ -1,16 +1,16 @@
-import {betterAuth} from "better-auth";
-import {prismaAdapter} from "better-auth/adapters/prisma";
-import {nextCookies} from "better-auth/next-js";
-import {twoFactor, admin as adminPlugin} from "better-auth/plugins";
-import {passkey} from "@better-auth/passkey";
-import {createAuthMiddleware} from "better-auth/api";
+import { betterAuth } from "better-auth";
+import { prismaAdapter } from "better-auth/adapters/prisma";
+import { nextCookies } from "better-auth/next-js";
+import { twoFactor, admin as adminPlugin } from "better-auth/plugins";
+import { passkey } from "@better-auth/passkey";
+import { createAuthMiddleware } from "better-auth/api";
 
 import prisma from "./db";
-import {admin, user, ac} from "./permissions";
-import {sendPasswordResetEmail} from "./email/password-reset-email";
-import {sendEmailVerificationEmail} from "./email/email-verification";
-import {sendDeleteAccountVerificationEmail} from "./email/delete-account-verification";
-import {sendWelcomeEmail} from "./email/welcome-email";
+import { admin, user, ac } from "./permissions";
+import { sendPasswordResetEmail } from "./email/password-reset-email";
+import { sendEmailVerificationEmail } from "./email/email-verification";
+import { sendDeleteAccountVerificationEmail } from "./email/delete-account-verification";
+import { sendWelcomeEmail } from "./email/welcome-email";
 
 export const auth = betterAuth({
   appName: "AI Interview Preparation",
@@ -20,31 +20,31 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
-    sendResetPassword: async ({user, url}) => {
-      await sendPasswordResetEmail({user, url});
+    sendResetPassword: async ({ user, url }) => {
+      await sendPasswordResetEmail({ user, url });
     },
   },
   emailVerification: {
     autoSignInAfterVerification: true,
     sendOnSignUp: true,
-    sendVerificationEmail: async ({user, url}) => {
-      await sendEmailVerificationEmail({user, url});
+    sendVerificationEmail: async ({ user, url }) => {
+      await sendEmailVerificationEmail({ user, url });
     },
   },
   user: {
     changeEmail: {
       enabled: true,
-      sendChangeEmailConfirmation: async ({user, url, newEmail}) => {
+      sendChangeEmailConfirmation: async ({ user, url, newEmail }) => {
         await sendEmailVerificationEmail({
-          user: {...user, email: newEmail},
+          user: { ...user, email: newEmail },
           url,
         });
       },
     },
     deleteUser: {
       enabled: true,
-      sendDeleteAccountVerification: async ({user, url}) => {
-        await sendDeleteAccountVerificationEmail({user, url});
+      sendDeleteAccountVerification: async ({ user, url }) => {
+        await sendDeleteAccountVerificationEmail({ user, url });
       },
     },
     additionalFields: {

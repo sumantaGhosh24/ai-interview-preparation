@@ -1,4 +1,4 @@
-import {sendEmail} from "./send-email";
+import { sendEmail } from "./send-email";
 
 interface EmailVerificationData {
   user: {
@@ -8,10 +8,7 @@ interface EmailVerificationData {
   url: string;
 }
 
-export async function sendEmailVerificationEmail({
-  user,
-  url,
-}: EmailVerificationData) {
+export async function sendEmailVerificationEmail({ user, url }: EmailVerificationData) {
   await sendEmail({
     to: user.email,
     subject: "Verify your email address",

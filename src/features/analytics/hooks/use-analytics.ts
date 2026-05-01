@@ -1,6 +1,6 @@
-import {useSuspenseQuery} from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
-import {useTRPC} from "@/trpc/client";
+import { useTRPC } from "@/trpc/client";
 
 export const useSuspenseWeakTopics = () => {
   const trpc = useTRPC();

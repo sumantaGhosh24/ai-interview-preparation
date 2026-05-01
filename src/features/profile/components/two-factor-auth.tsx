@@ -1,18 +1,18 @@
 "use client";
 
-import {useState} from "react";
-import {useRouter} from "next/navigation";
-import {Controller, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import QRCode from "react-qr-code";
-import {toast} from "sonner";
+import { toast } from "sonner";
 
-import {authClient} from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import LoadingSwap from "@/components/loading-swap";
-import {Button} from "@/components/ui/button";
-import {Input} from "@/components/ui/input";
-import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 
 const twoFactorAuthSchema = z.object({
   password: z.string().min(1),
@@ -25,10 +25,8 @@ type TwoFactorData = {
   backupCodes: string[];
 };
 
-const TwoFactorAuth = ({isEnabled}: {isEnabled: boolean}) => {
-  const [twoFactorData, setTwoFactorData] = useState<TwoFactorData | null>(
-    null,
-  );
+const TwoFactorAuth = ({ isEnabled }: { isEnabled: boolean }) => {
+  const [twoFactorData, setTwoFactorData] = useState<TwoFactorData | null>(null);
 
   const router = useRouter();
 
@@ -39,7 +37,7 @@ const TwoFactorAuth = ({isEnabled}: {isEnabled: boolean}) => {
     },
   });
 
-  const {isSubmitting} = form.formState;
+  const { isSubmitting } = form.formState;
 
   async function handleDisableTwoFactorAuth(data: TwoFactorAuthForm) {
     console.log(data);
@@ -97,7 +95,7 @@ const TwoFactorAuth = ({isEnabled}: {isEnabled: boolean}) => {
         <Controller
           control={form.control}
           name="password"
-          render={({field, fieldState}) => (
+          render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor={field.name}>Password</FieldLabel>
               <Input
@@ -134,11 +132,7 @@ const qrSchema = z.object({
 
 type QrForm = z.infer<typeof qrSchema>;
 
-const QRCodeVerify = ({
-  totpURI,
-  backupCodes,
-  onDone,
-}: TwoFactorData & {onDone: () => void}) => {
+const QRCodeVerify = ({ totpURI, backupCodes, onDone }: TwoFactorData & { onDone: () => void }) => {
   const [successfullyEnabled, setSuccessfullyEnabled] = useState(false);
 
   const router = useRouter();
@@ -150,7 +144,7 @@ const QRCodeVerify = ({
     },
   });
 
-  const {isSubmitting} = form.formState;
+  const { isSubmitting } = form.formState;
 
   async function handleQrCode(data: QrForm) {
     await authClient.twoFactor.verifyTotp(
@@ -174,8 +168,7 @@ const QRCodeVerify = ({
     return (
       <>
         <p className="text-sm text-muted-foreground mb-2">
-          Save these backup codes in a safe place. You can use them to access
-          your account.
+          Save these backup codes in a safe place. You can use them to access your account.
         </p>
         <div className="grid grid-cols-2 gap-2 mb-4">
           {backupCodes.map((code, index) => (
@@ -201,7 +194,7 @@ const QRCodeVerify = ({
           <Controller
             control={form.control}
             name="token"
-            render={({field, fieldState}) => (
+            render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor={field.name}>Code</FieldLabel>
                 <Input
@@ -211,9 +204,7 @@ const QRCodeVerify = ({
                   aria-invalid={fieldState.invalid}
                   {...field}
                 />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
           />

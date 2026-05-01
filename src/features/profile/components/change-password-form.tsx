@@ -1,16 +1,16 @@
 "use client";
 
-import {Controller, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
-import {toast} from "sonner";
+import { toast } from "sonner";
 
-import {authClient} from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import LoadingSwap from "@/components/loading-swap";
-import {Button} from "@/components/ui/button";
-import {Checkbox} from "@/components/ui/checkbox";
-import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
-import {Input} from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 
 const changePasswordSchema = z.object({
   currentPassword: z.string().min(1),
@@ -30,7 +30,7 @@ const ChangePasswordForm = () => {
     },
   });
 
-  const {isSubmitting} = form.formState;
+  const { isSubmitting } = form.formState;
 
   async function handlePasswordChange(data: ChangePasswordForm) {
     await authClient.changePassword(data, {
@@ -45,15 +45,12 @@ const ChangePasswordForm = () => {
   }
 
   return (
-    <form
-      className="space-y-4"
-      onSubmit={form.handleSubmit(handlePasswordChange)}
-    >
+    <form className="space-y-4" onSubmit={form.handleSubmit(handlePasswordChange)}>
       <FieldGroup>
         <Controller
           control={form.control}
           name="currentPassword"
-          render={({field, fieldState}) => (
+          render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor={field.name}>Current Password</FieldLabel>
               <Input
@@ -70,7 +67,7 @@ const ChangePasswordForm = () => {
         <Controller
           control={form.control}
           name="newPassword"
-          render={({field, fieldState}) => (
+          render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor={field.name}>New Password</FieldLabel>
               <Input
@@ -87,7 +84,7 @@ const ChangePasswordForm = () => {
         <Controller
           control={form.control}
           name="revokeOtherSessions"
-          render={({field, fieldState}) => (
+          render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <div className="flex items-center gap-2">
                 <Checkbox
@@ -96,9 +93,7 @@ const ChangePasswordForm = () => {
                   id={field.name}
                   aria-invalid={fieldState.invalid}
                 />
-                <FieldLabel htmlFor={field.name}>
-                  Log out other sessions
-                </FieldLabel>
+                <FieldLabel htmlFor={field.name}>Log out other sessions</FieldLabel>
               </div>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>

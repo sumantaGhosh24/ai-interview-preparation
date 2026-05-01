@@ -1,4 +1,4 @@
-import {EntityHeader} from "@/components/entity-components";
+import { EntityHeader } from "@/components/entity-components";
 
 import CreateTopicDialog from "./create-topic-dialog";
 

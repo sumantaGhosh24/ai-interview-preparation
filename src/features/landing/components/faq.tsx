@@ -1,4 +1,4 @@
-import {faqs} from "@/constants/landing";
+import { faqs } from "@/constants/landing";
 import {
   Accordion,
   AccordionContent,
@@ -14,9 +14,7 @@ const FAQ = () => {
           <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
             FAQ
           </p>
-          <h2 className="mt-3 text-3xl font-bold sm:text-5xl">
-            Frequently asked questions
-          </h2>
+          <h2 className="mt-3 text-3xl font-bold sm:text-5xl">Frequently asked questions</h2>
         </div>
         <Accordion type="single" collapsible defaultValue="1" className="mt-14">
           {faqs.map((item, i) => (

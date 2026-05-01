@@ -1,11 +1,11 @@
-import {z} from "zod";
-import {TRPCError} from "@trpc/server";
+import { z } from "zod";
+import { TRPCError } from "@trpc/server";
 
-import {inngest} from "@/inngest/client";
+import { inngest } from "@/inngest/client";
 import prisma from "@/lib/db";
-import {createTRPCRouter, protectedProcedure} from "@/trpc/init";
-import {PAGINATION} from "@/constants/pagination";
-import {invalidateAnswerCaches} from "@/lib/cache-invalidation";
+import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import { PAGINATION } from "@/constants/pagination";
+import { invalidateAnswerCaches } from "@/lib/cache-invalidation";
 
 export const answersRouter = createTRPCRouter({
   submit: protectedProcedure
@@ -15,7 +15,7 @@ export const answersRouter = createTRPCRouter({
         content: z.string().min(10),
       }),
     )
-    .mutation(async ({input, ctx}) => {
+    .mutation(async ({ input, ctx }) => {
       const userId = ctx.auth.user.id;
       const answer = await prisma.answer.create({
         data: {
@@ -57,8 +57,8 @@ export const answersRouter = createTRPCRouter({
       return answer;
     }),
   getSubmissionStatus: protectedProcedure
-    .input(z.object({answerId: z.string()}))
-    .query(async ({input, ctx}) => {
+    .input(z.object({ answerId: z.string() }))
+    .query(async ({ input, ctx }) => {
       const answer = await prisma.answer.findFirst({
         where: {
           id: input.answerId,
@@ -96,8 +96,8 @@ export const answersRouter = createTRPCRouter({
         search: z.string().default(""),
       }),
     )
-    .query(async ({input, ctx}) => {
-      const {page, pageSize, search} = input;
+    .query(async ({ input, ctx }) => {
+      const { page, pageSize, search } = input;
 
       const [items, totalCount] = await Promise.all([
         prisma.answer.findMany({

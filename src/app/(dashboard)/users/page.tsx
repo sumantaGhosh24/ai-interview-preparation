@@ -1,24 +1,12 @@
-import {headers} from "next/headers";
-import {redirect} from "next/navigation";
-import {UsersIcon} from "lucide-react";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { UsersIcon } from "lucide-react";
 
-import {auth} from "@/lib/auth";
-import {requireAdmin} from "@/lib/auth-utils";
+import { auth } from "@/lib/auth";
+import { requireAdmin } from "@/lib/auth-utils";
 import UserRow from "@/features/users/components/user-row";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 export const metadata = {
   title: "Manage Users",
@@ -27,20 +15,20 @@ export const metadata = {
 const ManageUsers = async () => {
   await requireAdmin();
 
-  const session = await auth.api.getSession({headers: await headers()});
+  const session = await auth.api.getSession({ headers: await headers() });
 
   if (session == null) return redirect("/login");
 
   const hasAccess = await auth.api.userHasPermission({
     headers: await headers(),
-    body: {permissions: {user: ["list"]}},
+    body: { permissions: { user: ["list"] } },
   });
 
   if (!hasAccess.success) return redirect("/dashboard");
 
   const users = await auth.api.listUsers({
     headers: await headers(),
-    query: {limit: 100, sortBy: "createdAt", sortDirection: "desc"},
+    query: { limit: 100, sortBy: "createdAt", sortDirection: "desc" },
   });
 
   return (
@@ -51,9 +39,7 @@ const ManageUsers = async () => {
             <UsersIcon className="h-5 w-5" />
             Users ({users.total})
           </CardTitle>
-          <CardDescription>
-            Manage user accounts, roles, and permissions
-          </CardDescription>
+          <CardDescription>Manage user accounts, roles, and permissions</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="rounded-md border">

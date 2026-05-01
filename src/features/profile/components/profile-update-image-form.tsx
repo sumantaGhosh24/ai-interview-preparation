@@ -1,20 +1,20 @@
 "use client";
 
-import {type ChangeEvent, useState} from "react";
-import {useRouter} from "next/navigation";
+import { type ChangeEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
-import {Controller, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
-import {toast} from "sonner";
+import { toast } from "sonner";
 
-import {isBase64Image} from "@/lib/utils";
-import {useUploadThing} from "@/lib/uploadthing";
-import {authClient} from "@/lib/auth-client";
+import { isBase64Image } from "@/lib/utils";
+import { useUploadThing } from "@/lib/uploadthing";
+import { authClient } from "@/lib/auth-client";
 import LoadingSwap from "@/components/loading-swap";
-import {Input} from "@/components/ui/input";
-import {Button} from "@/components/ui/button";
-import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 
 const profileUpdateImageSchema = z.object({
   imageUrl: z.string().min(1),
@@ -22,10 +22,10 @@ const profileUpdateImageSchema = z.object({
 
 type ProfileUpdateImageFormType = z.infer<typeof profileUpdateImageSchema>;
 
-const ProfileUpdateImageForm = ({image}: {image?: string | null}) => {
+const ProfileUpdateImageForm = ({ image }: { image?: string | null }) => {
   const [files, setFiles] = useState<File[]>([]);
 
-  const {startUpload, isUploading} = useUploadThing("imageUploader");
+  const { startUpload, isUploading } = useUploadThing("imageUploader");
 
   const router = useRouter();
 
@@ -33,12 +33,11 @@ const ProfileUpdateImageForm = ({image}: {image?: string | null}) => {
     resolver: zodResolver(profileUpdateImageSchema),
     defaultValues: {
       imageUrl:
-        image ??
-        "https://w3bkow2cit.ufs.sh/f/jLzp5qrLYh1KWP2CB5X5THxLaA1rNpE8DRtju7ZhPmKs2MoF",
+        image ?? "https://w3bkow2cit.ufs.sh/f/jLzp5qrLYh1KWP2CB5X5THxLaA1rNpE8DRtju7ZhPmKs2MoF",
     },
   });
 
-  const {isSubmitting} = form.formState;
+  const { isSubmitting } = form.formState;
 
   async function handleProfileUpdate(data: ProfileUpdateImageFormType) {
     if (!files) return toast.error("Please add an image.");
@@ -63,19 +62,14 @@ const ProfileUpdateImageForm = ({image}: {image?: string | null}) => {
     const updateUserResult = res[0];
 
     if (updateUserResult.error) {
-      toast.error(
-        updateUserResult.error.message || "Failed to update profile image",
-      );
+      toast.error(updateUserResult.error.message || "Failed to update profile image");
     } else {
       toast.success("Profile image updated successfully");
       router.refresh();
     }
   }
 
-  const handleImage = (
-    e: ChangeEvent<HTMLInputElement>,
-    fieldChange: (value: string) => void,
-  ) => {
+  const handleImage = (e: ChangeEvent<HTMLInputElement>, fieldChange: (value: string) => void) => {
     e.preventDefault();
     const fileReader = new FileReader();
     if (e.target.files && e.target.files.length > 0) {
@@ -91,15 +85,12 @@ const ProfileUpdateImageForm = ({image}: {image?: string | null}) => {
   };
 
   return (
-    <form
-      className="space-y-4"
-      onSubmit={form.handleSubmit(handleProfileUpdate)}
-    >
+    <form className="space-y-4" onSubmit={form.handleSubmit(handleProfileUpdate)}>
       <FieldGroup>
         <Controller
           control={form.control}
           name="imageUrl"
-          render={({field, fieldState}) => (
+          render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel
                 htmlFor={field.name}
@@ -131,14 +122,8 @@ const ProfileUpdateImageForm = ({image}: {image?: string | null}) => {
             </Field>
           )}
         />
-        <Button
-          type="submit"
-          disabled={isSubmitting || isUploading}
-          className="w-full"
-        >
-          <LoadingSwap isLoading={isSubmitting || isUploading}>
-            Update Profile Image
-          </LoadingSwap>
+        <Button type="submit" disabled={isSubmitting || isUploading} className="w-full">
+          <LoadingSwap isLoading={isSubmitting || isUploading}>Update Profile Image</LoadingSwap>
         </Button>
       </FieldGroup>
     </form>

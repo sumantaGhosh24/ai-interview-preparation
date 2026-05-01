@@ -1,12 +1,12 @@
-import {Suspense} from "react";
-import {ErrorBoundary} from "react-error-boundary";
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 
-import {requireAuth} from "@/lib/auth-utils";
-import {globalParamsLoader} from "@/features/global/server/params-loader";
-import {prefetchQuestion} from "@/features/questions/server/prefetch";
-import {prefetchAnswersHistory} from "@/features/answers/server/prefetch";
-import {HydrateClient} from "@/trpc/server";
-import {ErrorView, LoadingView} from "@/components/entity-components";
+import { requireAuth } from "@/lib/auth-utils";
+import { globalParamsLoader } from "@/features/global/server/params-loader";
+import { prefetchQuestion } from "@/features/questions/server/prefetch";
+import { prefetchAnswersHistory } from "@/features/answers/server/prefetch";
+import { HydrateClient } from "@/trpc/server";
+import { ErrorView, LoadingView } from "@/components/entity-components";
 import AnswerEditor from "@/features/answers/components/answer-editor";
 import AnswerHistory from "@/features/answers/components/answer-history";
 import AnswersContainer from "@/features/answers/components/answers-container";
@@ -21,13 +21,13 @@ const QuestionPage = async ({
 }: PageProps<"/topics/[topicId]/questions/[questionId]">) => {
   await requireAuth();
 
-  const {questionId} = await params;
+  const { questionId } = await params;
 
   const answerParams = await globalParamsLoader(searchParams);
 
   prefetchQuestion(questionId);
 
-  prefetchAnswersHistory({...answerParams, questionId});
+  prefetchAnswersHistory({ ...answerParams, questionId });
 
   return (
     <HydrateClient>

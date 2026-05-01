@@ -1,12 +1,12 @@
 "use client";
 
-import {Controller, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {z} from "zod";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 import LoadingSwap from "@/components/loading-swap";
-import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
-import {Button} from "@/components/ui/button";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import {useGenerateAdaptiveQuestion} from "../hooks/use-questions";
+import { useGenerateAdaptiveQuestion } from "../hooks/use-questions";
 
 interface CreateQuestionAIProps {
   topicId: string;
@@ -23,25 +23,14 @@ interface CreateQuestionAIProps {
 }
 
 const createAIQuestionsSchema = z.object({
-  numberOfQuestions: z.enum([
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-  ]),
+  numberOfQuestions: z.enum(["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]),
 });
 
 type CreateAIQuestionsFormType = z.infer<typeof createAIQuestionsSchema>;
 
 const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
 
-const CreateQuestionAI = ({topicId, setJobId}: CreateQuestionAIProps) => {
+const CreateQuestionAI = ({ topicId, setJobId }: CreateQuestionAIProps) => {
   const form = useForm<CreateAIQuestionsFormType>({
     resolver: zodResolver(createAIQuestionsSchema),
     defaultValues: {
@@ -73,11 +62,9 @@ const CreateQuestionAI = ({topicId, setJobId}: CreateQuestionAIProps) => {
         <Controller
           control={form.control}
           name="numberOfQuestions"
-          render={({field, fieldState}) => (
+          render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid} className="w-full">
-              <FieldLabel className="text-base font-semibold">
-                Number of Questions
-              </FieldLabel>
+              <FieldLabel className="text-base font-semibold">Number of Questions</FieldLabel>
               <Select
                 onValueChange={field.onChange}
                 defaultValue={field.value}
@@ -102,14 +89,8 @@ const CreateQuestionAI = ({topicId, setJobId}: CreateQuestionAIProps) => {
             </Field>
           )}
         />
-        <Button
-          type="submit"
-          disabled={generateAIQuestions.isPending}
-          className="w-full"
-        >
-          <LoadingSwap isLoading={generateAIQuestions.isPending}>
-            Generate AI Questions
-          </LoadingSwap>
+        <Button type="submit" disabled={generateAIQuestions.isPending} className="w-full">
+          <LoadingSwap isLoading={generateAIQuestions.isPending}>Generate AI Questions</LoadingSwap>
         </Button>
       </FieldGroup>
     </form>

@@ -1,12 +1,12 @@
 "use client";
 
-import {useState} from "react";
-import {Controller, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {z} from "zod";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 import LoadingSwap from "@/components/loading-swap";
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -14,11 +14,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {Input} from "@/components/ui/input";
-import {Textarea} from "@/components/ui/textarea";
-import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 
-import {useCreateTopic} from "../hooks/use-topics";
+import { useCreateTopic } from "../hooks/use-topics";
 
 const createTopicSchema = z.object({
   name: z.string().min(1).max(50),
@@ -70,7 +70,7 @@ const CreateTopicDialog = () => {
             <Controller
               control={form.control}
               name="name"
-              render={({field, fieldState}) => (
+              render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid} className="w-full">
                   <FieldLabel className="font-medium text-muted-foreground mb-1 block">
                     Topic Name
@@ -92,7 +92,7 @@ const CreateTopicDialog = () => {
             <Controller
               control={form.control}
               name="description"
-              render={({field, fieldState}) => (
+              render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid} className="w-full">
                   <FieldLabel className="font-medium text-muted-foreground mb-1 block">
                     Topic Description
@@ -113,14 +113,8 @@ const CreateTopicDialog = () => {
                 </Field>
               )}
             />
-            <Button
-              type="submit"
-              disabled={createTopic.isPending}
-              className="w-full"
-            >
-              <LoadingSwap isLoading={createTopic.isPending}>
-                Create Topic
-              </LoadingSwap>
+            <Button type="submit" disabled={createTopic.isPending} className="w-full">
+              <LoadingSwap isLoading={createTopic.isPending}>Create Topic</LoadingSwap>
             </Button>
           </FieldGroup>
         </form>

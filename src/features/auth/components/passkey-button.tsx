@@ -1,20 +1,20 @@
 "use client";
 
-import {useEffect} from "react";
-import {useRouter} from "next/navigation";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-import {authClient} from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 
 import AuthActionButton from "./auth-action-button";
 
 const PasskeyButton = () => {
   const router = useRouter();
 
-  const {refetch} = authClient.useSession();
+  const { refetch } = authClient.useSession();
 
   useEffect(() => {
     authClient.signIn.passkey(
-      {autoFill: true},
+      { autoFill: true },
       {
         onSuccess() {
           refetch();

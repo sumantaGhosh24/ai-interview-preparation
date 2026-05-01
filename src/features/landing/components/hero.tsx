@@ -1,14 +1,8 @@
 import Link from "next/link";
-import {Sparkles} from "lucide-react";
+import { Sparkles } from "lucide-react";
 
-import {Button} from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Hero = () => {
   return (
@@ -21,13 +15,13 @@ const Hero = () => {
               AI-Powered Interview Preparation Platform
             </p>
             <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
-              Practice <span className="text-blue-500">Interviews</span> Like
-              It’s the <span className="text-blue-500">Real One</span>
+              Practice <span className="text-blue-500">Interviews</span> Like It’s the{" "}
+              <span className="text-blue-500">Real One</span>
             </h1>
             <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-              Build confidence with AI-generated questions, instant answer
-              evaluation, learning path generator, and personalized improvement
-              plans designed for DSA, React, System Design, and beyond.
+              Build confidence with AI-generated questions, instant answer evaluation, learning path
+              generator, and personalized improvement plans designed for DSA, React, System Design,
+              and beyond.
             </p>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
               <Button size="xl" asChild>
@@ -40,9 +34,7 @@ const Hero = () => {
           </div>
           <Card className="rounded-3xl border p-6 space-y-4">
             <CardHeader className="space-y-4 p-0">
-              <CardDescription className="font-medium">
-                Latest Evaluation
-              </CardDescription>
+              <CardDescription className="font-medium">Latest Evaluation</CardDescription>
               <CardTitle className="text-xl font-semibold">
                 Explain React useEffect cleanup function
               </CardTitle>
@@ -61,8 +53,8 @@ const Hero = () => {
               <div className="rounded-2xl border p-4">
                 <p className="text-sm text-muted-foreground">AI Feedback</p>
                 <p className="mt-2 text-sm leading-6">
-                  Strong understanding of cleanup logic, but improve explanation
-                  around dependency arrays and stale closures.
+                  Strong understanding of cleanup logic, but improve explanation around dependency
+                  arrays and stale closures.
                 </p>
               </div>
             </CardContent>

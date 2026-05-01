@@ -1,16 +1,16 @@
 "use client";
 
-import {useRouter} from "next/navigation";
-import {Controller, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
-import {toast} from "sonner";
+import { toast } from "sonner";
 
-import {authClient} from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import LoadingSwap from "@/components/loading-swap";
-import {Input} from "@/components/ui/input";
-import {Button} from "@/components/ui/button";
-import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 
 const totpSchema = z.object({
   code: z.string().length(6),
@@ -28,7 +28,7 @@ const TotpForm = () => {
     },
   });
 
-  const {isSubmitting} = form.formState;
+  const { isSubmitting } = form.formState;
 
   async function handleTotpVerification(data: TotpForm) {
     await authClient.twoFactor.verifyTotp(data, {
@@ -42,15 +42,12 @@ const TotpForm = () => {
   }
 
   return (
-    <form
-      className="space-y-4"
-      onSubmit={form.handleSubmit(handleTotpVerification)}
-    >
+    <form className="space-y-4" onSubmit={form.handleSubmit(handleTotpVerification)}>
       <FieldGroup>
         <Controller
           control={form.control}
           name="code"
-          render={({field, fieldState}) => (
+          render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor={field.name}>Code</FieldLabel>
               <Input

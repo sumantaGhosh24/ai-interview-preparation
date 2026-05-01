@@ -5,8 +5,8 @@ const Footer = () => {
         <div>
           <h3 className="text-lg font-bold">AI Interview Prep</h3>
           <p className="mt-4 text-sm leading-7 text-muted-foreground">
-            Practice smarter with AI-generated interview questions, instant
-            answer evaluation, and personalized learning paths.
+            Practice smarter with AI-generated interview questions, instant answer evaluation, and
+            personalized learning paths.
           </p>
         </div>
         <div>

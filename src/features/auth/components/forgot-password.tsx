@@ -1,15 +1,15 @@
 "use client";
 
-import {Controller, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
-import {toast} from "sonner";
+import { toast } from "sonner";
 
-import {authClient} from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import LoadingSwap from "@/components/loading-swap";
-import {Input} from "@/components/ui/input";
-import {Button} from "@/components/ui/button";
-import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 
 const forgotPasswordSchema = z.object({
   email: z.email().min(1),
@@ -17,7 +17,7 @@ const forgotPasswordSchema = z.object({
 
 type ForgotPasswordForm = z.infer<typeof forgotPasswordSchema>;
 
-const ForgotPassword = ({openSignInTab}: {openSignInTab: () => void}) => {
+const ForgotPassword = ({ openSignInTab }: { openSignInTab: () => void }) => {
   const form = useForm<ForgotPasswordForm>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
@@ -25,7 +25,7 @@ const ForgotPassword = ({openSignInTab}: {openSignInTab: () => void}) => {
     },
   });
 
-  const {isSubmitting} = form.formState;
+  const { isSubmitting } = form.formState;
 
   async function handleForgotPassword(data: ForgotPasswordForm) {
     await authClient.requestPasswordReset(
@@ -35,9 +35,7 @@ const ForgotPassword = ({openSignInTab}: {openSignInTab: () => void}) => {
       },
       {
         onError: (error) => {
-          toast.error(
-            error.error.message || "Failed to send password reset email",
-          );
+          toast.error(error.error.message || "Failed to send password reset email");
         },
         onSuccess: () => {
           toast.success("Password reset email sent");
@@ -47,15 +45,12 @@ const ForgotPassword = ({openSignInTab}: {openSignInTab: () => void}) => {
   }
 
   return (
-    <form
-      className="space-y-4"
-      onSubmit={form.handleSubmit(handleForgotPassword)}
-    >
+    <form className="space-y-4" onSubmit={form.handleSubmit(handleForgotPassword)}>
       <FieldGroup>
         <Controller
           control={form.control}
           name="email"
-          render={({field, fieldState}) => (
+          render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor={field.name}>Email</FieldLabel>
               <Input

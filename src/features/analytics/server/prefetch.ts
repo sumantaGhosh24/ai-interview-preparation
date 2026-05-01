@@ -1,4 +1,4 @@
-import {prefetch, trpc} from "@/trpc/server";
+import { prefetch, trpc } from "@/trpc/server";
 
 export const prefetchWeakTopics = () => {
   return prefetch(trpc.analytics.getWeakTopics.queryOptions());

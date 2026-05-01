@@ -1,5 +1,5 @@
 import prisma from "@/lib/db";
-import {Difficulty} from "@/generated/prisma/enums";
+import { Difficulty } from "@/generated/prisma/enums";
 
 export const getRecommendedDifficulty = async (
   userId: string,
@@ -29,10 +29,7 @@ export const getRecommendedDifficulty = async (
   return Difficulty.HARD;
 };
 
-export const getPreviousWeaknesses = async (
-  userId: string,
-  topicId: string,
-): Promise<string[]> => {
+export const getPreviousWeaknesses = async (userId: string, topicId: string): Promise<string[]> => {
   const recentEvaluations = await prisma.answerEvaluation.findMany({
     where: {
       answer: {

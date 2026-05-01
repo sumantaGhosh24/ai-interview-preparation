@@ -1,16 +1,10 @@
 "use client";
 
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardDescription,
-} from "@/components/ui/card";
-import {Separator} from "@/components/ui/separator";
-import {Badge} from "@/components/ui/badge";
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
 
-import {useSuspenseDashboard} from "../hooks/use-analytics";
+import { useSuspenseDashboard } from "../hooks/use-analytics";
 
 const StatBox = ({
   label,
@@ -24,9 +18,7 @@ const StatBox = ({
   <div className="space-y-1">
     <div className="text-sm text-muted-foreground">{label}</div>
     <div className="text-2xl font-bold">{value}</div>
-    {description && (
-      <div className="text-xs text-muted-foreground">{description}</div>
-    )}
+    {description && <div className="text-xs text-muted-foreground">{description}</div>}
   </div>
 );
 
@@ -60,16 +52,14 @@ const TopicPerf = ({
       </div>
       <div>
         <div className="text-xs text-muted-foreground mb-1">Avg Score</div>
-        <div className="font-semibold">
-          {topic ? topic.avgScore.toFixed(2) : "--"}
-        </div>
+        <div className="font-semibold">{topic ? topic.avgScore.toFixed(2) : "--"}</div>
       </div>
     </CardContent>
   </Card>
 );
 
 const DashboardData = () => {
-  const {data: dashboard} = useSuspenseDashboard();
+  const { data: dashboard } = useSuspenseDashboard();
 
   return (
     <div className="space-y-6">
@@ -116,15 +106,10 @@ const DashboardData = () => {
         <Card>
           <CardHeader>
             <CardTitle>Average Performance</CardTitle>
-            <CardDescription>
-              Your average performance across all topics
-            </CardDescription>
+            <CardDescription>Your average performance across all topics</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <StatBox
-              label="Avg. Score"
-              value={dashboard.averageScore.toFixed(2)}
-            />
+            <StatBox label="Avg. Score" value={dashboard.averageScore.toFixed(2)} />
             <StatBox
               label="Avg. Accuracy"
               value={`${(dashboard.averageAccuracy * 100).toFixed(1)}%`}
@@ -135,16 +120,8 @@ const DashboardData = () => {
             />
           </CardContent>
         </Card>
-        <TopicPerf
-          label="Best Topic"
-          badgeColor="default"
-          topic={dashboard.bestTopic}
-        />
-        <TopicPerf
-          label="Weakest Topic"
-          badgeColor="destructive"
-          topic={dashboard.weakestTopic}
-        />
+        <TopicPerf label="Best Topic" badgeColor="default" topic={dashboard.bestTopic} />
+        <TopicPerf label="Weakest Topic" badgeColor="destructive" topic={dashboard.weakestTopic} />
       </div>
     </div>
   );

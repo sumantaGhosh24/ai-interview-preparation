@@ -1,4 +1,4 @@
-import {redis} from "./redis";
+import { redis } from "./redis";
 
 const DEFAULT_TTL = 60 * 10;
 
@@ -10,11 +10,7 @@ export async function getCache<T>(key: string): Promise<T | null> {
   return data as T;
 }
 
-export async function setCache<T>(
-  key: string,
-  value: T,
-  ttl: number = DEFAULT_TTL,
-) {
+export async function setCache<T>(key: string, value: T, ttl: number = DEFAULT_TTL) {
   await redis.set(key, value, {
     ex: ttl,
   });

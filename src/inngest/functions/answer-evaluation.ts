@@ -1,22 +1,22 @@
-import {NonRetriableError} from "inngest";
+import { NonRetriableError } from "inngest";
 
-import {answerRateLimit} from "@/lib/redis";
+import { answerRateLimit } from "@/lib/redis";
 import prisma from "@/lib/db";
-import {generateAnswerEvaluation} from "@/features/answers/ai/generate-answer-evaluation";
+import { generateAnswerEvaluation } from "@/features/answers/ai/generate-answer-evaluation";
 
-import {inngest} from "../client";
+import { inngest } from "../client";
 
 export const answerEvaluation = inngest.createFunction(
-  {id: "answer-evaluation", triggers: {event: "answer/submitted"}},
-  async ({event, step}) => {
-    const {answerId, userId} = event.data;
+  { id: "answer-evaluation", triggers: { event: "answer/submitted" } },
+  async ({ event, step }) => {
+    const { answerId, userId } = event.data;
 
     if (!userId) throw new NonRetriableError("User ID is required");
 
     try {
       await step.run("mark-answer-running", async () => {
         return prisma.answer.update({
-          where: {id: answerId},
+          where: { id: answerId },
           data: {
             status: "RUNNING",
             statusMessage: "Evaluating your answer...",
@@ -25,9 +25,7 @@ export const answerEvaluation = inngest.createFunction(
       });
 
       await step.run("rate-limit-check", async () => {
-        const result = await answerRateLimit.limit(
-          `answer-submitted:${userId}`,
-        );
+        const result = await answerRateLimit.limit(`answer-submitted:${userId}`);
         if (!result.success) {
           throw new NonRetriableError("Rate limit exceeded");
         }
@@ -36,10 +34,10 @@ export const answerEvaluation = inngest.createFunction(
 
       const answer = await step.run("fetch-answer", async () => {
         return prisma.answer.findUnique({
-          where: {id: answerId},
+          where: { id: answerId },
           include: {
             question: {
-              include: {topic: true},
+              include: { topic: true },
             },
             evaluation: true,
           },
@@ -53,7 +51,7 @@ export const answerEvaluation = inngest.createFunction(
       if (answer.evaluation) {
         await step.run("mark-answer-completed-existing", async () => {
           return prisma.answer.update({
-            where: {id: answerId},
+            where: { id: answerId },
             data: {
               status: "COMPLETED",
               statusMessage: "Evaluation already exists",
@@ -119,11 +117,9 @@ export const answerEvaluation = inngest.createFunction(
 
         const newAttemptCount = existing.attemptCount + 1;
         const newAvgScore =
-          (existing.avgScore * existing.attemptCount + aiResult.score) /
-          newAttemptCount;
+          (existing.avgScore * existing.attemptCount + aiResult.score) / newAttemptCount;
         const successfulAttempts =
-          (existing.accuracy / 100) * existing.attemptCount +
-          (aiResult.score >= 7 ? 1 : 0);
+          (existing.accuracy / 100) * existing.attemptCount + (aiResult.score >= 7 ? 1 : 0);
         const newAccuracy = (successfulAttempts / newAttemptCount) * 100;
 
         return prisma.topicPerformance.update({
@@ -143,7 +139,7 @@ export const answerEvaluation = inngest.createFunction(
 
       await step.run("mark-answer-completed", async () => {
         return prisma.answer.update({
-          where: {id: answerId},
+          where: { id: answerId },
           data: {
             status: "COMPLETED",
             statusMessage: "Answer evaluated successfully",
@@ -151,11 +147,11 @@ export const answerEvaluation = inngest.createFunction(
         });
       });
 
-      return {success: true};
+      return { success: true };
     } catch (error) {
       await step.run("mark-answer-failed", async () => {
         return prisma.answer.update({
-          where: {id: answerId},
+          where: { id: answerId },
           data: {
             status: "FAILED",
             statusMessage: "Failed to evaluate answer",

@@ -1,16 +1,16 @@
 "use client";
 
-import {useRouter} from "next/navigation";
-import {Controller, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
-import {toast} from "sonner";
+import { toast } from "sonner";
 
-import {authClient} from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import LoadingSwap from "@/components/loading-swap";
-import {Input} from "@/components/ui/input";
-import {Button} from "@/components/ui/button";
-import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 
 const profileUpdateSchema = z.object({
   name: z.string().min(1),
@@ -46,7 +46,7 @@ const ProfileUpdateForm = ({
     },
   });
 
-  const {isSubmitting} = form.formState;
+  const { isSubmitting } = form.formState;
 
   async function handleProfileUpdate(data: ProfileUpdateForm) {
     const promises = [
@@ -68,7 +68,7 @@ const ProfileUpdateForm = ({
     const res = await Promise.all(promises);
 
     const updateUserResult = res[0];
-    const emailResult = res[1] ?? {error: false};
+    const emailResult = res[1] ?? { error: false };
 
     if (updateUserResult.error) {
       toast.error(updateUserResult.error.message || "Failed to update profile");
@@ -85,15 +85,12 @@ const ProfileUpdateForm = ({
   }
 
   return (
-    <form
-      className="space-y-4"
-      onSubmit={form.handleSubmit(handleProfileUpdate)}
-    >
+    <form className="space-y-4" onSubmit={form.handleSubmit(handleProfileUpdate)}>
       <FieldGroup>
         <Controller
           control={form.control}
           name="name"
-          render={({field, fieldState}) => (
+          render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor={field.name}>Name</FieldLabel>
               <Input
@@ -110,7 +107,7 @@ const ProfileUpdateForm = ({
         <Controller
           control={form.control}
           name="email"
-          render={({field, fieldState}) => (
+          render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor={field.name}>Email</FieldLabel>
               <Input
@@ -127,7 +124,7 @@ const ProfileUpdateForm = ({
         <Controller
           control={form.control}
           name="favoriteNumber"
-          render={({field, fieldState}) => (
+          render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor={field.name}>Favorite Number</FieldLabel>
               <Input

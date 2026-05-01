@@ -1,6 +1,6 @@
 "use client";
 
-import {ComponentProps} from "react";
+import { ComponentProps } from "react";
 
 import ActionButton from "@/components/action-button";
 
@@ -9,7 +9,7 @@ const AuthActionButton = ({
   successMessage,
   ...props
 }: Omit<ComponentProps<typeof ActionButton>, "action"> & {
-  action: () => Promise<{error: null | {message?: string}}>;
+  action: () => Promise<{ error: null | { message?: string } }>;
   successMessage?: string;
 }) => {
   return (
@@ -19,9 +19,9 @@ const AuthActionButton = ({
         const res = await action();
 
         if (res.error) {
-          return {error: true, message: res.error.message || "Action failed"};
+          return { error: true, message: res.error.message || "Action failed" };
         } else {
-          return {error: false, message: successMessage};
+          return { error: false, message: successMessage };
         }
       }}
     />

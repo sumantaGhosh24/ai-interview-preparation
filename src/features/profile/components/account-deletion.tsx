@@ -1,6 +1,6 @@
 "use client";
 
-import {authClient} from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import AuthActionButton from "@/features/auth/components/auth-action-button";
 
 const AccountDeletion = () => {
@@ -10,7 +10,7 @@ const AccountDeletion = () => {
       variant="destructive"
       className="w-full"
       successMessage="Account deletion initiated. Please check your email to confirm."
-      action={() => authClient.deleteUser({callbackURL: "/"})}
+      action={() => authClient.deleteUser({ callbackURL: "/" })}
     >
       Delete Account Permanently
     </AuthActionButton>

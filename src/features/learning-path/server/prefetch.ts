@@ -1,6 +1,6 @@
-import type {inferInput} from "@trpc/tanstack-react-query";
+import type { inferInput } from "@trpc/tanstack-react-query";
 
-import {prefetch, trpc} from "@/trpc/server";
+import { prefetch, trpc } from "@/trpc/server";
 
 type Input = inferInput<typeof trpc.learningPaths.getMany>;
 
@@ -9,5 +9,5 @@ export const prefetchLearningPaths = (params: Input) => {
 };
 
 export const prefetchLearningPathByTopicId = (topicId: string) => {
-  return prefetch(trpc.learningPaths.getByTopicId.queryOptions({topicId}));
+  return prefetch(trpc.learningPaths.getByTopicId.queryOptions({ topicId }));
 };

@@ -1,6 +1,6 @@
-import {sendEmail} from "./send-email";
+import { sendEmail } from "./send-email";
 
-export async function sendWelcomeEmail(user: {name: string; email: string}) {
+export async function sendWelcomeEmail(user: { name: string; email: string }) {
   await sendEmail({
     to: user.email,
     subject: "Welcome to Our App!",

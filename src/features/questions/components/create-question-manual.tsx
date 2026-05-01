@@ -1,12 +1,12 @@
 "use client";
 
-import {Controller, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {z} from "zod";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 import LoadingSwap from "@/components/loading-swap";
-import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
-import {Button} from "@/components/ui/button";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -14,9 +14,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {Input} from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 
-import {useCreateQuestionManual} from "../hooks/use-questions";
+import { useCreateQuestionManual } from "../hooks/use-questions";
 
 interface CreateQuestionDialogProps {
   topicId: string;
@@ -32,10 +32,7 @@ type CreateQuestionsFormType = z.infer<typeof createQuestionsSchema>;
 
 const difficulties = ["EASY", "MEDIUM", "HARD"];
 
-const CreateManualQuestion = ({
-  topicId,
-  setOpen,
-}: CreateQuestionDialogProps) => {
+const CreateManualQuestion = ({ topicId, setOpen }: CreateQuestionDialogProps) => {
   const form = useForm<CreateQuestionsFormType>({
     resolver: zodResolver(createQuestionsSchema),
     defaultValues: {
@@ -69,7 +66,7 @@ const CreateManualQuestion = ({
         <Controller
           control={form.control}
           name="question"
-          render={({field, fieldState}) => (
+          render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid} className="w-full">
               <FieldLabel className="font-medium text-muted-foreground mb-1 block">
                 Question
@@ -91,11 +88,9 @@ const CreateManualQuestion = ({
         <Controller
           control={form.control}
           name="difficulty"
-          render={({field, fieldState}) => (
+          render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid} className="w-full">
-              <FieldLabel className="text-base font-semibold">
-                Question Difficulty
-              </FieldLabel>
+              <FieldLabel className="text-base font-semibold">Question Difficulty</FieldLabel>
               <Select
                 onValueChange={field.onChange}
                 defaultValue={field.value}
@@ -120,14 +115,8 @@ const CreateManualQuestion = ({
             </Field>
           )}
         />
-        <Button
-          type="submit"
-          disabled={createQuestion.isPending}
-          className="w-full"
-        >
-          <LoadingSwap isLoading={createQuestion.isPending}>
-            Create Question
-          </LoadingSwap>
+        <Button type="submit" disabled={createQuestion.isPending} className="w-full">
+          <LoadingSwap isLoading={createQuestion.isPending}>Create Question</LoadingSwap>
         </Button>
       </FieldGroup>
     </form>

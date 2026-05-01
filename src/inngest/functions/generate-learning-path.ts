@@ -1,23 +1,21 @@
-import {NonRetriableError} from "inngest";
+import { NonRetriableError } from "inngest";
 
 import prisma from "@/lib/db";
-import {learningPathRateLimit} from "@/lib/redis";
-import {generateLearningPath} from "@/features/learning-path/ai/generate-learning-path";
+import { learningPathRateLimit } from "@/lib/redis";
+import { generateLearningPath } from "@/features/learning-path/ai/generate-learning-path";
 
-import {inngest} from "../client";
+import { inngest } from "../client";
 
 export const generateLearningPathJob = inngest.createFunction(
-  {id: "generate-learning-path", triggers: {event: "learning-path/generate"}},
-  async ({event, step}) => {
-    const {userId, topicId, topicName, previousWeaknesses} = event.data;
+  { id: "generate-learning-path", triggers: { event: "learning-path/generate" } },
+  async ({ event, step }) => {
+    const { userId, topicId, topicName, previousWeaknesses } = event.data;
 
     if (!userId) throw new NonRetriableError("User ID is required");
 
     try {
       await step.run("rate-limit-check", async () => {
-        const result = await learningPathRateLimit.limit(
-          `learning-path:${userId}`,
-        );
+        const result = await learningPathRateLimit.limit(`learning-path:${userId}`);
 
         if (!result.success) {
           throw new NonRetriableError("Rate limit exceeded");

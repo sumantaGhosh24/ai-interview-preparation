@@ -1,10 +1,10 @@
 "use client";
 
-import {type ComponentProps, type ReactNode, useTransition} from "react";
-import {toast} from "sonner";
+import { type ComponentProps, type ReactNode, useTransition } from "react";
+import { toast } from "sonner";
 
 import LoadingSwap from "./loading-swap";
-import {Button} from "./ui/button";
+import { Button } from "./ui/button";
 import {
   AlertDialog,
   AlertDialogDescription,
@@ -23,7 +23,7 @@ const ActionButton = ({
   areYouSureDescription = "This action cannot be undone.",
   ...props
 }: ComponentProps<typeof Button> & {
-  action: () => Promise<{error: boolean; message?: string}>;
+  action: () => Promise<{ error: boolean; message?: string }>;
   requireAreYouSure?: boolean;
   areYouSureDescription?: ReactNode;
 }) => {
@@ -49,9 +49,7 @@ const ActionButton = ({
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              {areYouSureDescription}
-            </AlertDialogDescription>
+            <AlertDialogDescription>{areYouSureDescription}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -73,10 +71,7 @@ const ActionButton = ({
         props.onClick?.(e);
       }}
     >
-      <LoadingSwap
-        isLoading={isLoading}
-        className="inline-flex items-center gap-2"
-      >
+      <LoadingSwap isLoading={isLoading} className="inline-flex items-center gap-2">
         {props.children}
       </LoadingSwap>
     </Button>
