@@ -5,6 +5,7 @@ import {inngest} from "@/inngest/client";
 import prisma from "@/lib/db";
 import {createTRPCRouter, protectedProcedure} from "@/trpc/init";
 import {PAGINATION} from "@/constants/pagination";
+import {invalidateAnswerCaches} from "@/lib/cache-invalidation";
 
 export const answersRouter = createTRPCRouter({
   submit: protectedProcedure
@@ -25,6 +26,25 @@ export const answersRouter = createTRPCRouter({
           statusMessage: "Queued for evaluation",
         },
       });
+
+      const question = await prisma.question.findUnique({
+        where: {
+          id: input.questionId,
+        },
+        select: {
+          id: true,
+          topicId: true,
+        },
+      });
+
+      if (!question) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Question not found",
+        });
+      }
+
+      await invalidateAnswerCaches(userId, question.topicId, question.id);
 
       await inngest.send({
         name: "answer/submitted",
