@@ -13,11 +13,11 @@ import {
 
 import {useSuspenseTopic} from "../hooks/use-topics";
 
-interface RecentAttemptsCardProps {
+interface RecentAnswersCardProps {
   topicId: string;
 }
 
-const RecentAttemptsCard = ({topicId}: RecentAttemptsCardProps) => {
+const RecentAnswersCard = ({topicId}: RecentAnswersCardProps) => {
   const {data: topic} = useSuspenseTopic(topicId);
 
   return (
@@ -50,4 +50,4 @@ const RecentAttemptsCard = ({topicId}: RecentAttemptsCardProps) => {
   );
 };
 
-export default RecentAttemptsCard;
+export default RecentAnswersCard;

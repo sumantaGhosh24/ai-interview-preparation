@@ -18,11 +18,11 @@ export const getRecommendedDifficulty = async (
     return Difficulty.EASY;
   }
 
-  if (performance.avgScore <= 4 || performance.accuracy <= 50) {
+  if (performance.avgScore <= 3 || performance.accuracy <= 40) {
     return Difficulty.EASY;
   }
 
-  if (performance.avgScore <= 7 || performance.accuracy <= 75) {
+  if (performance.avgScore <= 6 || performance.accuracy <= 60) {
     return Difficulty.MEDIUM;
   }
 

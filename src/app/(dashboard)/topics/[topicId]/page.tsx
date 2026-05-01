@@ -4,13 +4,15 @@ import {ErrorBoundary} from "react-error-boundary";
 import {requireAuth} from "@/lib/auth-utils";
 import {prefetchTopic} from "@/features/topics/server/prefetch";
 import {prefetchQuestionsByTopic} from "@/features/questions/server/prefetch";
+import {prefetchLearningPathByTopicId} from "@/features/learning-path/server/prefetch";
 import {globalParamsLoader} from "@/features/global/server/params-loader";
 import {HydrateClient} from "@/trpc/server";
 import {ErrorView, LoadingView} from "@/components/entity-components";
 import QuestionsContainer from "@/features/questions/components/questions-container";
 import TopicOverviewCard from "@/features/topics/components/topic-overview-card";
-import RecentAttemptsCard from "@/features/topics/components/recent-attempts-card";
+import RecentAnswersCard from "@/features/topics/components/recent-answers-card";
 import QuestionsList from "@/features/questions/components/questions-list";
+import LearningPath from "@/features/learning-path/components/learning-path";
 
 export const metadata = {
   title: "Topic Details",
@@ -30,6 +32,8 @@ const TopicDetailsPage = async ({
 
   prefetchQuestionsByTopic({...topicParams, topicId});
 
+  prefetchLearningPathByTopicId(topicId);
+
   return (
     <HydrateClient>
       <ErrorBoundary
@@ -47,7 +51,8 @@ const TopicDetailsPage = async ({
           <QuestionsContainer topicId={topicId}>
             <QuestionsList topicId={topicId} />
           </QuestionsContainer>
-          <RecentAttemptsCard topicId={topicId} />
+          <LearningPath topicId={topicId} />
+          <RecentAnswersCard topicId={topicId} />
         </Suspense>
       </ErrorBoundary>
     </HydrateClient>

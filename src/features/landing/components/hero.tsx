@@ -26,8 +26,8 @@ const Hero = () => {
             </h1>
             <p className="mt-6 max-w-xl text-lg text-muted-foreground">
               Build confidence with AI-generated questions, instant answer
-              evaluation, mock interviews, and personalized improvement plans
-              designed for DSA, React, System Design, and beyond.
+              evaluation, learning path generator, and personalized improvement
+              plans designed for DSA, React, System Design, and beyond.
             </p>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
               <Button size="xl" asChild>

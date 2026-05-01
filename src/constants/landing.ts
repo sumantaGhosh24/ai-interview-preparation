@@ -16,7 +16,7 @@ export const features = [
       "Practice smarter with AI-generated questions that adjust difficulty based on your performance and weak areas.",
   },
   {
-    title: "Mock Interview Mode",
+    title: "Learning Path Generator",
     description:
       "Simulate real interviews with timers, focused sessions, and AI-assisted interviewer feedback.",
   },
@@ -30,7 +30,7 @@ export const features = [
 export const stats = [
   {label: "Topics Supported", value: "50+"},
   {label: "AI Feedback Speed", value: "< 30s"},
-  {label: "Mock Sessions", value: "Unlimited"},
+  {label: "Learning Path", value: "Unlimited"},
   {label: "Performance Tracking", value: "Real-time"},
 ];
 
@@ -51,7 +51,7 @@ export const testimonials = [
   {
     name: "SDE Candidate",
     feedback:
-      "Mock interview mode made preparation feel realistic. The weakness tracking is incredibly useful.",
+      "Learning path generator made preparation feel realistic. The weakness tracking is incredibly useful.",
   },
   {
     name: "System Design Learner",
@@ -77,7 +77,7 @@ export const faqs = [
     a: "The platform evaluates your answers, scores them, detects mistakes, and provides improvements with model answers.",
   },
   {
-    q: "Is mock interview mode timed?",
-    a: "Yes, mock interview sessions include timers and focused interview simulations for realistic preparation.",
+    q: "How does learning path generator work?",
+    a: "The platform generates a learning path based on your performance and weakness areas.",
   },
 ];

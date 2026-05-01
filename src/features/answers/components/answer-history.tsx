@@ -19,8 +19,8 @@ const AnswerHistory = ({questionId}: AnswerHistoryProps) => {
 
   const {data: answersHistory} = useSuspenseAnswersHistory(questionId);
 
-  const attempts = answersHistory.items;
-  const latestAttempt = attempts[0];
+  const answers = answersHistory.items;
+  const latestAnswer = answers[0];
 
   return (
     <div className="space-y-6">
@@ -47,50 +47,50 @@ const AnswerHistory = ({questionId}: AnswerHistoryProps) => {
           </Badge>
         </CardContent>
       </Card>
-      {!latestAttempt ? (
+      {!latestAnswer ? (
         <Card className="rounded-2xl border">
           <CardHeader>
-            <CardTitle>No attempts yet</CardTitle>
+            <CardTitle>No answers yet</CardTitle>
           </CardHeader>
           <CardContent className="text-muted-foreground">
             Submit your first answer to start evaluation and history tracking.
           </CardContent>
         </Card>
-      ) : latestAttempt.evaluation ? (
-        <EvaluationCard answer={latestAttempt} />
+      ) : latestAnswer.evaluation ? (
+        <EvaluationCard answer={latestAnswer} />
       ) : (
-        <EvaluationStatus answerId={latestAttempt.id} questionId={questionId} />
+        <EvaluationStatus answerId={latestAnswer.id} questionId={questionId} />
       )}
-      {!!attempts.length && (
+      {!!answers.length && (
         <Card className="rounded-2xl border">
           <CardHeader>
             <CardTitle>Submission History</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            {attempts.map((attempt) => (
+            {answers.map((answer) => (
               <div
-                key={attempt.id}
+                key={answer.id}
                 className="space-y-2 rounded-xl border p-4 text-sm"
               >
                 <div className="flex items-center justify-between gap-2">
                   <Badge
-                    variant={attempt.evaluation ? "success" : "warning"}
+                    variant={answer.evaluation ? "success" : "warning"}
                     className="uppercase"
                   >
-                    {attempt.evaluation ? "Evaluated" : "Pending"}
+                    {answer.evaluation ? "Evaluated" : "Pending"}
                   </Badge>
                   <span className="text-muted-foreground">
-                    {formatDistanceToNow(new Date(attempt.createdAt), {
+                    {formatDistanceToNow(new Date(answer.createdAt), {
                       addSuffix: true,
                     })}
                   </span>
                 </div>
                 <p className="line-clamp-4 whitespace-pre-wrap text-muted-foreground">
-                  {attempt.content}
+                  {answer.content}
                 </p>
-                {attempt.evaluation ? (
+                {answer.evaluation ? (
                   <p className="font-medium">
-                    Score: {attempt.evaluation.score}/10
+                    Score: {answer.evaluation.score}/10
                   </p>
                 ) : (
                   <p className="font-medium text-muted-foreground">

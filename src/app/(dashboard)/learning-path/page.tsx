@@ -2,19 +2,25 @@ import {Suspense} from "react";
 import {ErrorBoundary} from "react-error-boundary";
 
 import {requireAuth} from "@/lib/auth-utils";
-import {prefetchDashboard} from "@/features/analytics/server/prefetch";
+import {prefetchLearningPaths} from "@/features/learning-path/server/prefetch";
+import {globalParamsLoader} from "@/features/global/server/params-loader";
 import {HydrateClient} from "@/trpc/server";
 import {ErrorView, LoadingView} from "@/components/entity-components";
-import DashboardData from "@/features/analytics/components/dashboard-data";
+import LearningPathsContainer from "@/features/learning-path/components/learning-paths-container";
+import LearningPathsList from "@/features/learning-path/components/learning-paths-list";
 
 export const metadata = {
-  title: "Dashboard",
+  title: "Learning Path",
 };
 
-const DashboardPage = async () => {
+const LearningPathPage = async ({
+  searchParams,
+}: PageProps<"/learning-path">) => {
   await requireAuth();
 
-  prefetchDashboard();
+  const params = await globalParamsLoader(searchParams);
+
+  prefetchLearningPaths(params);
 
   return (
     <HydrateClient>
@@ -29,11 +35,13 @@ const DashboardPage = async () => {
         }
       >
         <Suspense fallback={<LoadingView />}>
-          <DashboardData />
+          <LearningPathsContainer>
+            <LearningPathsList />
+          </LearningPathsContainer>
         </Suspense>
       </ErrorBoundary>
     </HydrateClient>
   );
 };
 
-export default DashboardPage;
+export default LearningPathPage;

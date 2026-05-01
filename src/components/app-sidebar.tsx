@@ -32,8 +32,8 @@ const navItems = [
     icon: BookOpen,
   },
   {
-    label: "Mock Interview",
-    href: "/mock",
+    label: "Learning Path",
+    href: "/learning-path",
     icon: Mic,
   },
   {

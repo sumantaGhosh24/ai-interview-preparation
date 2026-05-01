@@ -19,3 +19,10 @@ export const answerRateLimit = new Ratelimit({
   analytics: true,
   prefix: "ratelimit:answer",
 });
+
+export const learningPathRateLimit = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(30, "1 h"),
+  analytics: true,
+  prefix: "ratelimit:learning-path",
+});

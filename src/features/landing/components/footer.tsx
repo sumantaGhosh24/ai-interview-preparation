@@ -13,7 +13,7 @@ const Footer = () => {
           <h4 className="font-semibold">Platform</h4>
           <div className="mt-4 space-y-3 text-sm text-muted-foreground">
             <p>AI Evaluation</p>
-            <p>Mock Interviews</p>
+            <p>Learning Path Generator</p>
             <p>Adaptive Questions</p>
             <p>Performance Tracking</p>
           </div>
