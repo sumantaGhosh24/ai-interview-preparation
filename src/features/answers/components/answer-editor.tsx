@@ -72,7 +72,7 @@ const AnswerEditor = ({questionId}: AnswerEditorProps) => {
           value={language}
           onValueChange={(value) => setLanguage(value as LanguageOption)}
         >
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-45">
             <SelectValue placeholder="Choose editor mode" />
           </SelectTrigger>
           <SelectContent>

@@ -1,7 +1,7 @@
 import {generateText} from "ai";
 import {z} from "zod";
 
-import {safeJson} from "@/features/questions/helpers/utils";
+import {safeJson} from "@/features/global/helpers/utils";
 import {BASE_SYSTEM_RULES, geminiModel} from "@/lib/ai";
 
 export const generateLearningPathSchema = z.object({

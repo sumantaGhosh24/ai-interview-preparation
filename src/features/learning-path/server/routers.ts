@@ -4,7 +4,7 @@ import {TRPCError} from "@trpc/server";
 import prisma from "@/lib/db";
 import {createTRPCRouter, protectedProcedure} from "@/trpc/init";
 import {inngest} from "@/inngest/client";
-import {getPreviousWeaknesses} from "@/features/questions/helpers/utils";
+import {getPreviousWeaknesses} from "@/features/global/helpers/utils";
 import {PAGINATION} from "@/constants/pagination";
 
 export const learningPathsRouter = createTRPCRouter({

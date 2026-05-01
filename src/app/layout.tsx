@@ -43,18 +43,18 @@ export const metadata: Metadata = {
   creator: "Sumanta Ghosh",
 
   openGraph: {
-    title: "AI Powered Interview Preparation Platform",
+    title: "AI Interview Preparation",
     description:
       "The ultimate platform for preparing for your next interview. With AI-powered tools and resources, you can confidently prepare for your next interview with ease.",
     url: "https://sumanta-ghosh.vercel.app",
-    siteName: "AI Powered Interview Preparation Platform",
+    siteName: "AI Interview Preparation",
     type: "website",
     images: ["/opengraph-image"],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "AI Powered Interview Preparation Platform",
+    title: "AI Interview Preparation",
     description:
       "The ultimate platform for preparing for your next interview. With AI-powered tools and resources, you can confidently prepare for your next interview with ease.",
     images: ["/opengraph-image"],

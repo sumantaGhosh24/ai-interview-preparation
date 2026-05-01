@@ -2,8 +2,7 @@ import {generateText} from "ai";
 import {z} from "zod";
 
 import {BASE_SYSTEM_RULES, geminiModel} from "@/lib/ai";
-
-import {safeJson, sanitizeAIInput} from "../helpers/utils";
+import {safeJson, sanitizeAIInput} from "@/features/global/helpers/utils";
 
 export const answerEvaluationSchema = z.object({
   score: z.number().min(0).max(10),

@@ -25,7 +25,7 @@ export default function Image() {
         fontWeight: 700,
       }}
     >
-      <div>AI Powered Interview Preparation Platform</div>
+      <div>AI Interview Preparation</div>
       <div style={{fontSize: 32, marginTop: 20}}>
         The ultimate platform for preparing for your next interview. With
         AI-powered tools and resources, you can confidently prepare for your

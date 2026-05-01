@@ -10,7 +10,7 @@ import {Difficulty} from "@/generated/prisma/enums";
 import {
   getPreviousWeaknesses,
   getRecommendedDifficulty,
-} from "../helpers/utils";
+} from "../../global/helpers/utils";
 
 export const questionsRouter = createTRPCRouter({
   createManual: protectedProcedure

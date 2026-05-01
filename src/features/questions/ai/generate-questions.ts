@@ -3,8 +3,7 @@ import {z} from "zod";
 
 import {BASE_SYSTEM_RULES, geminiModel} from "@/lib/ai";
 import {Difficulty} from "@/generated/prisma/enums";
-
-import {safeJson} from "../helpers/utils";
+import {safeJson} from "@/features/global/helpers/utils";
 
 export const generatedQuestionSchema = z.array(
   z.object({

@@ -52,7 +52,7 @@ const AttemptTrends = () => {
           </div>
         ) : (
           <div className="flex flex-col gap-4">
-            <div className="flex items-end gap-[2px] h-24 sm:h-28 md:h-32 overflow-x-auto px-2 bg-muted rounded">
+            <div className="flex items-end gap-0.5 h-24 sm:h-28 md:h-32 overflow-x-auto px-2 bg-muted rounded">
               {trendData.map((d) => (
                 <div
                   key={d.date}
@@ -73,7 +73,7 @@ const AttemptTrends = () => {
                 </div>
               ))}
             </div>
-            <div className="flex flex-row gap-[2px] px-2 select-none">
+            <div className="flex flex-row gap-0.5 px-2 select-none">
               {trendData.map((d, i) => (
                 <div
                   key={d.date}

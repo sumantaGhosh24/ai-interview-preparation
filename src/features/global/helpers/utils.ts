@@ -68,3 +68,11 @@ export const safeJson = (text: string) => {
     .replace(/```/g, "")
     .trim();
 };
+
+export const sanitizeAIInput = (input: string): string => {
+  return input
+    .replace(/<script._?>._?<\/script>/gi, "")
+    .replace(/ignore previous instructions/gi, "")
+    .replace(/system prompt/gi, "")
+    .trim();
+};

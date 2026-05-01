@@ -13,7 +13,7 @@ import {sendDeleteAccountVerificationEmail} from "./email/delete-account-verific
 import {sendWelcomeEmail} from "./email/welcome-email";
 
 export const auth = betterAuth({
-  appName: "AI Powered Interview Preparation Platform",
+  appName: "AI Interview Preparation",
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),

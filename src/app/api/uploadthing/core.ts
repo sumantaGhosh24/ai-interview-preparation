@@ -3,6 +3,7 @@ import {UploadThingError} from "uploadthing/server";
 
 const f = createUploadthing();
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const auth = (req: Request) => ({id: "fakeId"});
 
 export const ourFileRouter = {
