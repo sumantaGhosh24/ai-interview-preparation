@@ -28,6 +28,7 @@ This is a modern web application that uses AI to help users prepare for job inte
 - **Analytics**: Sentry
 - **Form Validation**: Zod + React Hook Form
 - **State Management**: TanStack React Query
+- **Testing**: Jest, RTL, Playwright
 
 ## Features
 
