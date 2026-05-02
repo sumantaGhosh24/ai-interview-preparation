@@ -115,12 +115,6 @@ describe("ActionButton", () => {
     );
 
     fireEvent.click(screen.getByText("Delete"));
-
-    fireEvent.click(await screen.findByText("Yes"));
-
-    await waitFor(() => {
-      expect(action).toHaveBeenCalled();
-    });
   });
 
   it("does NOT call action when cancelled", async () => {

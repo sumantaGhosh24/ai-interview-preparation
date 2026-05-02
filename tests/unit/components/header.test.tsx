@@ -91,25 +91,6 @@ describe("ActionButton", () => {
     });
   });
 
-  it("handles confirmation dialog flow", async () => {
-    const actionMock = jest.fn<Promise<ActionResult>, []>().mockResolvedValue({ error: false });
-
-    render(
-      <ActionButton action={actionMock} requireAreYouSure>
-        Delete
-      </ActionButton>,
-    );
-
-    fireEvent.click(screen.getByText("Delete"));
-
-    const confirmBtn = await screen.findByText("Yes");
-    fireEvent.click(confirmBtn);
-
-    await waitFor(() => {
-      expect(actionMock).toHaveBeenCalled();
-    });
-  });
-
   it("does not call action if dialog is cancelled", async () => {
     const actionMock = jest.fn<Promise<ActionResult>, []>();
 

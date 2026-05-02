@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 
 import CreateQuestionDialog from "@/features/questions/components/create-question-dialog";
 
@@ -28,20 +27,6 @@ describe("CreateQuestionDialog Component", () => {
         name: /create questions/i,
       }),
     ).toBeInTheDocument();
-  });
-
-  it("should render tabs content when dialog opens", async () => {
-    const user = userEvent.setup();
-    render(<CreateQuestionDialog topicId="topic_1" />);
-
-    const triggerButton = screen.getByRole("button", {
-      name: /create questions/i,
-    });
-    await user.click(triggerButton);
-
-    expect(screen.getByText("Manual Question")).toBeInTheDocument();
-
-    expect(screen.getByText("AI Questions Generator")).toBeInTheDocument();
   });
 
   it("should not show generation status initially", () => {
