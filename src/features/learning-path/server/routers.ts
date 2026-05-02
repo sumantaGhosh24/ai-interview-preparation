@@ -26,6 +26,10 @@ export const learningPathsRouter = createTRPCRouter({
 
       const previousWeaknesses = await getPreviousWeaknesses(ctx.auth.user.id, input.topicId);
 
+      if (!previousWeaknesses) {
+        return { topicId: topic.id };
+      }
+
       await inngest.send({
         name: "learning-path/generate",
         data: {

@@ -6,9 +6,6 @@ import prisma from "@/lib/db";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { PAGINATION } from "@/constants/pagination";
 import { Difficulty } from "@/generated/prisma/enums";
-import { invalidateQuestionCaches } from "@/lib/cache-invalidation";
-import { getOrSetCache } from "@/lib/cache";
-import { cacheKeys } from "@/lib/cache-keys";
 import { getPreviousWeaknesses, getRecommendedDifficulty } from "@/features/global/helpers/utils";
 
 export const questionsRouter = createTRPCRouter({
@@ -20,7 +17,7 @@ export const questionsRouter = createTRPCRouter({
         difficulty: z.enum(Difficulty),
       }),
     )
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input }) => {
       const topic = await prisma.topic.findUnique({
         where: { id: input.topicId },
       });
@@ -40,8 +37,6 @@ export const questionsRouter = createTRPCRouter({
           isAI: false,
         },
       });
-
-      await invalidateQuestionCaches(ctx.auth.user.id, input.topicId);
 
       return question;
     }),
@@ -110,40 +105,32 @@ export const questionsRouter = createTRPCRouter({
 
       return job;
     }),
-  remove: protectedProcedure
-    .input(z.object({ id: z.string() }))
-    .mutation(async ({ input, ctx }) => {
-      const existingQuestion = await prisma.question.findUnique({
-        where: {
-          id: input.id,
-        },
-        select: {
-          id: true,
-          topicId: true,
-        },
+  remove: protectedProcedure.input(z.object({ id: z.string() })).mutation(async ({ input }) => {
+    const existingQuestion = await prisma.question.findUnique({
+      where: {
+        id: input.id,
+      },
+      select: {
+        id: true,
+        topicId: true,
+      },
+    });
+
+    if (!existingQuestion) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Question not found",
       });
+    }
 
-      if (!existingQuestion) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Question not found",
-        });
-      }
+    const deletedQuestion = await prisma.question.delete({
+      where: {
+        id: input.id,
+      },
+    });
 
-      const deletedQuestion = await prisma.question.delete({
-        where: {
-          id: input.id,
-        },
-      });
-
-      await invalidateQuestionCaches(
-        ctx.auth.user.id,
-        existingQuestion.topicId,
-        existingQuestion.id,
-      );
-
-      return deletedQuestion;
-    }),
+    return deletedQuestion;
+  }),
   getByTopic: protectedProcedure
     .input(
       z.object({
@@ -160,72 +147,60 @@ export const questionsRouter = createTRPCRouter({
     .query(async ({ input }) => {
       const { page, pageSize, search } = input;
 
-      return getOrSetCache(
-        cacheKeys.questionsList(input.topicId, page, pageSize, search),
-        async () => {
-          const [items, totalCount] = await Promise.all([
-            prisma.question.findMany({
-              skip: (page - 1) * pageSize,
-              take: pageSize,
-              where: {
-                topicId: input.topicId,
-                question: {
-                  contains: search,
-                  mode: "insensitive",
-                },
-              },
-              orderBy: {
-                updatedAt: "desc",
-              },
-            }),
-            prisma.question.count({
-              where: {
-                topicId: input.topicId,
-                question: {
-                  contains: search,
-                  mode: "insensitive",
-                },
-              },
-            }),
-          ]);
+      const [items, totalCount] = await Promise.all([
+        prisma.question.findMany({
+          skip: (page - 1) * pageSize,
+          take: pageSize,
+          where: {
+            topicId: input.topicId,
+            question: {
+              contains: search,
+              mode: "insensitive",
+            },
+          },
+          orderBy: {
+            updatedAt: "desc",
+          },
+        }),
+        prisma.question.count({
+          where: {
+            topicId: input.topicId,
+            question: {
+              contains: search,
+              mode: "insensitive",
+            },
+          },
+        }),
+      ]);
 
-          const totalPages = Math.ceil(totalCount / pageSize);
-          const hasNextPage = page < totalPages;
-          const hasPreviousPage = page > 1;
+      const totalPages = Math.ceil(totalCount / pageSize);
+      const hasNextPage = page < totalPages;
+      const hasPreviousPage = page > 1;
 
-          return {
-            items,
-            page,
-            pageSize,
-            totalCount,
-            totalPages,
-            hasNextPage,
-            hasPreviousPage,
-          };
-        },
-        300,
-      );
+      return {
+        items,
+        page,
+        pageSize,
+        totalCount,
+        totalPages,
+        hasNextPage,
+        hasPreviousPage,
+      };
     }),
   getOne: protectedProcedure.input(z.object({ id: z.string() })).query(async ({ input }) => {
     const questionId = input.id;
 
-    return getOrSetCache(
-      cacheKeys.questionDetail(questionId),
-      async () => {
-        const question = await prisma.question.findUnique({
-          where: { id: questionId },
-        });
+    const question = await prisma.question.findUnique({
+      where: { id: questionId },
+    });
 
-        if (!question) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Question not found",
-          });
-        }
+    if (!question) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Question not found",
+      });
+    }
 
-        return question;
-      },
-      300,
-    );
+    return question;
   }),
 });

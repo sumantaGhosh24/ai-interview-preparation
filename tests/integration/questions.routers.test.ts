@@ -3,7 +3,6 @@ import { TRPCError } from "@trpc/server";
 
 import prisma from "@/lib/db";
 import { inngest } from "@/inngest/client";
-import { invalidateQuestionCaches } from "@/lib/cache-invalidation";
 import { getPreviousWeaknesses, getRecommendedDifficulty } from "@/features/global/helpers/utils";
 import { questionsRouter } from "@/features/questions/server/routers";
 
@@ -75,7 +74,6 @@ describe("questionsRouter", () => {
       });
 
       expect(result.id).toBe("q1");
-      expect(invalidateQuestionCaches).toHaveBeenCalled();
     });
 
     it("throws if topic not found", async () => {
@@ -164,7 +162,6 @@ describe("questionsRouter", () => {
       const result = await caller.remove({ id: "q1" });
 
       expect(result.id).toBe("q1");
-      expect(invalidateQuestionCaches).toHaveBeenCalled();
     });
 
     it("throws if question not found", async () => {
