@@ -3,7 +3,7 @@ const Footer = () => {
     <footer className="border-t bg-muted/20">
       <div className="mx-auto grid container gap-10 px-6 py-16 lg:grid-cols-4 lg:px-8">
         <div>
-          <h3 className="text-lg font-bold">AI Interview Prep</h3>
+          <h3 className="text-lg font-bold">AI Interview Preparation</h3>
           <p className="mt-4 text-sm leading-7 text-muted-foreground">
             Practice smarter with AI-generated interview questions, instant answer evaluation, and
             personalized learning paths.

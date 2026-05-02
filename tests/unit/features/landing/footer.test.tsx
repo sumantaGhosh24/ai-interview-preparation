@@ -6,7 +6,7 @@ describe("Footer", () => {
   it("should render main brand name", () => {
     render(<Footer />);
 
-    expect(screen.getByText("AI Interview Prep")).toBeInTheDocument();
+    expect(screen.getByText("AI Interview Preparation")).toBeInTheDocument();
   });
 
   it("should render platform section items", () => {
